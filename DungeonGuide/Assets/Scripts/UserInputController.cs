@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 namespace DungeonGuide
 {
 	public class UserInputController : MonoBehaviour
 	{
         private PlayerCharacterRoot selectedCharacter;
+
+		private Vector3 desiredCharacterPosition;
         private Vector3 lastMousePosition;
 
 		#region initializers
@@ -43,6 +46,7 @@ namespace DungeonGuide
                     if (this.selectedCharacter != null)
                     {
                         this.selectedCharacter.CharacterSelected(true);
+						this.desiredCharacterPosition = this.selectedCharacter.transform.position;
                     }
                 }
             }
@@ -59,7 +63,12 @@ namespace DungeonGuide
                 Vector3 mousePositionDelta = newMousePosition - this.lastMousePosition;
                 this.lastMousePosition = newMousePosition;
 
-                this.selectedCharacter.transform.position = this.selectedCharacter.transform.position + mousePositionDelta;
+				this.desiredCharacterPosition = this.desiredCharacterPosition + mousePositionDelta;
+				Vector3 snappedCharacterPosition = this.desiredCharacterPosition;
+				snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
+				snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
+
+				this.selectedCharacter.transform.position = snappedCharacterPosition;
             }
         }
 		#endregion
