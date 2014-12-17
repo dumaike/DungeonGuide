@@ -1,2 +1,6 @@
 /DungeonGuide/Library
 /DungeonGuide/Temp
+/DungeonGuide/*.csproj
+/DungeonGuide/*.sln
+/DungeonGuide/*.userprefs
+/Builds
