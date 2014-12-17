@@ -6,7 +6,7 @@ namespace DungeonGuide
 {
 	public class UserInputController : MonoBehaviour
 	{
-        private PlayerCharacterRoot selectedCharacter;
+		private CharacterRoot selectedCharacter;
 
 		private Vector3 desiredCharacterPosition;
         private Vector3 lastMousePosition;
@@ -42,7 +42,7 @@ namespace DungeonGuide
                 RaycastHit hitInfo = new RaycastHit();
                 if (Physics.Raycast(raycastRay, out hitInfo))
                 {
-                    this.selectedCharacter = hitInfo.transform.GetComponentInParent<PlayerCharacterRoot>();  
+                    this.selectedCharacter = hitInfo.transform.GetComponentInParent<CharacterRoot>();  
                     if (this.selectedCharacter != null)
                     {
                         this.selectedCharacter.CharacterSelected(true);
