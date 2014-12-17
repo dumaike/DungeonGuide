@@ -58,7 +58,9 @@ namespace DungeonGuide
             }
 
             if (this.selectedCharacter != null)
-            {
+			{
+				int layerMask = 1 << 0;
+
                 Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
                 Vector3 mousePositionDelta = newMousePosition - this.lastMousePosition;
                 this.lastMousePosition = newMousePosition;
@@ -67,8 +69,28 @@ namespace DungeonGuide
 				Vector3 snappedCharacterPosition = this.desiredCharacterPosition;
 				snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
 				snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
+				snappedCharacterPosition.y = 0;
 
-				this.selectedCharacter.transform.position = snappedCharacterPosition;
+				Vector3 currentCharacterPosition = this.selectedCharacter.transform.position;
+				Vector3 movementDirection = snappedCharacterPosition - currentCharacterPosition;
+				float distanceToMove = movementDirection.magnitude;
+				if (distanceToMove > 0)
+				{
+					Ray raycastRay = new Ray (currentCharacterPosition, movementDirection);
+					RaycastHit hitInfo = new RaycastHit ();
+
+					if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask))
+					{						
+						Debug.Log("Moving character from " + this.selectedCharacter.transform.position + " to " + snappedCharacterPosition);
+						this.selectedCharacter.transform.position = snappedCharacterPosition;
+					}
+					else
+					{
+						Debug.Log("Can't move because we hit a " + hitInfo.transform.name + " when trying to move to " 
+						          + snappedCharacterPosition + " from " + this.selectedCharacter.transform.position, 
+						          hitInfo.transform.gameObject);
+					}
+				}
             }
         }
 		#endregion
