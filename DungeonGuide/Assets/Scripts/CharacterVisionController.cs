@@ -11,7 +11,7 @@ namespace DungeonGuide
 		
 		private const float VISION_DISTANCE = 20.0f;
 		
-		private const float HALF_TILE_WIDTH = 0.3f;
+		public const float HALF_TILE_WIDTH = 0.3f;
 		private Vector3[] visionPoints = {
 			new Vector3(HALF_TILE_WIDTH, 0.1f, HALF_TILE_WIDTH), 
 			new Vector3(-HALF_TILE_WIDTH, 0.1f, HALF_TILE_WIDTH), 
@@ -81,10 +81,9 @@ namespace DungeonGuide
 							unseenLeftovers.Add (curTile);
 						}
 
-						if (DRAW_SIGHT_LINES)
-						{
+#if DRAW_SIGHT_LINES
 							Debug.DrawLine (raycastRay.origin, hitInfo.point);
-						}
+#endif
 					}
 
 					this.unseenTiles = new List<TileRoot> (unseenLeftovers);

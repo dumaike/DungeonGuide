@@ -35,64 +35,77 @@ namespace DungeonGuide
 		#region private methods
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                this.lastMousePosition = raycastRay.origin;
-                RaycastHit hitInfo = new RaycastHit();
-                if (Physics.Raycast(raycastRay, out hitInfo))
-                {
-                    this.selectedCharacter = hitInfo.transform.GetComponentInParent<CharacterRoot>();  
-                    if (this.selectedCharacter != null)
-                    {
-                        this.selectedCharacter.CharacterSelected(true);
+			UpdateCharacterMovement ();
+        }
+
+		private void UpdateCharacterMovement()
+		{
+			if (Input.GetMouseButtonDown(0))
+			{
+				Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+				this.lastMousePosition = raycastRay.origin;
+				RaycastHit hitInfo = new RaycastHit();
+				if (Physics.Raycast(raycastRay, out hitInfo))
+				{
+					this.selectedCharacter = hitInfo.transform.GetComponentInParent<CharacterRoot>();  
+					if (this.selectedCharacter != null)
+					{
+						this.selectedCharacter.CharacterSelected(true);
 						this.desiredCharacterPosition = this.selectedCharacter.transform.position;
-                    }
-                }
-            }
-
-            if (this.selectedCharacter != null && Input.GetMouseButtonUp(0))
-            {
-                this.selectedCharacter.CharacterSelected(false);
-                this.selectedCharacter = null;
-            }
-
-            if (this.selectedCharacter != null)
+					}
+				}
+			}
+			
+			if (this.selectedCharacter != null && Input.GetMouseButtonUp(0))
+			{		
+				Vector3 snappedCharacterPosition = this.desiredCharacterPosition;
+				snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
+				snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
+				snappedCharacterPosition.y = 0;				
+				this.selectedCharacter.transform.position = snappedCharacterPosition;
+				
+				this.selectedCharacter.CharacterSelected(false);
+				this.selectedCharacter = null;
+			}
+			
+			if (this.selectedCharacter != null)
 			{
 				int layerMask = 1 << 0;
-
-                Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
-                Vector3 mousePositionDelta = newMousePosition - this.lastMousePosition;
-                this.lastMousePosition = newMousePosition;
-
+				
+				Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
+				Vector3 mousePositionDelta = newMousePosition - this.lastMousePosition;
+				this.lastMousePosition = newMousePosition;
+				
 				this.desiredCharacterPosition = this.desiredCharacterPosition + mousePositionDelta;
 				Vector3 snappedCharacterPosition = this.desiredCharacterPosition;
 				snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
 				snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
 				snappedCharacterPosition.y = 0;
-
+				
 				Vector3 currentCharacterPosition = this.selectedCharacter.transform.position;
 				Vector3 movementDirection = snappedCharacterPosition - currentCharacterPosition;
 				float distanceToMove = movementDirection.magnitude;
 				if (distanceToMove > 0)
 				{
-					Ray raycastRay = new Ray (currentCharacterPosition, movementDirection);
+					Ray raycastRay = new Ray (currentCharacterPosition + movementDirection.normalized*CharacterVisionController.HALF_TILE_WIDTH, movementDirection);
 					RaycastHit hitInfo = new RaycastHit ();
-
+					
 					if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask))
 					{						
-						Debug.Log("Moving character from " + this.selectedCharacter.transform.position + " to " + snappedCharacterPosition);
+						Log.Print("Moving character from " + this.selectedCharacter.transform.position + " to " + snappedCharacterPosition, 
+						          LogChannel.CHARACTER_MOVEMENT);
+
 						this.selectedCharacter.transform.position = snappedCharacterPosition;
 					}
 					else
 					{
-						Debug.Log("Can't move because we hit a " + hitInfo.transform.name + " when trying to move to " 
+						Log.Print("Can't move because we hit a " + hitInfo.transform.name + " when trying to move to " 
 						          + snappedCharacterPosition + " from " + this.selectedCharacter.transform.position, 
-						          hitInfo.transform.gameObject);
+						          LogChannel.CHARACTER_MOVEMENT, hitInfo.transform.gameObject);
 					}
 				}
-            }
-        }
+			}
+		}
 		#endregion
 	}
 
