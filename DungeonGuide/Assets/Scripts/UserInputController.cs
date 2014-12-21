@@ -1,15 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 namespace DungeonGuide
 {
 	public class UserInputController : MonoBehaviour
 	{
+		private enum InputMode
+		{
+			CAMERA,
+			CHARACTERS,
+		};
+
 		private CharacterRoot selectedCharacter;
 
 		private Vector3 desiredCharacterPosition;
         private Vector3 lastMousePosition;
+
+		private InputMode currentMode = InputMode.CHARACTERS;
+
+		[SerializeField]
+		private Text intputModeButton;
 
 		#region initializers
 		private void Awake()
@@ -29,15 +41,32 @@ namespace DungeonGuide
 		#endregion
 
 		#region public methods
-
+		public void ToggleInputMode()
+		{
+			if (this.currentMode == InputMode.CAMERA)
+			{
+				this.currentMode = InputMode.CHARACTERS;
+				this.intputModeButton.text = "Character Mode";
+			}
+			else
+			{
+				this.currentMode = InputMode.CAMERA;
+				this.intputModeButton.text = "Camera Mode";
+			}
+		}
 		#endregion
 
 		#region private methods
         private void Update()
         {
-			UpdateCharacterMovement ();
-
-			UpdateCameraMovement ();
+			if (this.currentMode == InputMode.CHARACTERS)
+			{
+				UpdateCharacterMovement ();
+			}
+			else if (this.currentMode == InputMode.CAMERA)
+			{
+				UpdateCameraMovement ();
+			}
         }
 
 		private void UpdateCharacterMovement()
@@ -116,14 +145,14 @@ namespace DungeonGuide
 
 		private void UpdateCameraMovement()
 		{
-			if (Input.GetMouseButtonDown(1))
+			if (Input.GetMouseButtonDown(0))
 			{
 				ResetActionsInProgress();
 
 				this.lastMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
 			}
 
-			if(Input.GetMouseButton(1))
+			if(Input.GetMouseButton(0))
 			{
 				Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
 				Vector3 mousePositionDelta = newMousePosition - this.lastMousePosition;
