@@ -54,6 +54,18 @@ namespace DungeonGuide
 				this.intputModeButton.text = "Camera Mode";
 			}
 		}
+
+		public void CameraZoom(float amount)
+		{
+			float newZoom = Camera.main.orthographicSize + amount;
+			if (newZoom <= 0) 
+			{
+				newZoom = Camera.main.orthographicSize;
+			}
+
+			//Transform screen coords into world coords
+			Camera.main.orthographicSize = newZoom;
+		}
 		#endregion
 
 		#region private methods
@@ -142,23 +154,23 @@ namespace DungeonGuide
 				}
 			}
 		}
-
+		
 		private void UpdateCameraMovement()
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
 				ResetActionsInProgress();
-
+				
 				this.lastMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
 			}
-
+			
 			if(Input.GetMouseButton(0))
 			{
 				Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
 				Vector3 mousePositionDelta = newMousePosition - this.lastMousePosition;
 				//Include the delta in the new mouse position because we're moving the camera too
 				this.lastMousePosition = newMousePosition - mousePositionDelta;
-
+				
 				//Transform screen coords into world coords
 				Camera.main.transform.position -= mousePositionDelta;
 			}
