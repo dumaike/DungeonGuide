@@ -36,12 +36,17 @@ namespace DungeonGuide
         private void Update()
         {
 			UpdateCharacterMovement ();
+
+			UpdateCameraMovement ();
         }
 
 		private void UpdateCharacterMovement()
 		{
+			//If a character was clicked
 			if (Input.GetMouseButtonDown(0))
 			{
+				ResetActionsInProgress();
+
 				Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 				this.lastMousePosition = raycastRay.origin;
 				RaycastHit hitInfo = new RaycastHit();
@@ -55,7 +60,8 @@ namespace DungeonGuide
 					}
 				}
 			}
-			
+
+			//If a character was released
 			if (this.selectedCharacter != null && Input.GetMouseButtonUp(0))
 			{		
 				Vector3 snappedCharacterPosition = this.desiredCharacterPosition;
@@ -67,7 +73,8 @@ namespace DungeonGuide
 				this.selectedCharacter.CharacterSelected(false);
 				this.selectedCharacter = null;
 			}
-			
+
+			//If we're holding a character
 			if (this.selectedCharacter != null)
 			{
 				int layerMask = 1 << 0;
@@ -105,6 +112,32 @@ namespace DungeonGuide
 					}
 				}
 			}
+		}
+
+		private void UpdateCameraMovement()
+		{
+			if (Input.GetMouseButtonDown(1))
+			{
+				ResetActionsInProgress();
+
+				this.lastMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
+			}
+
+			if(Input.GetMouseButton(1))
+			{
+				Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
+				Vector3 mousePositionDelta = newMousePosition - this.lastMousePosition;
+				//Include the delta in the new mouse position because we're moving the camera too
+				this.lastMousePosition = newMousePosition - mousePositionDelta;
+
+				//Transform screen coords into world coords
+				Camera.main.transform.position -= mousePositionDelta;
+			}
+		}
+
+		private void ResetActionsInProgress()
+		{			
+			this.selectedCharacter = null;
 		}
 		#endregion
 	}
