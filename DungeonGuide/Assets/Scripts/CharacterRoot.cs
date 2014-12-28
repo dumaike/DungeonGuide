@@ -10,9 +10,13 @@ namespace DungeonGuide
 		private Color selectedColor = new Color(0, 1, 1, 1);
 		private Color defaultColor = new Color(1, 1, 1, 1);
 
+		[SerializeField]
+		private bool inPlaySerialized = false;
+		public bool inPlay { get{ return this.inPlaySerialized; } private set { this.inPlaySerialized = value; } }
+
 		#region initializers
 		virtual protected void Awake()
-		{			
+		{		
 			this.meshRenderers = this.GetComponentsInChildren<MeshRenderer> ();
 		}
 

@@ -60,33 +60,36 @@ namespace DungeonGuide
 
 			foreach (PlayerCharacterRoot player in this.playerCharacters) 
 			{
-				foreach (Vector3 localVisionPoint in this.visionPoints) 
+				if (player.inPlay)
 				{
-					List<TileRoot> unseenLeftovers = new List<TileRoot> ();
-					Vector3 visionPoint = player.transform.position + localVisionPoint;
-
-					foreach (TileRoot curTile in this.unseenTiles) 
+					foreach (Vector3 localVisionPoint in this.visionPoints) 
 					{
-						Ray raycastRay = new Ray (visionPoint, curTile.transform.position - visionPoint);
-						RaycastHit hitInfo = new RaycastHit ();
-						Physics.Raycast (raycastRay, out hitInfo, VISION_DISTANCE, layerMask);
-						float distanceFromHitToTile = Vector3.Distance (hitInfo.point, curTile.transform.position);
-						bool showTile = distanceFromHitToTile < 0.45;
-						if (showTile) 
+						List<TileRoot> unseenLeftovers = new List<TileRoot> ();
+						Vector3 visionPoint = player.transform.position + localVisionPoint;
+
+						foreach (TileRoot curTile in this.unseenTiles) 
 						{
-							curTile.ShowTile (showTile);        
-						} 
-						else 
-						{
-							unseenLeftovers.Add (curTile);
-						}
+							Ray raycastRay = new Ray (visionPoint, curTile.transform.position - visionPoint);
+							RaycastHit hitInfo = new RaycastHit ();
+							Physics.Raycast (raycastRay, out hitInfo, VISION_DISTANCE, layerMask);
+							float distanceFromHitToTile = Vector3.Distance (hitInfo.point, curTile.transform.position);
+							bool showTile = distanceFromHitToTile < 0.45;
+							if (showTile) 
+							{
+								curTile.ShowTile (showTile);        
+							} 
+							else 
+							{
+								unseenLeftovers.Add (curTile);
+							}
 
 #if DRAW_SIGHT_LINES
 							Debug.DrawLine (raycastRay.origin, hitInfo.point);
 #endif
-					}
+						}
 
-					this.unseenTiles = new List<TileRoot> (unseenLeftovers);
+						this.unseenTiles = new List<TileRoot> (unseenLeftovers);
+					}
 				}
 			}
 
