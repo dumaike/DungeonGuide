@@ -10,7 +10,7 @@ public enum LogChannel
 public class Log
 {
 	private static List<LogChannel> channelsToLog = new List<LogChannel> {
-		//LogChannel.CHARACTER_MOVEMENT,
+		LogChannel.CHARACTER_MOVEMENT,
 		LogChannel.DEBUG
 	};
 	

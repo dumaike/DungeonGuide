@@ -14,6 +14,7 @@ namespace DungeonGuide
 		};
 
 		private CharacterRoot selectedCharacter;
+		private Vector3 selectedCharacterStartPosition;
 
 		private Vector3 desiredCharacterPosition;
         private Vector3 lastMousePosition;
@@ -21,7 +22,7 @@ namespace DungeonGuide
 		private InputMode currentMode = InputMode.CHARACTERS;
 
 		[SerializeField]
-		private Text intputModeButton;
+		private Text intputModeButton;		
 
 		#region initializers
 		private void Awake()
@@ -80,44 +81,11 @@ namespace DungeonGuide
 				UpdateCameraMovement ();
 			}
         }
-
-		private void UpdateCharacterMovement()
-		{
-			//If a character was clicked
-			if (Input.GetMouseButtonDown(0))
-			{
-				ResetActionsInProgress();
-
-				Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-				this.lastMousePosition = raycastRay.origin;
-				RaycastHit hitInfo = new RaycastHit();
-				if (Physics.Raycast(raycastRay, out hitInfo))
-				{
-					this.selectedCharacter = hitInfo.transform.GetComponentInParent<CharacterRoot>();  
-					if (this.selectedCharacter != null)
-					{
-						this.selectedCharacter.CharacterSelected(true);
-						this.desiredCharacterPosition = this.selectedCharacter.transform.position;
-					}
-				}
-			}
-
-			//If a character was released
-			if (this.selectedCharacter != null && Input.GetMouseButtonUp(0))
-			{		
-				Vector3 snappedCharacterPosition = this.desiredCharacterPosition;
-				snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
-				snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
-				snappedCharacterPosition.y = 0;				
-				this.selectedCharacter.transform.position = snappedCharacterPosition;
-				
-				this.selectedCharacter.CharacterSelected(false);
-				this.selectedCharacter = null;
-			}
-
-			//If we're holding a character
-			if (this.selectedCharacter != null)
-			{
+        
+        private IEnumerator MovingSelectedCharacter()
+        {
+        	while(true)
+        	{
 				int layerMask = 1 << 0;
 				
 				Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
@@ -142,7 +110,7 @@ namespace DungeonGuide
 					{						
 						Log.Print("Moving character from " + this.selectedCharacter.transform.position + " to " + snappedCharacterPosition, 
 						          LogChannel.CHARACTER_MOVEMENT);
-
+						
 						this.selectedCharacter.transform.position = snappedCharacterPosition;
 					}
 					else
@@ -152,6 +120,40 @@ namespace DungeonGuide
 						          LogChannel.CHARACTER_MOVEMENT, hitInfo.transform.gameObject);
 					}
 				}
+				
+				yield return new WaitForEndOfFrame();
+			}
+        }        
+
+		private void UpdateCharacterMovement()
+		{
+			//If a character was clicked
+			if (Input.GetMouseButtonDown(0) && selectedCharacter == null)
+			{
+				ResetActionsInProgress();
+
+				Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+				this.lastMousePosition = raycastRay.origin;
+				RaycastHit hitInfo = new RaycastHit();
+				if (Physics.Raycast(raycastRay, out hitInfo))
+				{
+					this.selectedCharacter = hitInfo.transform.GetComponentInParent<CharacterRoot>();  
+					if (this.selectedCharacter != null)
+					{
+						this.selectedCharacter.CharacterSelected(true);
+						this.desiredCharacterPosition = this.selectedCharacter.transform.position;
+						StartCoroutine(MovingSelectedCharacter());
+					}
+				}
+			}
+
+			//If a character was released
+			if (this.selectedCharacter != null && Input.GetMouseButtonUp(0))
+			{		
+				StopAllCoroutines();
+				
+				this.selectedCharacter.CharacterSelected(false);
+				this.selectedCharacter = null;
 			}
 		}
 		
