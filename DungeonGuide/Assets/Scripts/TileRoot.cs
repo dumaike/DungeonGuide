@@ -36,20 +36,6 @@ namespace DungeonGuide
 				curRenderer.enabled = visible;
 			}
 		}
-
-		public IEnumerator SnapNextFrame()
-		{
-			yield return new WaitForEndOfFrame();
-			yield return new WaitForEndOfFrame();
-
-			Debug.Log ("Not called?");
-
-			Vector3 snappedPosition = this.transform.position;
-			snappedPosition.x = (float)Math.Round (snappedPosition.x);
-			snappedPosition.z = (float)Math.Round (snappedPosition.z);
-			snappedPosition.y = 0;
-        	this.transform.position = snappedPosition;
-		}
 		#endregion
 
 		#region private methods
