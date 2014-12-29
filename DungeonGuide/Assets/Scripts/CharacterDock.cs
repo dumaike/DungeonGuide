@@ -28,22 +28,43 @@ namespace DungeonGuide
 			MoveDockToEdge ();
 			
 			this.roster = GameObject.FindObjectOfType<CharacterRoster>();
-			if (this.roster == null)
+			if (this.roster == null || this.roster.availableCharacterPrefabs.Count == 0)
 			{
-				Log.Error("Could not find a character roster. Add one or there won't be any characters for the scene!", LogChannel.EDITOR_SETUP);
+				Log.Error("Could not find a character roster (or the roster is empty). Add one or there won't be any characters for the scene!", LogChannel.EDITOR_SETUP);
 			}
 			else
 			{
-				//Set the character placement at the top left of the dock	
+				//HACK Only supports 1x1 characters
+			
+				//Set the character placement at the top left of the dock minus half the height of the first character
 				Vector3 topLeftEdgeOfCamera = Camera.main.ScreenToWorldPoint (new Vector3 (0, Screen.height, UI_HEIGHT_OFFSET));			
-				topLeftEdgeOfCamera.x = this.leftEdge.transform.position.x;
+				topLeftEdgeOfCamera.x = this.leftEdge.transform.position.x;			
+				float startingX = topLeftEdgeOfCamera.x;	
+				
+				CharacterRoot previousCharacter = null;
 			
 				List<CharacterRoot> characters = this.roster.availableCharacterPrefabs;
 				foreach (CharacterRoot character in characters)
 				{
 					CharacterRoot createdCharacter = Instantiate(character) as CharacterRoot;
+					if (previousCharacter == null)
+					{						
+						topLeftEdgeOfCamera.z -= createdCharacter.characterDimensions.z / 2.0f;
+						topLeftEdgeOfCamera.x += createdCharacter.characterDimensions.x / 2.0f;
+					}
+					else
+					{
+						topLeftEdgeOfCamera.x += createdCharacter.characterDimensions.x;
+						if (topLeftEdgeOfCamera.x + (createdCharacter.characterDimensions.x / 2.0f) > this.rightEdge.transform.position.x)
+						{
+							topLeftEdgeOfCamera.x = startingX + createdCharacter.characterDimensions.x / 2.0f;
+							topLeftEdgeOfCamera.z -= createdCharacter.characterDimensions.z;
+						}
+					}
+					
 					createdCharacter.transform.position = topLeftEdgeOfCamera;
 					createdCharacter.transform.parent = this.transform;
+					previousCharacter = character;
 				}				
 			}
 		}

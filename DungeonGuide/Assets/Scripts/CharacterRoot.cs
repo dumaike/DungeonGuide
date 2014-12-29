@@ -15,7 +15,7 @@ namespace DungeonGuide
 		private bool inPlaySerialized = false;
 		public bool inPlay { get{ return this.inPlaySerialized; } private set { this.inPlaySerialized = value; } }
 		
-		public Vector2 characterDimensions {get; private set;}
+		public Vector3 characterDimensions {get; private set;}
 
 		#region initializers
 		virtual protected void Awake()
@@ -27,7 +27,8 @@ namespace DungeonGuide
 			{
 				float x = renderer.bounds.extents.x;
 				float z = renderer.bounds.extents.z;
-				this.characterDimensions = new Vector2((float)Math.Ceiling(x*2), (float)Math.Ceiling(z*2));
+				float y = renderer.bounds.extents.y;
+				this.characterDimensions = new Vector3((float)Math.Ceiling(x*2), (float)Math.Ceiling(y*2), (float)Math.Ceiling(z*2));
 			}
 		}
 

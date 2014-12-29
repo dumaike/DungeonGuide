@@ -10,8 +10,8 @@ public enum LogChannel
 public class Log
 {
 	private static List<LogChannel> channelsToLog = new List<LogChannel> {
-		LogChannel.EDITOR_SETUP,
-		LogChannel.CHARACTER_MOVEMENT,
+		//LogChannel.EDITOR_SETUP,
+		//LogChannel.CHARACTER_MOVEMENT,
 		LogChannel.DEBUG
 	};
 	
