@@ -157,7 +157,7 @@ namespace DungeonGuide
 			Vector3 snappedCharacterPosition = this.desiredCharacterPosition;
 			snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
 			snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
-			snappedCharacterPosition.y = 0;
+			snappedCharacterPosition.y = this.selectedCharacter.transform.position.y;
 			
 			Vector3 currentCharacterPosition = this.selectedCharacter.transform.position;
 			Vector3 movementDirection = snappedCharacterPosition - currentCharacterPosition;
