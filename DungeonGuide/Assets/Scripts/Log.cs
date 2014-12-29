@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 public enum LogChannel
 {
-	DEBUG, CHARACTER_MOVEMENT
+	DEBUG, CHARACTER_MOVEMENT, EDITOR_SETUP
 };
 
 public class Log
 {
 	private static List<LogChannel> channelsToLog = new List<LogChannel> {
+		LogChannel.EDITOR_SETUP,
 		LogChannel.CHARACTER_MOVEMENT,
 		LogChannel.DEBUG
 	};

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 namespace DungeonGuide
 {
@@ -13,11 +14,21 @@ namespace DungeonGuide
 		[SerializeField]
 		private bool inPlaySerialized = false;
 		public bool inPlay { get{ return this.inPlaySerialized; } private set { this.inPlaySerialized = value; } }
+		
+		public Vector2 characterDimensions {get; private set;}
 
 		#region initializers
 		virtual protected void Awake()
 		{		
 			this.meshRenderers = this.GetComponentsInChildren<MeshRenderer> ();
+			
+			//HACK Assumes centered single mesh objects
+			foreach (MeshRenderer renderer in this.meshRenderers)
+			{
+				float x = renderer.bounds.extents.x;
+				float z = renderer.bounds.extents.z;
+				this.characterDimensions = new Vector2((float)Math.Ceiling(x*2), (float)Math.Ceiling(z*2));
+			}
 		}
 
 		private void Start()

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace DungeonGuide
 {
@@ -17,12 +18,34 @@ namespace DungeonGuide
 		public bool isDockVisible {get; private set;}
 		
 		public const float UI_HEIGHT_OFFSET = 2.0f;
+		
+		private CharacterRoster roster = null;
 
 		#region initializers
 		private void Awake()
 		{
 			this.isDockVisible = false;
 			MoveDockToEdge ();
+			
+			this.roster = GameObject.FindObjectOfType<CharacterRoster>();
+			if (this.roster == null)
+			{
+				Log.Error("Could not find a character roster. Add one or there won't be any characters for the scene!", LogChannel.EDITOR_SETUP);
+			}
+			else
+			{
+				//Set the character placement at the top left of the dock	
+				Vector3 topLeftEdgeOfCamera = Camera.main.ScreenToWorldPoint (new Vector3 (0, Screen.height, UI_HEIGHT_OFFSET));			
+				topLeftEdgeOfCamera.x = this.leftEdge.transform.position.x;
+			
+				List<CharacterRoot> characters = this.roster.availableCharacterPrefabs;
+				foreach (CharacterRoot character in characters)
+				{
+					CharacterRoot createdCharacter = Instantiate(character) as CharacterRoot;
+					createdCharacter.transform.position = topLeftEdgeOfCamera;
+					createdCharacter.transform.parent = this.transform;
+				}				
+			}
 		}
 		#endregion
 
