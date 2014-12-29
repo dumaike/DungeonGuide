@@ -5,13 +5,7 @@ using UnityEngine.UI;
 namespace DungeonGuide
 {
 	public class DockButton : MonoBehaviour
-	{
-		/// <summary>
-		/// The UI for the dock to be shifted when this button is pressed
-		/// </summary>
-		[SerializeField]
-		private GameObject dockUI = null;
-		
+	{		
 		/// <summary>
 		/// The button itself, to be shifted when it's pressed
 		/// </summary>
@@ -24,37 +18,34 @@ namespace DungeonGuide
 		[SerializeField]
 		private CharacterDock characterDock = null;
 		
+		/// <summary>
+		/// The character dock UI to be shifted when this button is pressed
+		/// </summary>
+		[SerializeField]
+		private GameObject dockUI  = null;
+		
 		[SerializeField]
 		private Text dockButtonText = null;
 
-		private bool isDockVisible = false;
 		#region initializers
 		#endregion
 
 		#region public methods
 		public void ToggleDockVisiblity()
 		{
-			float shiftAmount = this.characterDock.dockShift;
-			if (this.isDockVisible)
-			{
-				shiftAmount = -shiftAmount;
-			}
-			Vector3 shiftVector = new Vector3(shiftAmount,0,0);
+			this.characterDock.ToggleDockVisibility();
 			
-			this.dockUI.transform.position = this.dockUI.transform.position + shiftVector;
-			this.dockButton.transform.position = this.dockButton.transform.position + shiftVector;
-			this.characterDock.transform.position = this.characterDock.transform.position + shiftVector;
+			this.dockButton.transform.position = this.dockButton.transform.position + this.characterDock.dockShift;
+			this.dockUI.transform.position = this.dockUI.transform.position + this.characterDock.dockShift;
 			
-			this.isDockVisible = !this.isDockVisible;
-			if (this.isDockVisible)
+			if (this.characterDock.isDockVisible)
 			{
 				this.dockButtonText.text = "<<";
 			}
 			else
 			{
 				this.dockButtonText.text = ">>";
-			}
-			
+			}			
 		}
 		#endregion
 
