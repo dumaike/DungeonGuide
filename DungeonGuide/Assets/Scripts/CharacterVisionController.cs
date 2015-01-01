@@ -4,10 +4,8 @@ using System.Collections.Generic;
 
 namespace DungeonGuide
 {
-	public class CharacterVisionController : MonoBehaviour
-	{
-		public static CharacterVisionController Instance {get; private set;}
-		
+	public class CharacterVisionController
+	{		
 		private TileRoot[] allTiles;
 		private List<TileRoot> unseenTiles;
 		
@@ -28,30 +26,14 @@ namespace DungeonGuide
 		private List<PlayerCharacterRoot> playerCharacters;
 
 		#region initializers
-		private void Awake()
-		{			
-			if (CharacterVisionController.Instance != null)
-			{
-				Log.Error("A second CharacterVisionController was created. This is a problem, there should be only ONE!", LogChannel.EDITOR_SETUP, this);
-			}
-			CharacterVisionController.Instance = this;
-			
+		public CharacterVisionController()
+		{						
 			this.allTiles = GameObject.FindObjectsOfType<TileRoot>();
 			this.playerCharacters = new List<PlayerCharacterRoot>(GameObject.FindObjectsOfType<PlayerCharacterRoot>());
 			foreach (PlayerCharacterRoot player in this.playerCharacters) 
 			{
 				GameObjectUtility.SetLayerRecursive (LayerMask.NameToLayer (INVISIBLE_LAYER_NAME), player.transform); 
 			}
-		}
-
-		private void Start()
-		{
-
-		}
-
-		private void OnDestroy()
-		{
-
 		}
 		#endregion
 
@@ -60,22 +42,20 @@ namespace DungeonGuide
 		{
 			this.playerCharacters.Remove (character);
 		}
-		#endregion
-
-		#region private methods
-		private void Update()
+		
+		public void Update()
 		{
 			int layerMask = 1 << 0;
-
+			
 			this.unseenTiles = new List<TileRoot> (this.allTiles);
-
+			
 			foreach (PlayerCharacterRoot player in this.playerCharacters) 
 			{
 				foreach (Vector3 localVisionPoint in this.visionPoints) 
 				{
 					List<TileRoot> unseenLeftovers = new List<TileRoot> ();
 					Vector3 visionPoint = player.transform.position + localVisionPoint;
-
+					
 					foreach (TileRoot curTile in this.unseenTiles) 
 					{
 						Ray raycastRay = new Ray (visionPoint, curTile.transform.position - visionPoint);
@@ -91,21 +71,25 @@ namespace DungeonGuide
 						{
 							unseenLeftovers.Add (curTile);
 						}
-
+						
 #if DRAW_SIGHT_LINES
 						Debug.DrawLine (raycastRay.origin, hitInfo.point);
 #endif
 					}
-
+					
 					this.unseenTiles = new List<TileRoot> (unseenLeftovers);
 				}
 			}
-
+			
 			foreach (TileRoot unseenTile in this.unseenTiles) 
 			{
-					unseenTile.ShowTile (false);
+				unseenTile.ShowTile (false);
 			}
 		}
+		#endregion
+
+		#region private methods
+		
 		#endregion
 	}
 

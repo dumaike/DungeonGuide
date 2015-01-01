@@ -5,9 +5,14 @@ using UnityEngine.UI;
 
 namespace DungeonGuide
 {
-	public class UserInputController : MonoBehaviour
-	{
-		public static UserInputController Instance {get; private set;}
+	public class UserInputController
+	{			
+		public enum InputEvent
+		{
+			ZOOM_IN = 0,
+			ZOOM_OUT = 1,
+			TOGGLE_INPUT_MODE = 2
+		}
 	
 		private enum InputMode
 		{
@@ -15,7 +20,6 @@ namespace DungeonGuide
 			CHARACTERS,
 		};
 
-		public CharacterRoot selectedCharacter {get; private set;}
 		private Vector3 selectedCharacterStartPosition;
 
 		private Vector3 desiredWorldCharacterPosition;
@@ -25,84 +29,58 @@ namespace DungeonGuide
         private Vector3 pressedMousePositionScreen;
 		private float mousePressedTime;
 		private bool mousePressed = false;
+		private float longPressMinimumMovement;
 
 		private InputMode currentMode = InputMode.CHARACTERS;
 		
-		private float longPressDuration = 1.0f;
-		private float longPressMinimumMovement;
-
-		[SerializeField]
-		private Text intputModeButton;	
+		private const float LONG_PRESS_DURATION = 1.0f;
+		private const float ZOOM_INCREMENT = 0.5f;
 		
-		[SerializeField]
-		private LongPressMenu longPressMenu;	
+		/// <summary>
+		/// The amount we'll allow the user to move in pixels and still count
+		/// that click as a long press, expressed in a percent of the screen
+		/// width.
+		/// </summary>
+		private const float LONG_PRESS_MOVEMENT_TOLERANCE = 0.01f;
+		
+		private Text intputModeButtonText;	
+		private LongPressMenu longPressMenuObject;			
 
 		#region initializers
-		private void Awake()
+		public UserInputController(Text inputModeButtonText, LongPressMenu longPressMenuObject)
 		{
-			if (UserInputController.Instance != null)
-			{
-				Log.Error("A second UserInputController was created. This is a problem, there should be only ONE!", LogChannel.EDITOR_SETUP, this);
-			}
-			UserInputController.Instance = this;
-		
-			this.longPressMinimumMovement = Screen.width / 100.0f;
-			Log.Print("The long press minimum movement is " + this.longPressMinimumMovement + " pixels.", LogChannel.INPUT, this);
-		}
-
-		private void Start()
-		{
-
-		}
-
-		private void OnDestroy()
-		{
-
+			this.intputModeButtonText = inputModeButtonText;
+			this.longPressMenuObject = longPressMenuObject;
+			
+			this.longPressMinimumMovement = Screen.width * LONG_PRESS_MOVEMENT_TOLERANCE;
+			Log.Print("The long press minimum movement is " + this.longPressMinimumMovement + " pixels.", LogChannel.INPUT);
 		}
 		#endregion
 
 		#region public methods
-		public void ToggleInputMode()
+		public void ReceiveInputEvent(InputEvent inputEvent)
 		{
-			if (this.currentMode == InputMode.CAMERA)
+			switch (inputEvent)
 			{
-				this.currentMode = InputMode.CHARACTERS;
-				this.intputModeButton.text = "Character Mode";
+				case InputEvent.TOGGLE_INPUT_MODE:
+					ToggleInputMode();
+					break;
+				case InputEvent.ZOOM_IN:
+					CameraZoom(-ZOOM_INCREMENT);
+					break;
+				case InputEvent.ZOOM_OUT:
+					CameraZoom(ZOOM_INCREMENT);
+					break;
+				default:
+					Log.Error("No action mapped for input event: " + inputEvent);
+					break;
 			}
-			else
-			{
-				this.currentMode = InputMode.CAMERA;
-				this.intputModeButton.text = "Camera Mode";
-			}
-		}
-
-		public void CameraZoom(float amount)
-		{
-			float newZoom = Camera.main.orthographicSize + amount;
-			if (newZoom <= 0) 
-			{
-				newZoom = Camera.main.orthographicSize;
-			}
-
-			//Transform screen coords into world coords
-			Camera.main.orthographicSize = newZoom;
 		}
 		
-		public void ResetActionsInProgress()
-		{			
-			if (this.selectedCharacter != null)
+		public void Update()
+		{
+			if (!this.longPressActive)
 			{
-				this.selectedCharacter.CharacterSelected(false);
-				this.selectedCharacter = null;
-			}
-		}
-		#endregion
-
-		#region private methods
-        private void Update()
-        {
-        	if (!this.longPressActive)
-        	{
 				if (this.currentMode == InputMode.CHARACTERS)
 				{
 					UpdateCharacterMovement ();
@@ -114,19 +92,46 @@ namespace DungeonGuide
 				
 				UpdateLongPressCheck();
 			}		
-			else if (this.longPressActive && this.longPressMenu.gameObject.activeSelf == false)
+			else if (this.longPressActive && this.longPressMenuObject.gameObject.activeSelf == false)
 			{
 				this.longPressActive = false;
-				ResetActionsInProgress();
 			}	
-        } 
-        
+		} 
+		#endregion
+
+		#region private methods
+		private void ToggleInputMode()
+		{
+			if (this.currentMode == InputMode.CAMERA)
+			{
+				this.currentMode = InputMode.CHARACTERS;
+				this.intputModeButtonText.text = "Character Mode";
+			}
+			else
+			{
+				this.currentMode = InputMode.CAMERA;
+				this.intputModeButtonText.text = "Camera Mode";
+			}
+		}
+		
+		private void CameraZoom(float amount)
+		{
+			float newZoom = Camera.main.orthographicSize + amount;
+			if (newZoom <= 0) 
+			{
+				newZoom = Camera.main.orthographicSize;
+			}
+			
+			//Transform screen coords into world coords
+			Camera.main.orthographicSize = newZoom;
+		}
+		
         private void UpdateLongPressCheck()
         {
 			//If the mouse was pressed
 			if (Input.GetMouseButtonDown(0))
 			{
-				Log.Print("Tracking long press.", LogChannel.INPUT, this);
+				Log.Print("Tracking long press.", LogChannel.INPUT);
 				this.pressedMousePositionScreen = Input.mousePosition;
 				this.mousePressedTime = Time.time;
 				this.mousePressed = true;
@@ -139,19 +144,19 @@ namespace DungeonGuide
 				Vector3 mousePositionDelta = Input.mousePosition - this.pressedMousePositionScreen;
 				if (mousePositionDelta.magnitude > this.longPressMinimumMovement)
 				{
-					Log.Print("Stopped tracking long press. Mouse moved too far.", LogChannel.INPUT, this);
+					Log.Print("Stopped tracking long press. Mouse moved too far.", LogChannel.INPUT);
 					this.mousePressed = false;
 				}				
 				//If the amount of time has passed, trigger the long press UI
-				else if (this.mousePressed && Time.time - this.mousePressedTime > this.longPressDuration)
+				else if (this.mousePressed && Time.time - this.mousePressedTime > UserInputController.LONG_PRESS_DURATION)
 				{
-					Log.Print("Log press activated", LogChannel.INPUT, this);
+					Log.Print("Log press activated", LogChannel.INPUT);
 					this.longPressActive = true;
-					this.longPressMenu.DisplayLongPressMenu(true);
+					this.longPressMenuObject.DisplayLongPressMenu(true);
 				}
 				else if (Input.GetMouseButtonUp(0))
 				{
-					Log.Print("Stopped tracking long press. Mouse released", LogChannel.INPUT, this);
+					Log.Print("Stopped tracking long press. Mouse released", LogChannel.INPUT);
 					this.mousePressed = false;
 				}
 			}
@@ -160,10 +165,8 @@ namespace DungeonGuide
 		private void UpdateCharacterMovement()
 		{
 			//If a character was clicked
-			if (Input.GetMouseButtonDown(0) && selectedCharacter == null)
-			{
-				ResetActionsInProgress();
-
+			if (Input.GetMouseButtonDown(0) && !SceneManager.SelectedChCtrl.IsCharacterSelected())
+			{				
 				Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 				this.lastWorldMousePosition = raycastRay.origin;
 				this.pressedMousePositionScreen = this.lastWorldMousePosition;
@@ -171,22 +174,22 @@ namespace DungeonGuide
 				RaycastHit hitInfo = new RaycastHit();
 				if (Physics.Raycast(raycastRay, out hitInfo))
 				{
-					this.selectedCharacter = hitInfo.transform.GetComponentInParent<CharacterRoot>();  
-					if (this.selectedCharacter != null)
+					CharacterRoot hitCharacter = hitInfo.transform.GetComponentInParent<CharacterRoot>();
+					if (hitCharacter != null)
 					{
-						this.selectedCharacter.CharacterSelected(true);
-						this.desiredWorldCharacterPosition = this.selectedCharacter.transform.position;
+						SceneManager.SelectedChCtrl.SelectCharacter(hitCharacter);  
+						this.desiredWorldCharacterPosition = hitCharacter.transform.position;
 					}
 				}
 			}
 
 			//If a character was released
-			if (this.selectedCharacter != null && Input.GetMouseButtonUp(0))
+			if (SceneManager.SelectedChCtrl.IsCharacterSelected() && Input.GetMouseButtonUp(0))
 			{		
-				ResetActionsInProgress();
+				SceneManager.SelectedChCtrl.DeselectCharacter();
 			}
 			
-			if (this.selectedCharacter != null)
+			if (SceneManager.SelectedChCtrl.IsCharacterSelected())
 			{
 				MoveSelectedCharacterToMouse();
 			}
@@ -195,9 +198,7 @@ namespace DungeonGuide
 		private void UpdateCameraMovement()
 		{
 			if (Input.GetMouseButtonDown(0))
-			{
-				ResetActionsInProgress();
-				
+			{				
 				this.lastWorldMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
 			}
 			
@@ -215,6 +216,8 @@ namespace DungeonGuide
 		
 		private void MoveSelectedCharacterToMouse()
 		{
+			CharacterRoot selectedCharacter = SceneManager.SelectedChCtrl.GetSelectedCharacter();
+		
 			int layerMask = 1 << 0;
 			
 			Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
@@ -225,9 +228,9 @@ namespace DungeonGuide
 			Vector3 snappedCharacterPosition = this.desiredWorldCharacterPosition;
 			snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
 			snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
-			snappedCharacterPosition.y = this.selectedCharacter.transform.position.y;
+			snappedCharacterPosition.y = selectedCharacter.transform.position.y;
 			
-			Vector3 currentCharacterPosition = this.selectedCharacter.transform.position;
+			Vector3 currentCharacterPosition = selectedCharacter.transform.position;
 			Vector3 movementDirection = snappedCharacterPosition - currentCharacterPosition;
 			float distanceToMove = movementDirection.magnitude;
 			if (distanceToMove > 0)
@@ -237,15 +240,15 @@ namespace DungeonGuide
 				
 				if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask))
 				{
-					Log.Print("Moving character from " + this.selectedCharacter.transform.position + " to " + snappedCharacterPosition, 
+					Log.Print("Moving character from " + selectedCharacter.transform.position + " to " + snappedCharacterPosition, 
 					          LogChannel.CHARACTER_MOVEMENT);
 					
-					this.selectedCharacter.transform.position = snappedCharacterPosition;
+					selectedCharacter.transform.position = snappedCharacterPosition;
 				}
 				else
 				{
 					Log.Print("Can't move because we hit a " + hitInfo.transform.name + " when trying to move to " 
-					          + snappedCharacterPosition + " from " + this.selectedCharacter.transform.position, 
+					          + snappedCharacterPosition + " from " + selectedCharacter.transform.position, 
 					          LogChannel.CHARACTER_MOVEMENT, hitInfo.transform.gameObject);
 				}
 			}
