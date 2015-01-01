@@ -16,18 +16,30 @@ namespace DungeonGuide
 		private CharacterRoot selectedCharacter;
 		private Vector3 selectedCharacterStartPosition;
 
-		private Vector3 desiredCharacterPosition;
-        private Vector3 lastMousePosition;
+		private Vector3 desiredWorldCharacterPosition;
+        private Vector3 lastWorldMousePosition;
+        
+        private bool longPressActive = false;
+        private Vector3 pressedMousePositionScreen;
+		private float mousePressedTime;
+		private bool mousePressed = false;
 
 		private InputMode currentMode = InputMode.CHARACTERS;
+		
+		private float longPressDuration = 1.0f;
+		private float longPressMinimumMovement;
 
 		[SerializeField]
-		private Text intputModeButton;		
+		private Text intputModeButton;	
+		
+		[SerializeField]
+		private LongPressMenu longPressMenu;	
 
 		#region initializers
 		private void Awake()
 		{
-
+			this.longPressMinimumMovement = Screen.width / 100.0f;
+			Log.Print("The long press minimum movement is " + this.longPressMinimumMovement + " pixels.", LogChannel.INPUT, this);
 		}
 
 		private void Start()
@@ -72,25 +84,61 @@ namespace DungeonGuide
 		#region private methods
         private void Update()
         {
-			if (this.currentMode == InputMode.CHARACTERS)
+        	if (!this.longPressActive)
+        	{
+				if (this.currentMode == InputMode.CHARACTERS)
+				{
+					UpdateCharacterMovement ();
+				}
+				else if (this.currentMode == InputMode.CAMERA)
+				{
+					UpdateCameraMovement ();
+				}
+				
+				UpdateLongPressCheck();
+			}		
+			else if (this.longPressActive && this.longPressMenu.gameObject.activeSelf == false)
 			{
-				UpdateCharacterMovement ();
+				this.longPressActive = false;
+				ResetActionsInProgress();
+			}	
+        } 
+        
+        private void UpdateLongPressCheck()
+        {
+			//If the mouse was pressed
+			if (Input.GetMouseButtonDown(0))
+			{
+				Log.Print("Tracking long press.", LogChannel.INPUT, this);
+				this.pressedMousePositionScreen = Input.mousePosition;
+				this.mousePressedTime = Time.time;
+				this.mousePressed = true;
 			}
-			else if (this.currentMode == InputMode.CAMERA)
-			{
-				UpdateCameraMovement ();
+			
+			//If a mouse was released
+			if (this.mousePressed)
+			{	
+				//If we move the mouse too much, just stop tracking for long press
+				Vector3 mousePositionDelta = Input.mousePosition - this.pressedMousePositionScreen;
+				if (mousePositionDelta.magnitude > this.longPressMinimumMovement)
+				{
+					Log.Print("Stopped tracking long press. Mouse moved too far.", LogChannel.INPUT, this);
+					this.mousePressed = false;
+				}				
+				//If the amount of time has passed, trigger the long press UI
+				else if (this.mousePressed && Time.time - this.mousePressedTime > this.longPressDuration)
+				{
+					Log.Print("Log press activated", LogChannel.INPUT, this);
+					this.longPressActive = true;
+					this.longPressMenu.DisplayLongPressMenu(true);
+				}
+				else if (Input.GetMouseButtonUp(0))
+				{
+					Log.Print("Stopped tracking long press. Mouse released", LogChannel.INPUT, this);
+					this.mousePressed = false;
+				}
 			}
         }
-        
-        private IEnumerator MovingSelectedCharacter()
-        {
-        	while(true)
-        	{
-				MoveSelectedCharacterToMouse();
-				
-				yield return new WaitForEndOfFrame();
-			}
-        }        
 
 		private void UpdateCharacterMovement()
 		{
@@ -100,7 +148,9 @@ namespace DungeonGuide
 				ResetActionsInProgress();
 
 				Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-				this.lastMousePosition = raycastRay.origin;
+				this.lastWorldMousePosition = raycastRay.origin;
+				this.pressedMousePositionScreen = this.lastWorldMousePosition;
+				
 				RaycastHit hitInfo = new RaycastHit();
 				if (Physics.Raycast(raycastRay, out hitInfo))
 				{
@@ -108,8 +158,7 @@ namespace DungeonGuide
 					if (this.selectedCharacter != null)
 					{
 						this.selectedCharacter.CharacterSelected(true);
-						this.desiredCharacterPosition = this.selectedCharacter.transform.position;
-						StartCoroutine(MovingSelectedCharacter());
+						this.desiredWorldCharacterPosition = this.selectedCharacter.transform.position;
 					}
 				}
 			}
@@ -117,10 +166,12 @@ namespace DungeonGuide
 			//If a character was released
 			if (this.selectedCharacter != null && Input.GetMouseButtonUp(0))
 			{		
-				StopAllCoroutines();
-				
-				this.selectedCharacter.CharacterSelected(false);				
-				this.selectedCharacter = null;
+				ResetActionsInProgress();
+			}
+			
+			if (this.selectedCharacter != null)
+			{
+				MoveSelectedCharacterToMouse();
 			}
 		}
 		
@@ -130,15 +181,15 @@ namespace DungeonGuide
 			{
 				ResetActionsInProgress();
 				
-				this.lastMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
+				this.lastWorldMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
 			}
 			
 			if(Input.GetMouseButton(0))
 			{
 				Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
-				Vector3 mousePositionDelta = newMousePosition - this.lastMousePosition;
+				Vector3 mousePositionDelta = newMousePosition - this.lastWorldMousePosition;
 				//Include the delta in the new mouse position because we're moving the camera too
-				this.lastMousePosition = newMousePosition - mousePositionDelta;
+				this.lastWorldMousePosition = newMousePosition - mousePositionDelta;
 				
 				//Transform screen coords into world coords
 				Camera.main.transform.position -= mousePositionDelta;
@@ -150,11 +201,11 @@ namespace DungeonGuide
 			int layerMask = 1 << 0;
 			
 			Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
-			Vector3 mousePositionDelta = newMousePosition - this.lastMousePosition;
-			this.lastMousePosition = newMousePosition;
+			Vector3 mousePositionDelta = newMousePosition - this.lastWorldMousePosition;
+			this.lastWorldMousePosition = newMousePosition;
 			
-			this.desiredCharacterPosition = this.desiredCharacterPosition + mousePositionDelta;
-			Vector3 snappedCharacterPosition = this.desiredCharacterPosition;
+			this.desiredWorldCharacterPosition = this.desiredWorldCharacterPosition + mousePositionDelta;
+			Vector3 snappedCharacterPosition = this.desiredWorldCharacterPosition;
 			snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
 			snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
 			snappedCharacterPosition.y = this.selectedCharacter.transform.position.y;
@@ -167,7 +218,7 @@ namespace DungeonGuide
 				Ray raycastRay = new Ray (currentCharacterPosition + movementDirection.normalized*CharacterVisionController.HALF_TILE_WIDTH, movementDirection);
 				RaycastHit hitInfo = new RaycastHit ();
 				
-				if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask) || !this.selectedCharacter.inPlay)
+				if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask))
 				{
 					Log.Print("Moving character from " + this.selectedCharacter.transform.position + " to " + snappedCharacterPosition, 
 					          LogChannel.CHARACTER_MOVEMENT);
@@ -185,7 +236,11 @@ namespace DungeonGuide
 
 		private void ResetActionsInProgress()
 		{			
-			this.selectedCharacter = null;
+			if (this.selectedCharacter != null)
+			{
+				this.selectedCharacter.CharacterSelected(false);
+				this.selectedCharacter = null;
+			}
 		}
 		#endregion
 	}
