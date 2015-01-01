@@ -27,6 +27,18 @@ namespace DungeonGuide
 		{
 			this.gameObject.SetActive(display);
 		}
+		
+		public void DeleteSelectedCharacter()
+		{
+			CharacterRoot selectedCharacter = UserInputController.Instance.selectedCharacter;
+			Destroy(selectedCharacter.gameObject);
+		
+			UserInputController.Instance.ResetActionsInProgress();
+			if (selectedCharacter is PlayerCharacterRoot)
+			{
+				CharacterVisionController.Instance.RemoveCharacterFromVision(selectedCharacter as PlayerCharacterRoot);
+			}
+		}
 		#endregion
 
 		#region private methods

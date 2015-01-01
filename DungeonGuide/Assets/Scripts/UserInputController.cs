@@ -7,13 +7,15 @@ namespace DungeonGuide
 {
 	public class UserInputController : MonoBehaviour
 	{
+		public static UserInputController Instance {get; private set;}
+	
 		private enum InputMode
 		{
 			CAMERA,
 			CHARACTERS,
 		};
 
-		private CharacterRoot selectedCharacter;
+		public CharacterRoot selectedCharacter {get; private set;}
 		private Vector3 selectedCharacterStartPosition;
 
 		private Vector3 desiredWorldCharacterPosition;
@@ -38,6 +40,12 @@ namespace DungeonGuide
 		#region initializers
 		private void Awake()
 		{
+			if (UserInputController.Instance != null)
+			{
+				Log.Error("A second UserInputController was created. This is a problem, there should be only ONE!", LogChannel.EDITOR_SETUP, this);
+			}
+			UserInputController.Instance = this;
+		
 			this.longPressMinimumMovement = Screen.width / 100.0f;
 			Log.Print("The long press minimum movement is " + this.longPressMinimumMovement + " pixels.", LogChannel.INPUT, this);
 		}
@@ -78,6 +86,15 @@ namespace DungeonGuide
 
 			//Transform screen coords into world coords
 			Camera.main.orthographicSize = newZoom;
+		}
+		
+		public void ResetActionsInProgress()
+		{			
+			if (this.selectedCharacter != null)
+			{
+				this.selectedCharacter.CharacterSelected(false);
+				this.selectedCharacter = null;
+			}
 		}
 		#endregion
 
@@ -233,15 +250,6 @@ namespace DungeonGuide
 				}
 			}
 		}		
-
-		private void ResetActionsInProgress()
-		{			
-			if (this.selectedCharacter != null)
-			{
-				this.selectedCharacter.CharacterSelected(false);
-				this.selectedCharacter = null;
-			}
-		}
 		#endregion
 	}
 

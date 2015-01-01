@@ -6,6 +6,8 @@ namespace DungeonGuide
 {
 	public class CharacterVisionController : MonoBehaviour
 	{
+		public static CharacterVisionController Instance {get; private set;}
+		
 		private TileRoot[] allTiles;
 		private List<TileRoot> unseenTiles;
 		
@@ -23,13 +25,19 @@ namespace DungeonGuide
 
 		public const string INVISIBLE_LAYER_NAME = "NonSightBlocking";
 
-		private PlayerCharacterRoot[] playerCharacters;
+		private List<PlayerCharacterRoot> playerCharacters;
 
 		#region initializers
 		private void Awake()
 		{			
+			if (CharacterVisionController.Instance != null)
+			{
+				Log.Error("A second CharacterVisionController was created. This is a problem, there should be only ONE!", LogChannel.EDITOR_SETUP, this);
+			}
+			CharacterVisionController.Instance = this;
+			
 			this.allTiles = GameObject.FindObjectsOfType<TileRoot>();
-			this.playerCharacters = GameObject.FindObjectsOfType<PlayerCharacterRoot>();
+			this.playerCharacters = new List<PlayerCharacterRoot>(GameObject.FindObjectsOfType<PlayerCharacterRoot>());
 			foreach (PlayerCharacterRoot player in this.playerCharacters) 
 			{
 				GameObjectUtility.SetLayerRecursive (LayerMask.NameToLayer (INVISIBLE_LAYER_NAME), player.transform); 
@@ -48,7 +56,10 @@ namespace DungeonGuide
 		#endregion
 
 		#region public methods
-
+		public void RemoveCharacterFromVision(PlayerCharacterRoot character)
+		{
+			this.playerCharacters.Remove (character);
+		}
 		#endregion
 
 		#region private methods
