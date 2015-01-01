@@ -28,7 +28,7 @@ GameObject:
   - 4: {fileID: 423090}
   - 114: {fileID: 11462946}
   m_Layer: 0
-  m_Name: TieflingPlayerCharacter
+  m_Name: ClericPlayerCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: f79445c9697d0224f9b46dea01d05a61, type: 2}
+  - {fileID: 2100000, guid: 93e5ff07ab8fd0b418632cf301c3a854, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -110,7 +110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 124a4c4eb36f2604583d9183c878dc58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inPlaySerialized: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

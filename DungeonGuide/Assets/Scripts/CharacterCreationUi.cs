@@ -10,7 +10,11 @@ namespace DungeonGuide
 		#region initializers
 		private void Awake()
 		{
-			this.gameObject.SetActive(false);
+			if (Time.time < 0.1f)
+			{
+				Log.Warning("You left the CharacterCreationUi active. Deactivating at startup, but you should really do this in the editor");
+				this.gameObject.SetActive(false);
+			}
 		}
 
 		private void Start()

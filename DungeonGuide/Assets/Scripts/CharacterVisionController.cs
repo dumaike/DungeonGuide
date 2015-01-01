@@ -30,10 +30,6 @@ namespace DungeonGuide
 		{						
 			this.allTiles = GameObject.FindObjectsOfType<TileRoot>();
 			this.playerCharacters = new List<PlayerCharacterRoot>(GameObject.FindObjectsOfType<PlayerCharacterRoot>());
-			foreach (PlayerCharacterRoot player in this.playerCharacters) 
-			{
-				GameObjectUtility.SetLayerRecursive (LayerMask.NameToLayer (INVISIBLE_LAYER_NAME), player.transform); 
-			}
 		}
 		#endregion
 

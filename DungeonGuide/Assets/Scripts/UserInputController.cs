@@ -33,7 +33,7 @@ namespace DungeonGuide
 
 		private InputMode currentMode = InputMode.CHARACTERS;
 		
-		private const float LONG_PRESS_DURATION = 1.0f;
+		private const float LONG_PRESS_DURATION = 0.5f;
 		private const float ZOOM_INCREMENT = 0.5f;
 		
 		/// <summary>

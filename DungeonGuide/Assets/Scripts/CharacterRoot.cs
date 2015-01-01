@@ -16,6 +16,9 @@ namespace DungeonGuide
 		#region initializers
 		virtual protected void Awake()
 		{		
+			GameObjectUtility.SetLayerRecursive (
+				LayerMask.NameToLayer (CharacterVisionController.INVISIBLE_LAYER_NAME), this.transform); 
+		
 			this.meshRenderers = this.GetComponentsInChildren<MeshRenderer> ();
 			
 			//HACK Assumes centered single mesh objects
