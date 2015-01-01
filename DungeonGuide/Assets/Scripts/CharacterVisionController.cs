@@ -43,6 +43,11 @@ namespace DungeonGuide
 			this.playerCharacters.Remove (character);
 		}
 		
+		public void AddCharacterToVision(PlayerCharacterRoot character)
+		{
+			this.playerCharacters.Add (character);
+		}
+		
 		public void Update()
 		{
 			int layerMask = 1 << 0;
