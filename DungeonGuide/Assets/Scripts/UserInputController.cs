@@ -153,6 +153,11 @@ namespace DungeonGuide
 					Log.Print("Log press activated", LogChannel.INPUT);
 					this.longPressActive = true;
 					this.longPressMenuObject.DisplayLongPressMenu(true);
+					
+					Vector3 desiredLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+					desiredLocation.x = (float)Math.Round(desiredLocation.x);
+					desiredLocation.y = (float)Math.Round(desiredLocation.y);
+					this.longPressMenuObject.transform.position = desiredLocation;
 				}
 				else if (Input.GetMouseButtonUp(0))
 				{
