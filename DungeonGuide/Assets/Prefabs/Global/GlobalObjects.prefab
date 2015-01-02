@@ -989,6 +989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deleteButton: {fileID: 11481758}
+  toggleButton: {fileID: 11445020}
   characterCreationUi: {fileID: 11489560}
 --- !u!114 &11420566
 MonoBehaviour:
