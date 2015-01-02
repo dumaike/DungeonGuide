@@ -12,12 +12,15 @@ namespace DungeonGuide
 		private UserInputController userInputController;
 		private CharacterVisionController characterVisionController;
 		private SelectedCharacterController selectedCharacterController;
+		private InteractiveObjectController interactiveObjectController;
 		
 		public static UserInputController UserInputCtlr {get{return SceneManager.Instance.userInputController;}}
 		
 		public static CharacterVisionController ChVisionCtrl {get{return SceneManager.Instance.characterVisionController;}}
 		
 		public static SelectedCharacterController SelectedChCtrl {get{return SceneManager.Instance.selectedCharacterController;}}
+		
+		public static InteractiveObjectController InteractiveObjCtrl {get{return SceneManager.Instance.interactiveObjectController;}}
 		
 		[SerializeField]
 		private Text intputModeButton;	
@@ -38,6 +41,7 @@ namespace DungeonGuide
 			this.userInputController = new UserInputController(this.intputModeButton, this.longPressMenu);
 			this.characterVisionController = new CharacterVisionController();
 			this.selectedCharacterController = new SelectedCharacterController();
+			this.interactiveObjectController = new InteractiveObjectController();
 		}
 
 		private void OnDestroy()
@@ -45,6 +49,7 @@ namespace DungeonGuide
 			this.userInputController = null;
 			this.characterVisionController = null;
 			this.selectedCharacterController = null;
+			this.interactiveObjectController = null;
 		}
 		
 		#endregion

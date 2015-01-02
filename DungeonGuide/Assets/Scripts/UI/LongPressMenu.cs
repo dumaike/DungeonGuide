@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -56,7 +56,19 @@ namespace DungeonGuide
 		
 		public void CreateCharacter()
 		{
-			this.characterCreationUi.OpenCharacterCreation(menuActionLocation);
+			this.characterCreationUi.OpenCharacterCreation(this.menuActionLocation);
+			HideLongPressMenu();
+		}
+		
+		public void RevealObjects()
+		{
+			SceneManager.InteractiveObjCtrl.RevealAppropriateObjects(this.menuActionLocation);
+			HideLongPressMenu();
+		}
+		
+		public void ToggleInteraction()
+		{
+			SceneManager.InteractiveObjCtrl.ToggleAppropriateObjects(this.menuActionLocation);
 			HideLongPressMenu();
 		}
 		#endregion
