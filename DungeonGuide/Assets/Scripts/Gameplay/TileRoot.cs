@@ -9,8 +9,6 @@ namespace DungeonGuide
 	{
 		private MeshRenderer[] meshRenderers;
 
-		public int test;
-
 		#region initializers
 		private void Awake()
 		{
