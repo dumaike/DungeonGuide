@@ -10,6 +10,9 @@ namespace DungeonGuide
 		private Button deleteButton;
 		
 		[SerializeField]
+		private Button toggleButton;
+		
+		[SerializeField]
 		private CharacterCreationUi characterCreationUi;
 		
 		private Vector3 menuActionLocation;
@@ -41,11 +44,18 @@ namespace DungeonGuide
 			this.gameObject.SetActive(true);
 			this.menuActionLocation = menuActionLocation;
 			this.deleteButton.interactable = SceneManager.SelectedChCtrl.IsCharacterSelected();
+			this.toggleButton.interactable = 
+				SceneManager.InteractiveObjCtrl.IsTogglableObjectInRange(menuActionLocation);
 		}
 		
 		public void HideLongPressMenu()
 		{
 			this.gameObject.SetActive(false);
+			
+			if (SceneManager.SelectedChCtrl.IsCharacterSelected())
+			{
+				SceneManager.SelectedChCtrl.DeselectCharacter();
+			}
 		}
 		
 		public void DeleteSelectedCharacter()

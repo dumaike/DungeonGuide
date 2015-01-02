@@ -51,6 +51,19 @@ namespace DungeonGuide
 		{
 			ToggleAppropriateObjects(toggleLocation, this.toggleableObjects);
 		}
+		
+		public bool IsTogglableObjectInRange(Vector3 toggleLocation)
+		{			
+			foreach (InteractiveRoot interactiveObj in this.toggleableObjects)
+			{
+				Vector3 distFromClick = interactiveObj.transform.position - toggleLocation;
+				if (distFromClick.magnitude <= InteractiveObjectController.INTERACT_RADIUS)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 		#endregion
 
 		#region private methods
