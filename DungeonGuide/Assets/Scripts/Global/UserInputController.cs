@@ -7,6 +7,8 @@ namespace DungeonGuide
 {
 	public class UserInputController
 	{			
+		private const float UI_HEIGHT = 5.0f;
+	
 		public enum InputEvent
 		{
 			ZOOM_IN = 0,
@@ -155,10 +157,10 @@ namespace DungeonGuide
 					
 					Vector3 desiredLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 					desiredLocation.x = (float)Math.Round(desiredLocation.x);
-					desiredLocation.y = (float)Math.Round(desiredLocation.y);
+					desiredLocation.z = (float)Math.Round(desiredLocation.z);
+					desiredLocation.y = UserInputController.UI_HEIGHT;
 					this.longPressMenuObject.transform.position = desiredLocation;
 										
-					desiredLocation.z = (float)Math.Round(desiredLocation.z);
 					desiredLocation.y = 0;
 					this.longPressMenuObject.DisplayLongPressMenu(desiredLocation);
 				}

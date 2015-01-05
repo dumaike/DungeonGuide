@@ -9,9 +9,9 @@ namespace DungeonGuide
 	public class TileRootEditor : Editor
 	{
 		private TileRoot tile;
-		#region public methods
-
-		#endregion
+		
+		public bool checkedForSnappableParent = false;
+		private SnappableRoot snappableParent;
 
 		#region private methods
 		public override void OnInspectorGUI ()
@@ -21,6 +21,17 @@ namespace DungeonGuide
 			if (this.tile == null)
 			{
 				this.tile = target as TileRoot;
+			}
+			
+			if (!this.checkedForSnappableParent)
+			{
+				this.snappableParent = this.tile.GetComponentInParent<SnappableRoot>();
+			}
+			
+			//Don't bother trying to snap if we're in a snappable parent
+			if (this.snappableParent != null)
+			{
+				return;
 			}
 			
 			if (this.tile.transform.parent == null && this.tile.gameObject.activeInHierarchy)

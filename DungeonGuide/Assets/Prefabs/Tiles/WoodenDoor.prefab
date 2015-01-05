@@ -79,7 +79,7 @@ GameObject:
   - 114: {fileID: 11456852}
   - 114: {fileID: 11424766}
   m_Layer: 0
-  m_Name: HorizontalDoor
+  m_Name: WoodenDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,7 +240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66006d330ac9f434dabfce6c972c8756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: 0
 --- !u!114 &11419606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,7 +251,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66006d330ac9f434dabfce6c972c8756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: 0
 --- !u!114 &11424766
 MonoBehaviour:
   m_ObjectHideFlags: 1

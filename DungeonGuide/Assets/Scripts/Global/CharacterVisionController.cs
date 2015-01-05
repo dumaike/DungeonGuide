@@ -59,10 +59,15 @@ namespace DungeonGuide
 					
 					foreach (TileRoot curTile in this.unseenTiles) 
 					{
+						//Cast a ray toward the tile
 						Ray raycastRay = new Ray (visionPoint, curTile.transform.position - visionPoint);
 						RaycastHit hitInfo = new RaycastHit ();
 						Physics.Raycast (raycastRay, out hitInfo, VISION_DISTANCE, layerMask);
+						
+						//What's the distance to the thing we hit
 						float distanceFromHitToTile = Vector3.Distance (hitInfo.point, curTile.transform.position);
+						
+						//If it's close to the distance to the tile, we can see the tile
 						bool showTile = distanceFromHitToTile < 0.45;
 						if (showTile) 
 						{
