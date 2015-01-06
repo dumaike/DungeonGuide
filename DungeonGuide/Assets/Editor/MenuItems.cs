@@ -15,12 +15,6 @@ namespace DungeonGuide
 			{
 				GridUtility.SnapToGrid(root.gameObject, root.snapType);
 			}
-			
-			TileRoot[] allTiles = GameObject.FindObjectsOfType<TileRoot>();
-			foreach(TileRoot root in allTiles)
-			{
-				GridUtility.SnapToGrid(root.gameObject, SnapType.CENTER);
-			}
 		}
 		#endregion
 

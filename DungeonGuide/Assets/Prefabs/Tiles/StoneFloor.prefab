@@ -29,7 +29,7 @@ GameObject:
   - 114: {fileID: 11487980}
   - 114: {fileID: 11479640}
   m_Layer: 0
-  m_Name: DungeonFloorTile
+  m_Name: StoneFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
