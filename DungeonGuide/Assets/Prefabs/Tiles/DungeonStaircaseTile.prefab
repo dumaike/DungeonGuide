@@ -27,6 +27,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 498406}
   - 114: {fileID: 11487980}
+  - 114: {fileID: 11412646}
   m_Layer: 0
   m_Name: DungeonStaircaseTile
   m_TagString: Untagged
@@ -99,6 +100,18 @@ MeshCollider:
   m_SmoothSphereCollisions: 0
   m_Convex: 0
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &11412646
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 487dc62cab00f6242a9146388f85d980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snapType: 0
 --- !u!114 &11487980
 MonoBehaviour:
   m_ObjectHideFlags: 1

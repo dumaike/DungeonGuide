@@ -7,7 +7,7 @@ namespace DungeonGuide
 {
 	public class TileRoot : MonoBehaviour
 	{
-		private MeshRenderer[] meshRenderers;
+		public MeshRenderer[] meshRenderers {get; private set;}
 
 		#region initializers
 		private void Awake()

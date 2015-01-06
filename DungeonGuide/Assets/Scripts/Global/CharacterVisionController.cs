@@ -11,7 +11,7 @@ namespace DungeonGuide
 		
 		private const float VISION_DISTANCE = 20.0f;
 		
-		public const float HALF_TILE_WIDTH = 0.3f;
+		public const float HALF_TILE_WIDTH = 0.40f;
 		private Vector3[] visionPoints = {
 			new Vector3(HALF_TILE_WIDTH, 0.1f, HALF_TILE_WIDTH), 
 			new Vector3(-HALF_TILE_WIDTH, 0.1f, HALF_TILE_WIDTH), 
@@ -19,7 +19,7 @@ namespace DungeonGuide
 			new Vector3(-HALF_TILE_WIDTH, 0.1f, -HALF_TILE_WIDTH) 
 		};      
 
-		public const bool DRAW_SIGHT_LINES = false;
+		public const bool DRAW_SIGHT_LINES = true;
 
 		public const string INVISIBLE_LAYER_NAME = "NonSightBlocking";
 
@@ -59,28 +59,28 @@ namespace DungeonGuide
 					
 					foreach (TileRoot curTile in this.unseenTiles) 
 					{
-						//Cast a ray toward the tile
-						Ray raycastRay = new Ray (visionPoint, curTile.transform.position - visionPoint);
-						RaycastHit hitInfo = new RaycastHit ();
-						Physics.Raycast (raycastRay, out hitInfo, VISION_DISTANCE, layerMask);
-						
-						//What's the distance to the thing we hit
-						float distanceFromHitToTile = Vector3.Distance (hitInfo.point, curTile.transform.position);
-						
-						//If it's close to the distance to the tile, we can see the tile
-						bool showTile = distanceFromHitToTile < 0.45;
-						if (showTile) 
+						foreach (MeshRenderer meshRenderer in curTile.meshRenderers)
 						{
-							curTile.ShowTile (showTile);        
-						} 
-						else 
-						{
-							unseenLeftovers.Add (curTile);
-						}
+							//Cast a ray toward the tile
+							Ray raycastRay = new Ray (visionPoint, meshRenderer.transform.position - visionPoint);
+							RaycastHit hitInfo = new RaycastHit ();
+							Physics.Raycast (raycastRay, out hitInfo, VISION_DISTANCE, layerMask);
 						
+							//If it's close to the distance to the tile, we can see the tile
+							bool showTile = hitInfo.transform == meshRenderer.transform;
+							if (showTile) 
+							{
+								curTile.ShowTile (showTile);        
+							} 
+							else 
+							{
+								unseenLeftovers.Add (curTile);
+							}
+							
 #if DRAW_SIGHT_LINES
-						Debug.DrawLine (raycastRay.origin, hitInfo.point);
+							Debug.DrawLine (raycastRay.origin, hitInfo.point);
 #endif
+						}
 					}
 					
 					this.unseenTiles = new List<TileRoot> (unseenLeftovers);
