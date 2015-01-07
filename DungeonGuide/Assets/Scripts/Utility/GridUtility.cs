@@ -103,6 +103,13 @@ namespace DungeonGuide
 			}
 		}
 		#endregion
+		
+		#region private methods		
+		public static void ReparentToPath(GameObject go, string path)
+		{
+			//TODO reparent an object to a path with a specific name convention
+		}
+		#endregion
 	}
 
 }

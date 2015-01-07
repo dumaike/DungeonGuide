@@ -19,7 +19,6 @@ namespace DungeonGuide
 		#endregion
 
 		#region private methods
-
 		#endregion
 	}
 
