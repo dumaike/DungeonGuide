@@ -16,6 +16,16 @@ namespace DungeonGuide
 				GridUtility.SnapToGrid(root.gameObject, root.snapType);
 			}
 		}
+		
+		[MenuItem("Tools/Organize Tiles")]
+		public static void OrgTiles()
+		{
+			SnappableRoot[] allSnappable = GameObject.FindObjectsOfType<SnappableRoot>();
+			foreach(SnappableRoot root in allSnappable)
+			{
+				GridUtility.ReparentToPath(root.gameObject, "GameplayObjects/" + root.name);
+			}
+		}
 		#endregion
 
 		#region private methods
