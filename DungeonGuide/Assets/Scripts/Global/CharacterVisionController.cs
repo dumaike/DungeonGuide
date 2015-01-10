@@ -24,6 +24,8 @@ namespace DungeonGuide
 		public const string INVISIBLE_LAYER_NAME = "NonSightBlocking";
 
 		private List<PlayerCharacterRoot> playerCharacters;
+		
+		private bool visionDirty = true;
 
 		#region initializers
 		public CharacterVisionController()
@@ -34,18 +36,34 @@ namespace DungeonGuide
 		#endregion
 
 		#region public methods
+		public void SetVisionDirty()
+		{
+			Log.Print("Character vision set to dirty. Recalculating.", LogChannel.CHARACTER_VISION);
+		
+			this.visionDirty = true;
+		}
+		
 		public void RemoveCharacterFromVision(PlayerCharacterRoot character)
 		{
+			SetVisionDirty();
 			this.playerCharacters.Remove (character);
 		}
 		
 		public void AddCharacterToVision(PlayerCharacterRoot character)
 		{
+			SetVisionDirty();
 			this.playerCharacters.Add (character);
 		}
 		
 		public void Update()
 		{
+			//If nothing has changed that requires a vision re-calc, don't
+			//bother doing anything in the update.
+			if (!this.visionDirty)
+			{
+				return;
+			}
+		
 			int layerMask = 1 << 0;
 			
 			this.unseenTiles = new List<TileRoot> (this.allTiles);
@@ -93,6 +111,8 @@ namespace DungeonGuide
 			{
 				unseenTile.ShowTile (false);
 			}
+			
+			this.visionDirty = false;
 		}
 		#endregion
 

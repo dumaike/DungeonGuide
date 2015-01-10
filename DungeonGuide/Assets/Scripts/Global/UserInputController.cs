@@ -46,7 +46,7 @@ namespace DungeonGuide
 		private const float LONG_PRESS_MOVEMENT_TOLERANCE = 0.01f;
 		
 		private Text intputModeButtonText;	
-		private LongPressMenu longPressMenuObject;			
+		private LongPressMenu longPressMenuObject;		
 
 		#region initializers
 		public UserInputController(Text inputModeButtonText, LongPressMenu longPressMenuObject)
@@ -60,6 +60,7 @@ namespace DungeonGuide
 		#endregion
 
 		#region public methods
+		
 		public void ReceiveInputEvent(InputEvent inputEvent)
 		{
 			switch (inputEvent)
@@ -257,12 +258,13 @@ namespace DungeonGuide
 			{
 				Ray raycastRay = new Ray (currentCharacterPosition + movementDirection.normalized*CharacterVisionController.HALF_TILE_WIDTH, movementDirection);
 				RaycastHit hitInfo = new RaycastHit ();
-				
+
 				if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask))
 				{
 					Log.Print("Moving character from " + selectedCharacter.transform.position + " to " + snappedCharacterPosition, 
 					          LogChannel.CHARACTER_MOVEMENT);
-					
+
+					SceneManager.ChVisionCtrl.SetVisionDirty();
 					selectedCharacter.transform.position = snappedCharacterPosition;
 				}
 				else

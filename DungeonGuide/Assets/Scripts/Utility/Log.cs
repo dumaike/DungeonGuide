@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public enum LogChannel
 {
-	DEBUG, CHARACTER_MOVEMENT, EDITOR_SETUP, INPUT
+	DEBUG, CHARACTER_MOVEMENT, EDITOR_SETUP, INPUT, CHARACTER_VISION
 };
 
 public class Log
@@ -12,6 +12,7 @@ public class Log
 	private static List<LogChannel> channelsToLog = new List<LogChannel> {
 		//LogChannel.EDITOR_SETUP,
 		//LogChannel.CHARACTER_MOVEMENT,
+		//LogChannel.CHARACTER_VISION,
 		//LogChannel.INPUT,
 		LogChannel.DEBUG
 	};
@@ -30,17 +31,17 @@ public class Log
 	{
 		if (IsChannelActive(channel))
 		{
-			Debug.Log(message, context);
+			Debug.Log(channel + ": " + message, context);
 		}
 	}
 	
 	public static void Warning(string message, LogChannel channel = LogChannel.DEBUG, Object context = null)
 	{
-		Debug.LogWarning(message, context);
+		Debug.LogWarning(channel + ": " +message, context);
 	}
 	
 	public static void Error(string message, LogChannel channel = LogChannel.DEBUG, Object context = null)
 	{
-		Debug.LogError(message, context);
+		Debug.LogError(channel + ": " +message, context);
 	}
 }
