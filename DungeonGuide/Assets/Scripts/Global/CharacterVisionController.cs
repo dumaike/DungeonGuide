@@ -65,10 +65,12 @@ namespace DungeonGuide
 							Ray raycastRay = new Ray (visionPoint, meshRenderer.transform.position - visionPoint);
 							RaycastHit hitInfo = new RaycastHit ();
 							Physics.Raycast (raycastRay, out hitInfo, VISION_DISTANCE, layerMask);
+							float distanceToMesh = (raycastRay.origin - meshRenderer.transform.position).magnitude;
 						
 							//If it's close to the distance to the tile, we can see the tile
-							bool showTile = hitInfo.transform == meshRenderer.transform;
-							if (showTile) 
+							bool showTile = hitInfo.transform == meshRenderer.transform || 
+								distanceToMesh < hitInfo.distance || hitInfo.transform == null;
+							if (showTile)
 							{
 								curTile.ShowTile (showTile);        
 							} 

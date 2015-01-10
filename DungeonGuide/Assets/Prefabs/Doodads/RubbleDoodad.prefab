@@ -28,8 +28,9 @@ GameObject:
   - 4: {fileID: 423090}
   - 114: {fileID: 11474874}
   - 114: {fileID: 11413458}
+  - 114: {fileID: 11486778}
   m_Layer: 0
-  m_Name: GrickCharacter
+  m_Name: RubbleDoodad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +44,7 @@ Transform:
   m_GameObject: {fileID: 100374}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
   m_LocalPosition: {x: 0, y: .100000001, z: 0}
-  m_LocalScale: {x: .800000012, y: .100000001, z: .800000012}
+  m_LocalScale: {x: .800000012, y: .0500000007, z: .800000012}
   m_Children: []
   m_Father: {fileID: 423090}
   m_RootOrder: 0
@@ -54,7 +55,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 123090}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: -32, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400374}
@@ -72,7 +73,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 248f37e795fd3bf44b3d5934e4b7c3fc, type: 2}
+  - {fileID: 2100000, guid: f9bc192e9c0c67e44a5ea3828b51299f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -86,7 +87,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100374}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!64 &6441758
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -99,7 +100,7 @@ MeshCollider:
   serializedVersion: 2
   m_SmoothSphereCollisions: 0
   m_Convex: 0
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &11413458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -121,6 +122,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53e14f83c636e9a43980af700f7b711a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11486778
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66006d330ac9f434dabfce6c972c8756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &100100000
