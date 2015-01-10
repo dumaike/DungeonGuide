@@ -173,14 +173,16 @@ namespace DungeonGuide
 			Log.Print("Log press activated", LogChannel.INPUT);
 			this.longPressActive = true;
 			
-			Vector3 desiredLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			desiredLocation.x = (float)Math.Round(desiredLocation.x);
-			desiredLocation.z = (float)Math.Round(desiredLocation.z);
-			desiredLocation.y = UserInputController.UI_HEIGHT;
-			this.longPressMenuObject.transform.position = desiredLocation;
+			Vector3 mouseLocationInWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			Vector3 snappedLocation = mouseLocationInWorld;
+			snappedLocation.x = (float)Math.Round(snappedLocation.x);
+			snappedLocation.z = (float)Math.Round(snappedLocation.z);
+			snappedLocation.y = UserInputController.UI_HEIGHT;
+			this.longPressMenuObject.transform.position = snappedLocation;
 			
-			desiredLocation.y = 0;
-			this.longPressMenuObject.DisplayLongPressMenu(desiredLocation);
+			snappedLocation.y = 0;
+			mouseLocationInWorld.y = 0;
+			this.longPressMenuObject.DisplayLongPressMenu(snappedLocation, mouseLocationInWorld);
         }
 
 		private void UpdateCharacterMovement()

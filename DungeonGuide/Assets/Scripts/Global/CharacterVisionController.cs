@@ -59,7 +59,7 @@ namespace DungeonGuide
 		{
 			//If nothing has changed that requires a vision re-calc, don't
 			//bother doing anything in the update.
-			if (!this.visionDirty)
+			if (!this.visionDirty || ConsoleCommands.fullVisionMode)
 			{
 				return;
 			}
@@ -114,10 +114,17 @@ namespace DungeonGuide
 			
 			this.visionDirty = false;
 		}
+		
+		public void ShowAllTiles()
+		{
+			foreach (TileRoot curTile in this.allTiles) 
+			{
+				curTile.ShowTile(true);
+			}
+		}
 		#endregion
 
 		#region private methods
-		
 		#endregion
 	}
 

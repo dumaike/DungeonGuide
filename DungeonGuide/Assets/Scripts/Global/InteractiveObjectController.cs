@@ -6,7 +6,7 @@ namespace DungeonGuide
 {
 	public class InteractiveObjectController
 	{
-		private const float INTERACT_RADIUS = 2.0f;
+		private const float INTERACT_RADIUS = 1.25f;
 		
 		private List<InteractiveRoot> reavealableObjects = new List<InteractiveRoot>();
 		private List<InteractiveRoot> toggleableObjects = new List<InteractiveRoot>();
