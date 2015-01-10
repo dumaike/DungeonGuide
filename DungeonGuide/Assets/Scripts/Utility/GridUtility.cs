@@ -21,7 +21,8 @@ namespace DungeonGuide
 				int snappedX = (int)go.transform.position.x;
 				int snappedZ = (int)go.transform.position.z;
 				if (snappedX != go.transform.position.x ||
-				    snappedZ != go.transform.position.z)
+				    snappedZ != go.transform.position.z ||
+				    go.transform.position.y != 0)
 				{
 					Vector3 snappedPosition = go.transform.position;
 					snappedPosition.x = (float)Math.Round (snappedPosition.x);

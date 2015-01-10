@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 namespace DungeonGuide
@@ -6,7 +6,7 @@ namespace DungeonGuide
 	public class CreateCharacterButton : MonoBehaviour
 	{
 		[SerializeField]
-		private CharacterRoot characterToCreate;
+		private MoveableRoot objectToCreate;
 		
 		private CharacterCreationUi creationUi;
 		
@@ -21,7 +21,7 @@ namespace DungeonGuide
 		#region public methods
 		public void CreateCharacter()
 		{
-			CharacterRoot createdCharacter = Instantiate(this.characterToCreate) as CharacterRoot;
+			MoveableRoot createdCharacter = Instantiate(this.objectToCreate) as MoveableRoot;
 			createdCharacter.transform.position = this.creationUi.characterCreationPosition;
 			if (createdCharacter is PlayerCharacterRoot)
 			{

@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 namespace DungeonGuide
 {
 	public class SelectedCharacterController
 	{		
-		private CharacterRoot selectedCharacter;
+		private MoveableRoot selectedCharacter;
 		
 		#region initializers
 		public SelectedCharacterController()
@@ -15,13 +15,13 @@ namespace DungeonGuide
 		#endregion
 
 		#region public methods
-		public void SelectCharacter(CharacterRoot character)
+		public void SelectCharacter(MoveableRoot character)
 		{
 			this.selectedCharacter = character;
 			this.selectedCharacter.CharacterSelected(true);
 		}
 		
-		public CharacterRoot GetSelectedCharacter()
+		public MoveableRoot GetSelectedCharacter()
 		{
 			return this.selectedCharacter;
 		}

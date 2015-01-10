@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 using UnityEngine.UI;
@@ -184,7 +184,7 @@ namespace DungeonGuide
 				RaycastHit hitInfo = new RaycastHit();
 				if (Physics.Raycast(raycastRay, out hitInfo))
 				{
-					CharacterRoot hitCharacter = hitInfo.transform.GetComponentInParent<CharacterRoot>();
+					MoveableRoot hitCharacter = hitInfo.transform.GetComponentInParent<MoveableRoot>();
 					if (hitCharacter != null)
 					{
 						SceneManager.SelectedChCtrl.SelectCharacter(hitCharacter);  
@@ -226,7 +226,7 @@ namespace DungeonGuide
 		
 		private void MoveSelectedCharacterToMouse()
 		{
-			CharacterRoot selectedCharacter = SceneManager.SelectedChCtrl.GetSelectedCharacter();
+			MoveableRoot selectedCharacter = SceneManager.SelectedChCtrl.GetSelectedCharacter();
 		
 			int layerMask = 1 << 0;
 			
