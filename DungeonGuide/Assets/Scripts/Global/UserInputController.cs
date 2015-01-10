@@ -152,17 +152,7 @@ namespace DungeonGuide
 				//If the amount of time has passed, trigger the long press UI
 				else if (this.mousePressed && Time.time - this.mousePressedTime > UserInputController.LONG_PRESS_DURATION)
 				{
-					Log.Print("Log press activated", LogChannel.INPUT);
-					this.longPressActive = true;
-					
-					Vector3 desiredLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-					desiredLocation.x = (float)Math.Round(desiredLocation.x);
-					desiredLocation.z = (float)Math.Round(desiredLocation.z);
-					desiredLocation.y = UserInputController.UI_HEIGHT;
-					this.longPressMenuObject.transform.position = desiredLocation;
-										
-					desiredLocation.y = 0;
-					this.longPressMenuObject.DisplayLongPressMenu(desiredLocation);
+					DisplayLongPressMenu();
 				}
 				else if (Input.GetMouseButtonUp(0))
 				{
@@ -170,6 +160,26 @@ namespace DungeonGuide
 					this.mousePressed = false;
 				}
 			}
+			
+			if (Input.GetMouseButtonDown(1))
+			{
+				DisplayLongPressMenu();
+			}
+        }
+        
+        private void DisplayLongPressMenu()
+        {			
+			Log.Print("Log press activated", LogChannel.INPUT);
+			this.longPressActive = true;
+			
+			Vector3 desiredLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			desiredLocation.x = (float)Math.Round(desiredLocation.x);
+			desiredLocation.z = (float)Math.Round(desiredLocation.z);
+			desiredLocation.y = UserInputController.UI_HEIGHT;
+			this.longPressMenuObject.transform.position = desiredLocation;
+			
+			desiredLocation.y = 0;
+			this.longPressMenuObject.DisplayLongPressMenu(desiredLocation);
         }
 
 		private void UpdateCharacterMovement()
