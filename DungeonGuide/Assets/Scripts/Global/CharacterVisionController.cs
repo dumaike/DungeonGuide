@@ -77,8 +77,22 @@ namespace DungeonGuide
 					
 					foreach (TileRoot curTile in this.unseenTiles) 
 					{
-						foreach (MeshRenderer meshRenderer in curTile.meshRenderers)
+					
+						if (BreakOnThis.HasBreakComponent(curTile))
 						{
+							Debug.Log("break");
+						}
+						
+						bool canSeeAllMeshesInTile = true;
+						foreach (MeshRenderer meshRenderer in curTile.allMeshRenderers)
+						{
+							//If the mesh doesn't even exist in the current game state
+							//don't bother raycasting
+							if (!curTile.DoesMeshExist(meshRenderer))
+							{
+								continue;
+							}
+						
 							//Cast a ray toward the tile
 							Ray raycastRay = new Ray (visionPoint, meshRenderer.transform.position - visionPoint);
 							RaycastHit hitInfo = new RaycastHit ();
@@ -86,20 +100,30 @@ namespace DungeonGuide
 							float distanceToMesh = (raycastRay.origin - meshRenderer.transform.position).magnitude;
 						
 							//If it's close to the distance to the tile, we can see the tile
-							bool showTile = hitInfo.transform == meshRenderer.transform || 
+							bool canSeeMesh = hitInfo.transform == meshRenderer.transform || 
 								distanceToMesh < hitInfo.distance || hitInfo.transform == null;
-							if (showTile)
+							if (!canSeeMesh)
 							{
-								curTile.ShowTile (showTile);        
-							} 
-							else 
-							{
-								unseenLeftovers.Add (curTile);
+								canSeeAllMeshesInTile = false;
+								break;
 							}
-							
 #if DRAW_SIGHT_LINES
 							Debug.DrawLine (raycastRay.origin, hitInfo.point);
 #endif
+						}
+												
+						if (BreakOnThis.HasBreakComponent(curTile))
+						{
+							Debug.Log("break");
+						}						
+						
+						if (canSeeAllMeshesInTile)
+						{
+							curTile.ShowTile (canSeeAllMeshesInTile);        
+						} 
+						else 
+						{
+							unseenLeftovers.Add (curTile);
 						}
 					}
 					
@@ -109,6 +133,11 @@ namespace DungeonGuide
 			
 			foreach (TileRoot unseenTile in this.unseenTiles) 
 			{
+				if (BreakOnThis.HasBreakComponent(unseenTile))
+				{
+					Debug.Log("break");
+				}
+				
 				unseenTile.ShowTile (false);
 			}
 			
