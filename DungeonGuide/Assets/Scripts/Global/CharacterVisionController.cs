@@ -9,7 +9,7 @@ namespace DungeonGuide
 		private TileRoot[] allTiles;
 		private List<TileRoot> unseenTiles;
 		
-		private const float VISION_DISTANCE = 20.0f;
+		private const float VISION_DISTANCE = 15.0f;
 		
 		public const float HALF_TILE_WIDTH = 0.40f;
 		private Vector3[] visionPoints = {
@@ -76,16 +76,17 @@ namespace DungeonGuide
 					Vector3 visionPoint = player.transform.position + localVisionPoint;
 					
 					foreach (TileRoot curTile in this.unseenTiles) 
-					{
-					
-						if (BreakOnThis.HasBreakComponent(curTile))
-						{
-							Debug.Log("break");
-						}
-						
+					{						
 						bool canSeeAllMeshesInTile = true;
 						foreach (MeshRenderer meshRenderer in curTile.allMeshRenderers)
-						{
+						{						
+							float distanceToMesh = (visionPoint - meshRenderer.transform.position).magnitude;
+							if (distanceToMesh > VISION_DISTANCE)
+							{
+								canSeeAllMeshesInTile = false;
+								break;
+							}
+							
 							//If the mesh doesn't even exist in the current game state
 							//don't bother raycasting
 							if (!curTile.DoesMeshExist(meshRenderer))
@@ -97,7 +98,6 @@ namespace DungeonGuide
 							Ray raycastRay = new Ray (visionPoint, meshRenderer.transform.position - visionPoint);
 							RaycastHit hitInfo = new RaycastHit ();
 							Physics.Raycast (raycastRay, out hitInfo, VISION_DISTANCE, layerMask);
-							float distanceToMesh = (raycastRay.origin - meshRenderer.transform.position).magnitude;
 						
 							//If it's close to the distance to the tile, we can see the tile
 							bool canSeeMesh = hitInfo.transform == meshRenderer.transform || 
@@ -111,11 +111,6 @@ namespace DungeonGuide
 							Debug.DrawLine (raycastRay.origin, hitInfo.point);
 #endif
 						}
-												
-						if (BreakOnThis.HasBreakComponent(curTile))
-						{
-							Debug.Log("break");
-						}						
 						
 						if (canSeeAllMeshesInTile)
 						{
@@ -133,11 +128,6 @@ namespace DungeonGuide
 			
 			foreach (TileRoot unseenTile in this.unseenTiles) 
 			{
-				if (BreakOnThis.HasBreakComponent(unseenTile))
-				{
-					Debug.Log("break");
-				}
-				
 				unseenTile.ShowTile (false);
 			}
 			
