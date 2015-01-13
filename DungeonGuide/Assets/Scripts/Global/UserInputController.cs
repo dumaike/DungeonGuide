@@ -82,6 +82,23 @@ namespace DungeonGuide
 		
 		public void Update()
 		{
+			if (Input.GetMouseButtonDown(0))
+			{
+				Log.Print("Mouse 0 Down", LogChannel.INPUT);
+			}
+			if (Input.GetMouseButtonUp(0))
+			{
+				Log.Print("Mouse 0 Up", LogChannel.INPUT);
+			}
+			if (Input.GetMouseButtonDown(1))
+			{
+				Log.Print("Mouse 1 Down", LogChannel.INPUT);
+			}
+			if (Input.GetMouseButtonUp(1))
+			{
+				Log.Print("Mouse 1 Up", LogChannel.INPUT);
+			}
+		
 			if (!this.longPressActive)
 			{
 				if (this.currentMode == InputMode.CHARACTERS)
@@ -104,7 +121,7 @@ namespace DungeonGuide
 
 		#region private methods
 		private void ToggleInputMode()
-		{
+		{		
 			if (this.currentMode == InputMode.CAMERA)
 			{
 				this.currentMode = InputMode.CHARACTERS;

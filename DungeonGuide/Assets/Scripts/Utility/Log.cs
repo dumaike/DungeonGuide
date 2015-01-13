@@ -13,7 +13,7 @@ public class Log
 		//LogChannel.EDITOR_SETUP,
 		//LogChannel.CHARACTER_MOVEMENT,
 		//LogChannel.CHARACTER_VISION,
-		//LogChannel.INPUT,
+		LogChannel.INPUT,
 		LogChannel.DEBUG
 	};
 	
