@@ -181,6 +181,7 @@ namespace DungeonGuide
 			
 			if (Input.GetMouseButtonDown(1))
 			{
+				SelectCharacterUnderMouse();
 				DisplayLongPressMenu();
 			}
         }
@@ -207,20 +208,7 @@ namespace DungeonGuide
 			//If a character was clicked
 			if (Input.GetMouseButtonDown(0) && !SceneManager.SelectedChCtrl.IsCharacterSelected())
 			{				
-				Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-				this.lastWorldMousePosition = raycastRay.origin;
-				this.pressedMousePositionScreen = this.lastWorldMousePosition;
-				
-				RaycastHit hitInfo = new RaycastHit();
-				if (Physics.Raycast(raycastRay, out hitInfo))
-				{
-					MoveableRoot hitCharacter = hitInfo.transform.GetComponentInParent<MoveableRoot>();
-					if (hitCharacter != null)
-					{
-						SceneManager.SelectedChCtrl.SelectCharacter(hitCharacter);  
-						this.desiredWorldCharacterPosition = hitCharacter.transform.position;
-					}
-				}
+				SelectCharacterUnderMouse();
 			}
 
 			//If a character was released
@@ -232,6 +220,24 @@ namespace DungeonGuide
 			if (SceneManager.SelectedChCtrl.IsCharacterSelected())
 			{
 				MoveSelectedCharacterToMouse();
+			}
+		}
+		
+		private void SelectCharacterUnderMouse()
+		{
+			Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+			this.lastWorldMousePosition = raycastRay.origin;
+			this.pressedMousePositionScreen = this.lastWorldMousePosition;
+			
+			RaycastHit hitInfo = new RaycastHit();
+			if (Physics.Raycast(raycastRay, out hitInfo))
+			{
+				MoveableRoot hitCharacter = hitInfo.transform.GetComponentInParent<MoveableRoot>();
+				if (hitCharacter != null)
+				{
+					SceneManager.SelectedChCtrl.SelectCharacter(hitCharacter);  
+					this.desiredWorldCharacterPosition = hitCharacter.transform.position;
+				}
 			}
 		}
 		
