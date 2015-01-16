@@ -61,6 +61,18 @@ namespace DungeonGuide
 
 		#region public methods
 		
+		public int SelectedCharacterMovementAmount()
+		{
+			if (!SceneManager.SelectedChCtrl.IsCharacterSelected())
+			{
+				return 0;
+			}
+		
+			MoveableRoot selectedCharacter = SceneManager.SelectedChCtrl.GetSelectedCharacter();
+			
+			return (int)(selectedCharacter.transform.position - this.selectedCharacterStartPosition).magnitude;
+		}
+		
 		public void ReceiveInputEvent(InputEvent inputEvent)
 		{
 			switch (inputEvent)
@@ -237,6 +249,7 @@ namespace DungeonGuide
 				{
 					SceneManager.SelectedChCtrl.SelectCharacter(hitCharacter);  
 					this.desiredWorldCharacterPosition = hitCharacter.transform.position;
+					this.selectedCharacterStartPosition = this.desiredWorldCharacterPosition;
 				}
 			}
 		}

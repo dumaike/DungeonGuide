@@ -7,6 +7,8 @@ namespace DungeonGuide
 {
 	public class SceneManager : MonoBehaviour
 	{		
+		public const float SCENE_TO_WORLD_UNITS = 5.0f;
+	
 		public static SceneManager Instance {get; private set;}
 		
 		private UserInputController userInputController;
