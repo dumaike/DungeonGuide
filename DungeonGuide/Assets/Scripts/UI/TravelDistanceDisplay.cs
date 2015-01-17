@@ -22,7 +22,7 @@ namespace DungeonGuide
 		{
 			float travelDistance = 
 				SceneManager.UserInputCtlr.SelectedCharacterMovementAmount();
-			int roundedDistance = (int)(travelDistance*SceneManager.SCENE_TO_WORLD_UNITS);
+			int roundedDistance = (int)Mathf.Ceil(travelDistance*SceneManager.SCENE_TO_WORLD_UNITS);
 			
 			if (roundedDistance > 0)
 			{
