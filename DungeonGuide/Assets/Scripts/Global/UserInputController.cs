@@ -294,14 +294,16 @@ namespace DungeonGuide
 			float distanceToMove = movementDirection.magnitude;
 			if (distanceToMove > 0)
 			{
-				Ray raycastRay = new Ray (currentCharacterPosition + movementDirection.normalized*CharacterVisionController.HALF_TILE_WIDTH, movementDirection);
+				Ray raycastRay = new Ray (currentCharacterPosition, movementDirection);
 				RaycastHit hitInfo = new RaycastHit ();
 
-				if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask))
+				if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask) || selectedCharacter.freeMovement)
 				{
 					Log.Print("Moving character from " + selectedCharacter.transform.position + " to " + snappedCharacterPosition, 
 					          LogChannel.CHARACTER_MOVEMENT);
 
+					//Debug.DrawLine (raycastRay.origin, raycastRay.origin + raycastRay.direction*distanceToMove);
+					
 					SceneManager.ChVisionCtrl.SetVisionDirty();
 					selectedCharacter.transform.position = snappedCharacterPosition;
 				}

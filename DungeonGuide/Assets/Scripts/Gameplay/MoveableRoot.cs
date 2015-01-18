@@ -12,6 +12,8 @@ namespace DungeonGuide
 		private Color defaultColor = new Color(1, 1, 1, 1);
 		
 		public Vector3 characterDimensions {get; private set;}
+		
+		public bool freeMovement = false;
 
 		#region initializers
 		virtual protected void Awake()

@@ -10,6 +10,12 @@ namespace DungeonGuide
 		private Button deleteButton;
 		
 		[SerializeField]
+		private Button freedomButton;
+		
+		[SerializeField]
+		private Text freedomText;
+		
+		[SerializeField]
 		private Button toggleButton;
 		
 		[SerializeField]
@@ -27,16 +33,6 @@ namespace DungeonGuide
 				this.gameObject.SetActive(false);
 			}
 		}
-
-		private void Start()
-		{
-
-		}
-
-		private void OnDestroy()
-		{
-
-		}
 		#endregion
 
 		#region public methods
@@ -47,7 +43,14 @@ namespace DungeonGuide
 			this.mouseWorldLocation = mouseLocationInWorld;
 			
 			//Turn off the delete button if we didn't hit a character
-			this.deleteButton.interactable = SceneManager.SelectedChCtrl.IsCharacterSelected();
+			bool isCharacterSelected = SceneManager.SelectedChCtrl.IsCharacterSelected();
+			this.deleteButton.interactable = isCharacterSelected;
+			this.freedomButton.interactable = isCharacterSelected;
+			this.freedomText.text = "Freedom";
+			if (isCharacterSelected && SceneManager.SelectedChCtrl.GetSelectedCharacter().freeMovement)
+			{
+				this.freedomText.text = "Constrain";
+			}
 			
 			//Turn off the toggle button if we didn't hit a toggleable
 			this.toggleButton.interactable = 
@@ -85,6 +88,13 @@ namespace DungeonGuide
 		public void ToggleInteraction()
 		{
 			SceneManager.InteractiveObjCtrl.ToggleAppropriateObjects(this.mouseWorldLocation);
+			HideLongPressMenu();
+		}
+		
+		public void ToggleMovementFreedom()
+		{
+			SceneManager.SelectedChCtrl.GetSelectedCharacter().freeMovement = 
+				!SceneManager.SelectedChCtrl.GetSelectedCharacter().freeMovement;
 			HideLongPressMenu();
 		}
 		#endregion

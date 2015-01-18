@@ -17,7 +17,7 @@ public class Log
 		//LogChannel.DEBUG
 	};
 	
-	public static bool IsChannelActive(LogChannel channel)
+	public static bool IsChannelLogging(LogChannel channel)
 	{
 		if (Log.channelsToLog.Contains(channel))
 		{
@@ -29,7 +29,7 @@ public class Log
 	
 	public static void Print(string message, LogChannel channel = LogChannel.DEBUG, Object context = null)
 	{
-		if (IsChannelActive(channel))
+		if (IsChannelLogging(channel))
 		{
 			Debug.Log(channel + ": " + message, context);
 		}
@@ -43,5 +43,21 @@ public class Log
 	public static void Error(string message, LogChannel channel = LogChannel.DEBUG, Object context = null)
 	{
 		Debug.LogError(channel + ": " +message, context);
+	}	
+	
+	public static void AddChannel(LogChannel channel)
+	{
+		if (IsChannelLogging(channel))
+			Debug.LogWarning("A channel that's already being logged is trying to start logging (" + channel + ")");
+		else
+			Log.channelsToLog.Add(channel);
+	}
+	
+	public static void RemoveChannel(LogChannel channel)
+	{
+		if (!IsChannelLogging(channel))
+			Debug.LogWarning("A channel that's already not being logged is trying to stop logging (" + channel + ")");
+		else
+			Log.channelsToLog.Remove(channel);
 	}
 }
