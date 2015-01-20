@@ -31,6 +31,7 @@ namespace DungeonGuide
 		public CharacterVisionController()
 		{						
 			this.allTiles = GameObject.FindObjectsOfType<TileRoot>();
+			Log.Print("There are " + this.allTiles.Length + " tiles in the scene.", LogChannel.EDITOR_SETUP);
 			this.playerCharacters = new List<PlayerCharacterRoot>(GameObject.FindObjectsOfType<PlayerCharacterRoot>());
 		}
 		#endregion
