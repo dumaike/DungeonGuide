@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace DungeonGuide
 {
-	public class LongPressMenu : MonoBehaviour
+	public class ContextMenu : MonoBehaviour
 	{
 		[SerializeField]
 		private Button deleteButton;
@@ -29,14 +29,14 @@ namespace DungeonGuide
 		{			
 			if (Time.time < 0.1f)
 			{
-				Log.Warning("You left the LongPressMenu active. Deactivating at startup, but you should really do this in the editor");
+				Log.Warning("You left the Context menu active. Deactivating at startup, but you should really do this in the editor");
 				this.gameObject.SetActive(false);
 			}
 		}
 		#endregion
 
 		#region public methods
-		public void DisplayLongPressMenu(Vector3 snappedActionLocation, Vector3 mouseLocationInWorld)
+		public void DisplayContextMenu(Vector3 snappedActionLocation, Vector3 mouseLocationInWorld)
 		{
 			this.gameObject.SetActive(true);
 			this.snappedActionLocation = snappedActionLocation;
@@ -57,7 +57,7 @@ namespace DungeonGuide
 				SceneManager.interactiveObjCtrl.IsTogglableObjectInRange(mouseWorldLocation);
 		}
 		
-		public void HideLongPressMenu()
+		public void HideContextMenu()
 		{
 			this.gameObject.SetActive(false);
 			
@@ -70,32 +70,32 @@ namespace DungeonGuide
 		public void DeleteSelectedCharacter()
 		{
 			SceneManager.selectedChCtrl.DeleteSelectedCharacter();
-			HideLongPressMenu();
+			HideContextMenu();
 		}
 		
 		public void CreateCharacter()
 		{
 			this.characterCreationUi.OpenCharacterCreation(this.snappedActionLocation);
-			HideLongPressMenu();
+			HideContextMenu();
 		}
 		
 		public void RevealObjects()
 		{
 			SceneManager.interactiveObjCtrl.RevealAppropriateObjects(this.mouseWorldLocation);
-			HideLongPressMenu();
+			HideContextMenu();
 		}
 		
 		public void ToggleInteraction()
 		{
 			SceneManager.interactiveObjCtrl.ToggleAppropriateObjects(this.mouseWorldLocation);
-			HideLongPressMenu();
+			HideContextMenu();
 		}
 		
 		public void ToggleMovementFreedom()
 		{
 			SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement = 
 				!SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement;
-			HideLongPressMenu();
+			HideContextMenu();
 		}
 		#endregion
 

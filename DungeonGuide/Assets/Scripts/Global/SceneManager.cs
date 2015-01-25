@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System;
@@ -28,7 +28,7 @@ namespace DungeonGuide
 		private Text intputModeButton;	
 		
 		[SerializeField]
-		private LongPressMenu longPressMenu;	
+		private ContextMenu contextMenu;	
 		
 		[SerializeField]
 		private Camera gameplayCamera;
@@ -52,7 +52,7 @@ namespace DungeonGuide
 			}
 			SceneManager.Instance = this;
 		
-			this.userInputController = new UserInputController(this.intputModeButton, this.longPressMenu);
+			this.userInputController = new UserInputController(this.intputModeButton, this.contextMenu);
 			this.characterVisionController = new CharacterVisionController(this.visionOverlayQuad, depthMaskShader);
 			this.selectedCharacterController = new SelectedCharacterController();
 			this.interactiveObjectController = new InteractiveObjectController();

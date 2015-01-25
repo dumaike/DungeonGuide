@@ -6,13 +6,13 @@ namespace DungeonGuide
 {
 	public class CharacterVisionController
 	{				
-		private const float VISION_DISTANCE = 15.0f;
+		private const float VISION_DISTANCE = 60.0f;
 		private const int NUM_RAYS = 360;
 
 		public const string INVISIBLE_LAYER_NAME = "NonSightBlocking";
 		
 		private Vector3 VISION_OFFSET = new Vector3(0, 0.1f, 0);
-		private float VISION_SPILL_OVER = 0.1f;
+		private float VISION_SPILL_OVER = 0.15f;
 
 		private List<PlayerCharacterRoot> playerCharacters;
 		private List<GameObject> characterVisionMeshes;
@@ -73,9 +73,7 @@ namespace DungeonGuide
 		}
 		
 		public void Update()
-		{
-			UpdateVisionQuad();
-		
+		{		
 			//If nothing has changed that requires a vision re-calc, don't
 			//bother doing anything in the update.
 			if (!this.visionDirty || ConsoleCommands.fullVisionMode)
@@ -115,7 +113,7 @@ namespace DungeonGuide
 					}
 					
 					visionPoints[iRayIndex + 1] = hitPoint + visionLocationOffset;
-					Debug.DrawRay(characterVisionOrigin, hitPoint - characterVisionOrigin);
+					//Debug.DrawRay(characterVisionOrigin, hitPoint - characterVisionOrigin);
 				}
 				
 				//Draw the character's vision mesh
@@ -146,7 +144,7 @@ namespace DungeonGuide
 		
 		public void ShowAllTiles()
 		{
-		
+			this.visionOverlay.gameObject.SetActive(false);
 		}
 		
 		public void UpdateVisionQuad()
