@@ -41,7 +41,7 @@ namespace DungeonGuide
 		{
 			if (this.selectedCharacter is PlayerCharacterRoot)
 			{
-				SceneManager.ChVisionCtrl.RemoveCharacterFromVision(this.selectedCharacter as PlayerCharacterRoot);
+				SceneManager.chVisionCtrl.RemoveCharacterFromVision(this.selectedCharacter as PlayerCharacterRoot);
 			}
 			
 			SceneManager.Instance.DestroyGo(this.selectedCharacter.gameObject);

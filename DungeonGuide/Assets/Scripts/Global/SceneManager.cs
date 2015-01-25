@@ -16,19 +16,31 @@ namespace DungeonGuide
 		private SelectedCharacterController selectedCharacterController;
 		private InteractiveObjectController interactiveObjectController;
 		
-		public static UserInputController UserInputCtlr {get{return SceneManager.Instance.userInputController;}}
+		public static UserInputController userInputCtlr {get{return SceneManager.Instance.userInputController;}}		
+		public static CharacterVisionController chVisionCtrl {get{return SceneManager.Instance.characterVisionController;}}		
+		public static SelectedCharacterController selectedChCtrl {get{return SceneManager.Instance.selectedCharacterController;}}		
+		public static InteractiveObjectController interactiveObjCtrl {get{return SceneManager.Instance.interactiveObjectController;}}
 		
-		public static CharacterVisionController ChVisionCtrl {get{return SceneManager.Instance.characterVisionController;}}
-		
-		public static SelectedCharacterController SelectedChCtrl {get{return SceneManager.Instance.selectedCharacterController;}}
-		
-		public static InteractiveObjectController InteractiveObjCtrl {get{return SceneManager.Instance.interactiveObjectController;}}
+		public static Camera gameplayCam {get{return SceneManager.Instance.gameplayCamera;}}		
+		public static Camera visionCam {get{return SceneManager.Instance.visionCamera;}}
 		
 		[SerializeField]
 		private Text intputModeButton;	
 		
 		[SerializeField]
 		private LongPressMenu longPressMenu;	
+		
+		[SerializeField]
+		private Camera gameplayCamera;
+		
+		[SerializeField]
+		private Camera visionCamera;
+		
+		[SerializeField]
+		private MeshFilter visionOverlayQuad;
+		
+		[SerializeField]
+		private Material depthMaskShader;
 	
 		#region initializers
 		private void Awake()
@@ -41,7 +53,7 @@ namespace DungeonGuide
 			SceneManager.Instance = this;
 		
 			this.userInputController = new UserInputController(this.intputModeButton, this.longPressMenu);
-			this.characterVisionController = new CharacterVisionController();
+			this.characterVisionController = new CharacterVisionController(this.visionOverlayQuad, depthMaskShader);
 			this.selectedCharacterController = new SelectedCharacterController();
 			this.interactiveObjectController = new InteractiveObjectController();
 		}
@@ -77,7 +89,7 @@ namespace DungeonGuide
 
 		#region private methods
 		private void Update()
-		{
+		{		
 			this.userInputController.Update();
 			this.characterVisionController.Update();
 		}

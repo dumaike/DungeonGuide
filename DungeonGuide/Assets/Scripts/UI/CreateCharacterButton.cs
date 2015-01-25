@@ -25,7 +25,7 @@ namespace DungeonGuide
 			createdCharacter.transform.position = this.creationUi.characterCreationPosition;
 			if (createdCharacter is PlayerCharacterRoot)
 			{
-				SceneManager.ChVisionCtrl.AddCharacterToVision(createdCharacter as PlayerCharacterRoot);
+				SceneManager.chVisionCtrl.AddCharacterToVision(createdCharacter as PlayerCharacterRoot);
 			}
 			this.creationUi.CloseCharacterCreation();
 		}

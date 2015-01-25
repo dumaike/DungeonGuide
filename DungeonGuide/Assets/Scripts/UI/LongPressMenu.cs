@@ -43,33 +43,33 @@ namespace DungeonGuide
 			this.mouseWorldLocation = mouseLocationInWorld;
 			
 			//Turn off the delete button if we didn't hit a character
-			bool isCharacterSelected = SceneManager.SelectedChCtrl.IsCharacterSelected();
+			bool isCharacterSelected = SceneManager.selectedChCtrl.IsCharacterSelected();
 			this.deleteButton.interactable = isCharacterSelected;
 			this.freedomButton.interactable = isCharacterSelected;
 			this.freedomText.text = "Freedom";
-			if (isCharacterSelected && SceneManager.SelectedChCtrl.GetSelectedCharacter().freeMovement)
+			if (isCharacterSelected && SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement)
 			{
 				this.freedomText.text = "Constrain";
 			}
 			
 			//Turn off the toggle button if we didn't hit a toggleable
 			this.toggleButton.interactable = 
-				SceneManager.InteractiveObjCtrl.IsTogglableObjectInRange(mouseWorldLocation);
+				SceneManager.interactiveObjCtrl.IsTogglableObjectInRange(mouseWorldLocation);
 		}
 		
 		public void HideLongPressMenu()
 		{
 			this.gameObject.SetActive(false);
 			
-			if (SceneManager.SelectedChCtrl.IsCharacterSelected())
+			if (SceneManager.selectedChCtrl.IsCharacterSelected())
 			{
-				SceneManager.SelectedChCtrl.DeselectCharacter();
+				SceneManager.selectedChCtrl.DeselectCharacter();
 			}
 		}
 		
 		public void DeleteSelectedCharacter()
 		{
-			SceneManager.SelectedChCtrl.DeleteSelectedCharacter();
+			SceneManager.selectedChCtrl.DeleteSelectedCharacter();
 			HideLongPressMenu();
 		}
 		
@@ -81,20 +81,20 @@ namespace DungeonGuide
 		
 		public void RevealObjects()
 		{
-			SceneManager.InteractiveObjCtrl.RevealAppropriateObjects(this.mouseWorldLocation);
+			SceneManager.interactiveObjCtrl.RevealAppropriateObjects(this.mouseWorldLocation);
 			HideLongPressMenu();
 		}
 		
 		public void ToggleInteraction()
 		{
-			SceneManager.InteractiveObjCtrl.ToggleAppropriateObjects(this.mouseWorldLocation);
+			SceneManager.interactiveObjCtrl.ToggleAppropriateObjects(this.mouseWorldLocation);
 			HideLongPressMenu();
 		}
 		
 		public void ToggleMovementFreedom()
 		{
-			SceneManager.SelectedChCtrl.GetSelectedCharacter().freeMovement = 
-				!SceneManager.SelectedChCtrl.GetSelectedCharacter().freeMovement;
+			SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement = 
+				!SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement;
 			HideLongPressMenu();
 		}
 		#endregion

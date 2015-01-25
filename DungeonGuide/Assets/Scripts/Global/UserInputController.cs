@@ -63,12 +63,12 @@ namespace DungeonGuide
 		
 		public int SelectedCharacterMovementAmount()
 		{
-			if (!SceneManager.SelectedChCtrl.IsCharacterSelected())
+			if (!SceneManager.selectedChCtrl.IsCharacterSelected())
 			{
 				return 0;
 			}
 		
-			MoveableRoot selectedCharacter = SceneManager.SelectedChCtrl.GetSelectedCharacter();
+			MoveableRoot selectedCharacter = SceneManager.selectedChCtrl.GetSelectedCharacter();
 			
 			return (int)(selectedCharacter.transform.position - this.selectedCharacterStartPosition).magnitude;
 		}
@@ -81,10 +81,12 @@ namespace DungeonGuide
 					ToggleInputMode();
 					break;
 				case InputEvent.ZOOM_IN:
-					CameraZoom(-ZOOM_INCREMENT);
+					CameraZoom(-ZOOM_INCREMENT, SceneManager.gameplayCam);
+					CameraZoom(-ZOOM_INCREMENT, SceneManager.visionCam);
 					break;
 				case InputEvent.ZOOM_OUT:
-					CameraZoom(ZOOM_INCREMENT);
+					CameraZoom(ZOOM_INCREMENT, SceneManager.gameplayCam);
+					CameraZoom(ZOOM_INCREMENT, SceneManager.visionCam);
 					break;
 				default:
 					Log.Error("No action mapped for input event: " + inputEvent);
@@ -146,16 +148,16 @@ namespace DungeonGuide
 			}
 		}
 		
-		private void CameraZoom(float amount)
+		private void CameraZoom(float amount, Camera camera)
 		{
-			float newZoom = Camera.main.orthographicSize + amount;
+			float newZoom = camera.orthographicSize + amount;
 			if (newZoom <= 0) 
 			{
-				newZoom = Camera.main.orthographicSize;
+				newZoom = camera.orthographicSize;
 			}
 			
 			//Transform screen coords into world coords
-			Camera.main.orthographicSize = newZoom;
+			camera.orthographicSize = newZoom;
 		}
 		
         private void UpdateLongPressCheck()
@@ -218,18 +220,18 @@ namespace DungeonGuide
 		private void UpdateCharacterMovement()
 		{
 			//If a character was clicked
-			if (Input.GetMouseButtonDown(0) && !SceneManager.SelectedChCtrl.IsCharacterSelected())
+			if (Input.GetMouseButtonDown(0) && !SceneManager.selectedChCtrl.IsCharacterSelected())
 			{				
 				SelectCharacterUnderMouse();
 			}
 
 			//If a character was released
-			if (SceneManager.SelectedChCtrl.IsCharacterSelected() && Input.GetMouseButtonUp(0))
+			if (SceneManager.selectedChCtrl.IsCharacterSelected() && Input.GetMouseButtonUp(0))
 			{		
-				SceneManager.SelectedChCtrl.DeselectCharacter();
+				SceneManager.selectedChCtrl.DeselectCharacter();
 			}
 			
-			if (SceneManager.SelectedChCtrl.IsCharacterSelected())
+			if (SceneManager.selectedChCtrl.IsCharacterSelected())
 			{
 				MoveSelectedCharacterToMouse();
 			}
@@ -247,7 +249,7 @@ namespace DungeonGuide
 				MoveableRoot hitCharacter = hitInfo.transform.GetComponentInParent<MoveableRoot>();
 				if (hitCharacter != null)
 				{
-					SceneManager.SelectedChCtrl.SelectCharacter(hitCharacter);  
+					SceneManager.selectedChCtrl.SelectCharacter(hitCharacter);  
 					this.desiredWorldCharacterPosition = hitCharacter.transform.position;
 					this.selectedCharacterStartPosition = this.desiredWorldCharacterPosition;
 				}
@@ -258,24 +260,25 @@ namespace DungeonGuide
 		{
 			if (Input.GetMouseButtonDown(0))
 			{				
-				this.lastWorldMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
+				this.lastWorldMousePosition = SceneManager.gameplayCam.ScreenPointToRay(Input.mousePosition).origin;
 			}
 			
 			if(Input.GetMouseButton(0))
 			{
-				Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
+				Vector3 newMousePosition = SceneManager.gameplayCam.ScreenPointToRay(Input.mousePosition).origin;
 				Vector3 mousePositionDelta = newMousePosition - this.lastWorldMousePosition;
 				//Include the delta in the new mouse position because we're moving the camera too
 				this.lastWorldMousePosition = newMousePosition - mousePositionDelta;
 				
 				//Transform screen coords into world coords
-				Camera.main.transform.position -= mousePositionDelta;
+				SceneManager.gameplayCam.transform.position -= mousePositionDelta;
+				SceneManager.visionCam.transform.position -= mousePositionDelta;
 			}
 		}
 		
 		private void MoveSelectedCharacterToMouse()
 		{
-			MoveableRoot selectedCharacter = SceneManager.SelectedChCtrl.GetSelectedCharacter();
+			MoveableRoot selectedCharacter = SceneManager.selectedChCtrl.GetSelectedCharacter();
 		
 			int layerMask = 1 << 0;
 			
@@ -304,7 +307,7 @@ namespace DungeonGuide
 
 					//Debug.DrawLine (raycastRay.origin, raycastRay.origin + raycastRay.direction*distanceToMove);
 					
-					SceneManager.ChVisionCtrl.SetVisionDirty();
+					SceneManager.chVisionCtrl.SetVisionDirty();
 					selectedCharacter.transform.position = snappedCharacterPosition;
 				}
 				else

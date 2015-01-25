@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -30,7 +30,7 @@ namespace DungeonGuide
 		#region public methods
 		public void TriggerInteraction()
 		{
-			SceneManager.ChVisionCtrl.SetVisionDirty();
+			SceneManager.chVisionCtrl.SetVisionDirty();
 			this.inDefaultState = !this.inDefaultState;
 			
 			foreach(MeshRenderer cur in this.toggledStateMeshes)

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -21,7 +21,7 @@ namespace DungeonGuide
 		private void Update()
 		{
 			float travelDistance = 
-				SceneManager.UserInputCtlr.SelectedCharacterMovementAmount();
+				SceneManager.userInputCtlr.SelectedCharacterMovementAmount();
 			int roundedDistance = (int)Mathf.Ceil(travelDistance*SceneManager.SCENE_TO_WORLD_UNITS);
 			
 			if (roundedDistance > 0)

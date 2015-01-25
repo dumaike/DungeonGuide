@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 namespace DungeonGuide
@@ -10,7 +10,7 @@ namespace DungeonGuide
 		public static void FullVision() 
 		{
 			fullVisionMode = !fullVisionMode;
-			SceneManager.ChVisionCtrl.ShowAllTiles();
+			SceneManager.chVisionCtrl.ShowAllTiles();
 		}
 	}
 
