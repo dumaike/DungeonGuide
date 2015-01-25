@@ -15,6 +15,8 @@ namespace DungeonGuide
 
 		private List<PlayerCharacterRoot> playerCharacters;
 		
+		private List<List<Vector3>> visionPerCharacter;
+		
 		private bool visionDirty = true;
 
 		#region initializers
@@ -55,6 +57,7 @@ namespace DungeonGuide
 		
 			int layerMask = 1 << 0;
 			
+			//Create the vision points
 			foreach (PlayerCharacterRoot player in this.playerCharacters) 
 			{
 				Vector3 characterVisionOrigin = player.transform.position + VISION_OFFSET;
@@ -79,6 +82,9 @@ namespace DungeonGuide
 					Debug.DrawRay(characterVisionOrigin, hitPoint - characterVisionOrigin);
 				}	
 			}
+			
+			//Draw the character's vision mesh
+			
 			
 			//this.visionDirty = false;
 		}
