@@ -12,7 +12,6 @@ namespace DungeonGuide
 		public const string INVISIBLE_LAYER_NAME = "NonSightBlocking";
 		
 		private Vector3 VISION_OFFSET = new Vector3(0, 0.1f, 0);
-		private float VISION_SPILL_OVER = 0.15f;
 
 		private List<PlayerCharacterRoot> playerCharacters;
 		private List<GameObject> characterVisionMeshes;
@@ -105,7 +104,7 @@ namespace DungeonGuide
 					Vector3 hitPoint;
 					if (hitSomething)
 					{
-						hitPoint = hitInfo.point + raycastRay.direction*VISION_SPILL_OVER;
+						hitPoint = hitInfo.point;
 					}
 					else
 					{
