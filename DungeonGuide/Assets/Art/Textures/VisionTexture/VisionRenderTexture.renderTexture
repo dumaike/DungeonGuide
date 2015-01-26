@@ -6,8 +6,8 @@ RenderTexture:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: VisionRenderTexture
-  m_Width: 1024
-  m_Height: 768
+  m_Width: 2160
+  m_Height: 1440
   m_AntiAliasing: 2
   m_DepthFormat: 2
   m_ColorFormat: 0

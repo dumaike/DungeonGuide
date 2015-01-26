@@ -158,26 +158,22 @@ namespace DungeonGuide
         private void UpdateContextMenuCheck()
         {
 			//If the mouse was pressed
-			if (Input.GetMouseButtonUp(0))
-			{
-				Log.Print("Tracking context menue click.", LogChannel.INPUT);
-				this.mousePressedTime = Time.time;
-			}
-			
-			//If a mouse was released
 			if (Input.GetMouseButtonDown(0))
-			{	
+			{
 				if (Time.time - this.mousePressedTime < UserInputController.DOUBLE_CLICK_DURATION)
 				{
 					DisplayContextMenu();
 				}
+				
+				Log.Print("Tracking context menue click.", LogChannel.INPUT);
+				this.mousePressedTime = Time.time;
 			}
 			
-			if (Input.GetMouseButtonDown(1))
+			/*if (Input.GetMouseButtonDown(1))
 			{
 				SelectCharacterUnderMouse();
 				DisplayContextMenu();
-			}
+			}*/
         }
         
         private void DisplayContextMenu()
