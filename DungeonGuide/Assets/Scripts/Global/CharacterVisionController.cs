@@ -7,7 +7,7 @@ namespace DungeonGuide
 	public class CharacterVisionController
 	{				
 		private const float VISION_DISTANCE = 60.0f;
-		private const int NUM_RAYS = 360;
+		private const int NUM_RAYS = 720;
 
 		public const string INVISIBLE_LAYER_NAME = "NonSightBlocking";
 		
@@ -90,7 +90,7 @@ namespace DungeonGuide
 				PlayerCharacterRoot player = this.playerCharacters[iPlayerIndex];
 			
 				Vector3 characterVisionOrigin = player.transform.position + VISION_OFFSET;
-				float raycastStep = 360/NUM_RAYS;
+				float raycastStep = 360.0f/NUM_RAYS;
 				Vector3[] visionPoints = new Vector3[NUM_RAYS + 1];
 				visionPoints[0] = characterVisionOrigin + visionLocationOffset;
 				
