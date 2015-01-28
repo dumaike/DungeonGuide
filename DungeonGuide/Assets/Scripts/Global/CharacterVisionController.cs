@@ -7,7 +7,7 @@ namespace DungeonGuide
 	public class CharacterVisionController
 	{				
 		private const float VISION_DISTANCE = 60.0f;
-		private const int NUM_RAYS = 720;
+		private const int NUM_RAYS = 360;
 
 		public const string INVISIBLE_LAYER_NAME = "NonSightBlocking";
 		
