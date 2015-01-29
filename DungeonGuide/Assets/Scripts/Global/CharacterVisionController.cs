@@ -56,6 +56,8 @@ namespace DungeonGuide
 			
 			int indexOfCharacter = this.playerCharacters.IndexOf(character);
 			this.playerCharacters.RemoveAt(indexOfCharacter);
+			
+			SceneManager.Destroy(this.characterVisionMeshes[indexOfCharacter]);
 			this.characterVisionMeshes.RemoveAt(indexOfCharacter);
 		}
 		
