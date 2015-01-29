@@ -32,7 +32,7 @@ namespace DungeonGuide
 
 		private InputMode currentMode = InputMode.CHARACTERS;
 		
-		private const float DOUBLE_CLICK_DURATION = 0.5f;
+		private const float DOUBLE_CLICK_DURATION = 0.3f;
 		private const float ZOOM_INCREMENT = 0.5f;
 		
 		/// <summary>
@@ -55,6 +55,11 @@ namespace DungeonGuide
 
 		#region public methods
 		
+		public void MenuItemClicked()
+		{
+			this.mousePressedTime = float.MinValue;
+		}		
+		
 		public int SelectedCharacterMovementAmount()
 		{
 			if (!SceneManager.selectedChCtrl.IsCharacterSelected())
@@ -69,6 +74,8 @@ namespace DungeonGuide
 		
 		public void ReceiveInputEvent(InputEvent inputEvent)
 		{
+			MenuItemClicked();
+		
 			switch (inputEvent)
 			{
 				case InputEvent.TOGGLE_INPUT_MODE:

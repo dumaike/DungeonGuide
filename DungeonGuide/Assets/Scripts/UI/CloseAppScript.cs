@@ -16,11 +16,13 @@ namespace DungeonGuide
 		
 		public void ShowCloseDialog()
 		{
+			SceneManager.userInputCtlr.MenuItemClicked();
 			this.closeDialog.gameObject.SetActive(true);
 		}
 		
 		public void HideCloseDialog()
 		{
+			SceneManager.userInputCtlr.MenuItemClicked();
 			this.closeDialog.gameObject.SetActive(false);
 		}
 		#endregion

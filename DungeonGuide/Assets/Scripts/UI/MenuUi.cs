@@ -29,11 +29,13 @@ namespace DungeonGuide
 		#region public methods
 		public void CloseMenu()
 		{
+			SceneManager.userInputCtlr.MenuItemClicked();
 			this.gameObject.SetActive(false);
 		}
 		
 		public void OpenMenu()
 		{
+			SceneManager.userInputCtlr.MenuItemClicked();
 			this.gameObject.SetActive(true);
 		}
 		#endregion
