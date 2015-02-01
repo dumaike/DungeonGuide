@@ -203,13 +203,13 @@ namespace DungeonGuide
 		private void UpdateCharacterMovement()
 		{
 			//If a character was clicked
-			if (Input.GetMouseButtonDown(0) && !SceneManager.selectedChCtrl.IsCharacterSelected())
+			if ((Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) && !SceneManager.selectedChCtrl.IsCharacterSelected())
 			{				
 				SelectCharacterUnderMouse();
 			}
 
 			//If a character was released
-			if (SceneManager.selectedChCtrl.IsCharacterSelected() && Input.GetMouseButtonUp(0))
+			if (SceneManager.selectedChCtrl.IsCharacterSelected() && (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)))
 			{		
 				SceneManager.selectedChCtrl.DeselectCharacter();
 			}
