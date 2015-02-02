@@ -90,9 +90,13 @@ namespace DungeonGuide
 		#region private methods
 		private void Update()
 		{		
-			this.userInputController.Update();
 			this.characterVisionController.Update();
 		}
+		
+		private void LateUpdate()
+		{
+			this.userInputController.Update();
+		}		
 		#endregion
 	}
 
