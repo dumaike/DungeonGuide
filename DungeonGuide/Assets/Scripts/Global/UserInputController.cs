@@ -32,7 +32,7 @@ namespace DungeonGuide
 
 		private InputMode currentMode = InputMode.CHARACTERS;
 		
-		private const float DOUBLE_CLICK_DURATION = 0.3f;
+		private const float DOUBLE_CLICK_DURATION = 0.2f;
 		private const float ZOOM_INCREMENT = 0.5f;
 		
 		/// <summary>
