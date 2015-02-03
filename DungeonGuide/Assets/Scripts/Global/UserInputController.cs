@@ -167,7 +167,9 @@ namespace DungeonGuide
 			//If the mouse was pressed
 			if (Input.GetMouseButtonDown(0))
 			{
-				if (Time.time - this.mousePressedTime < UserInputController.DOUBLE_CLICK_DURATION)
+				float timeSinceLastClick = Time.time - this.mousePressedTime;
+				if (timeSinceLastClick < UserInputController.DOUBLE_CLICK_DURATION &&
+					timeSinceLastClick != 0)
 				{
 					DisplayContextMenu();
 				}
