@@ -127,7 +127,7 @@ namespace DungeonGuide
 				
 				UpdateContextMenuCheck();
 			}		
-			else if (this.contextMenuActive && this.contextMenuObject.gameObject.activeSelf == false)
+			else if (this.contextMenuActive && this.contextMenuObject.IsContextMenuActive() == false)
 			{
 				this.contextMenuActive = false;
 			}	

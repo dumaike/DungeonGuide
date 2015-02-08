@@ -21,6 +21,11 @@ namespace DungeonGuide
 			this.selectedCharacter.CharacterSelected(true);
 		}
 		
+		public void TintSelectedCharacter(Color color)
+		{
+			this.selectedCharacter.TintCharacter(color);
+		}		
+		
 		public MoveableRoot GetSelectedCharacter()
 		{
 			return this.selectedCharacter;

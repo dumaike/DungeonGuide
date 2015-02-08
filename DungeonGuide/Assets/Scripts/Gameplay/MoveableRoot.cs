@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 namespace DungeonGuide
 {
@@ -50,6 +51,15 @@ namespace DungeonGuide
 			foreach (MeshRenderer curRenderer in this.meshRenderers)
 			{
 				curRenderer.material.color = selected ? this.selectedColor : this.defaultColor;
+			}
+		}
+		
+		public void TintCharacter(Color color)
+		{
+			this.defaultColor = color;
+			foreach (MeshRenderer curRenderer in this.meshRenderers)
+			{
+				curRenderer.material.color = this.defaultColor;
 			}
 		}
 		#endregion

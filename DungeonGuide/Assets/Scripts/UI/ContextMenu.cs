@@ -19,22 +19,20 @@ namespace DungeonGuide
 		private Button toggleButton;
 		
 		[SerializeField]
+		private Button tintCharacterButton;
+		
+		[SerializeField]
 		private CharacterCreationUi characterCreationUi;
+		
+		[SerializeField]
+		private GameObject extendedContextMenuUi;
+		
+		[SerializeField]
+		private GameObject tintCharacterUi;
 		
 		private Vector3 snappedActionLocation;
 		private Vector3 mouseWorldLocation;
 	
-		#region initializers
-		private void Awake()
-		{			
-			if (Time.time < 0.1f)
-			{
-				Log.Warning("You left the Context menu active. Deactivating at startup, but you should really do this in the editor");
-				this.gameObject.SetActive(false);
-			}
-		}
-		#endregion
-
 		#region public methods
 		public void DisplayContextMenu(Vector3 snappedActionLocation, Vector3 mouseLocationInWorld)
 		{
@@ -46,6 +44,7 @@ namespace DungeonGuide
 			bool isCharacterSelected = SceneManager.selectedChCtrl.IsCharacterSelected();
 			this.deleteButton.interactable = isCharacterSelected;
 			this.freedomButton.interactable = isCharacterSelected;
+			this.tintCharacterButton.interactable = isCharacterSelected;
 			this.freedomText.text = "Freedom";
 			if (isCharacterSelected && SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement)
 			{
@@ -60,17 +59,12 @@ namespace DungeonGuide
 		public void HideContextMenu()
 		{
 			this.gameObject.SetActive(false);
-			
-			if (SceneManager.selectedChCtrl.IsCharacterSelected())
-			{
-				SceneManager.selectedChCtrl.DeselectCharacter();
-			}
 		}
 		
 		public void DeleteSelectedCharacter()
 		{
 			SceneManager.selectedChCtrl.DeleteSelectedCharacter();
-			HideContextMenu();
+			HideAllContextMenues();
 		}
 		
 		public void CreateCharacter()
@@ -82,25 +76,71 @@ namespace DungeonGuide
 		public void RevealObjects()
 		{
 			SceneManager.interactiveObjCtrl.RevealAppropriateObjects(this.mouseWorldLocation);
-			HideContextMenu();
+			HideAllContextMenues();
 		}
 		
 		public void ToggleInteraction()
 		{
 			SceneManager.interactiveObjCtrl.ToggleAppropriateObjects(this.mouseWorldLocation);
-			HideContextMenu();
+			HideAllContextMenues();
 		}
 		
 		public void ToggleMovementFreedom()
 		{
 			SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement = 
 				!SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement;
-			HideContextMenu();
+			HideAllContextMenues();
 		}
+		
+		public void DisplayExtendedContextMenu()
+		{
+			HideContextMenu();
+			this.extendedContextMenuUi.SetActive(true);
+		}
+		
+		public void HideExtendedContextMenu()
+		{			
+			HideAllContextMenues();
+		}
+		
+		public void DisplayTintCharacterMenu()
+		{
+			HideContextMenu();
+			this.tintCharacterUi.SetActive(true);
+		}
+		
+		public void HideTintCharacterMenu()
+		{			
+			HideAllContextMenues();			
+		}
+		
+		public bool IsContextMenuActive()
+		{
+			return this.tintCharacterUi.activeSelf ||
+				this.extendedContextMenuUi.activeSelf ||
+				this.gameObject.activeSelf;
+		}
+		
+		public void TintCharacter(Color colorToTint)
+		{			
+			SceneManager.selectedChCtrl.TintSelectedCharacter(colorToTint);
+			HideAllContextMenues();
+		}		
+		
 		#endregion
 
 		#region private methods
-
+		private void HideAllContextMenues()
+		{
+			this.tintCharacterUi.SetActive(false);
+			this.extendedContextMenuUi.SetActive(false);
+			this.gameObject.SetActive(false);
+			
+			if (SceneManager.selectedChCtrl.IsCharacterSelected())
+			{
+				SceneManager.selectedChCtrl.DeselectCharacter();
+			}
+		}
 		#endregion
 	}
 
