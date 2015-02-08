@@ -13,6 +13,8 @@ namespace DungeonGuide
 	
 	public class GridUtility
 	{	
+		public const string GAMEPLAY_OBJECT_ROOT_NAME = "GameplayObjects";
+	
 		#region public methods
 		public static void SnapToGrid(GameObject go, SnapType snapType)
 		{

@@ -6,6 +6,9 @@ namespace DungeonGuide
 {
 	public class CreateCharacterButton : MonoBehaviour
 	{
+		//The number of characters of this type created so far
+		private int creationCounter = 0;
+	
 		private enum CharacterTemplate
 		{
 			One_by_One_Character_Template,
@@ -22,10 +25,14 @@ namespace DungeonGuide
 		
 		private GameObject objectToCreate;
 		
+		private GameObject gameplayObjectRoot;
+		
 		#region initializers
 		public void Awake()
 		{
 			this.creationUi = this.transform.GetComponentInParent<CharacterCreationUi>();
+			
+			this.gameplayObjectRoot = GameObject.Find(GridUtility.GAMEPLAY_OBJECT_ROOT_NAME);
 			
 			switch (this.characterType)
 			{
@@ -46,8 +53,11 @@ namespace DungeonGuide
 		#region public methods
 		public void CreateCharacter()
 		{
+			this.creationCounter++;
+		
 			GameObject createdCharacter = Instantiate(this.objectToCreate) as GameObject;
 			createdCharacter.transform.position = this.creationUi.characterCreationPosition;
+			createdCharacter.transform.parent = this.gameplayObjectRoot.transform;
 			
 			//Register the character for vision if applicable
 			MoveableRoot moveableRootOfCharacter = createdCharacter.GetComponentInChildren<MoveableRoot>();
@@ -59,6 +69,12 @@ namespace DungeonGuide
 			//Set up the character texture
 			MeshRenderer characterMesh = createdCharacter.GetComponentInChildren<MeshRenderer>();
 			characterMesh.material.mainTexture = this.characterTexture;
+			
+			Text counterText = createdCharacter.GetComponentInChildren<Text>();
+			if (counterText != null)
+			{
+				counterText.text = this.creationCounter.ToString();
+			}
 			
 			this.creationUi.CloseCharacterCreation();
 		}

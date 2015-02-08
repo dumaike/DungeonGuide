@@ -21,7 +21,7 @@ namespace DungeonGuide
 			
 			if (this.snappableObject.transform.parent == null && this.snappableObject.gameObject.activeInHierarchy)
 			{
-				GridUtility.ReparentToPath(this.snappableObject.gameObject, "GameplayObjects/" + this.snappableObject.name);
+				GridUtility.ReparentToPath(this.snappableObject.gameObject, GridUtility.GAMEPLAY_OBJECT_ROOT_NAME + "/" + this.snappableObject.name);
 			}
 			
 			GridUtility.SnapToGrid(this.snappableObject.gameObject, this.snappableObject.snapType);

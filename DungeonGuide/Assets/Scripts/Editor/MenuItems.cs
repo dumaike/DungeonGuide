@@ -23,7 +23,7 @@ namespace DungeonGuide
 			SnappableRoot[] allSnappable = GameObject.FindObjectsOfType<SnappableRoot>();
 			foreach(SnappableRoot root in allSnappable)
 			{
-				GridUtility.ReparentToPath(root.gameObject, "GameplayObjects/" + root.name);
+				GridUtility.ReparentToPath(root.gameObject, GridUtility.GAMEPLAY_OBJECT_ROOT_NAME + "/" + root.name);
 			}
 		}
 		#endregion
@@ -33,4 +33,3 @@ namespace DungeonGuide
 	}
 
 }
-

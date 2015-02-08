@@ -51,6 +51,22 @@ namespace DungeonGuide
 				return;
 			}
 			SceneManager.Instance = this;
+			
+			GameObject gameplayObjectRoot = GameObject.Find(GridUtility.GAMEPLAY_OBJECT_ROOT_NAME);
+			Canvas worldCanvas = gameplayObjectRoot.GetComponent<Canvas>();
+			if (worldCanvas == null)
+			{
+				Log.Warning("There isn't a canvas on your gameplay root. " + 
+					"Fixing at runtime, but you should fix it in the editor.", LogChannel.EDITOR_SETUP, gameplayObjectRoot);
+				 worldCanvas = gameplayObjectRoot.AddComponent<Canvas>();
+			}
+			
+			if (worldCanvas.renderMode != RenderMode.WorldSpace)
+			{
+				Log.Warning("The canvas on your gameplay root isn't rendering in world mode. " + 
+				            "Fixing at runtime, but you should fix it in the editor.", LogChannel.EDITOR_SETUP, gameplayObjectRoot);
+				worldCanvas.renderMode = RenderMode.WorldSpace;
+			}
 		
 			this.userInputController = new UserInputController(this.intputModeButton, this.contextMenu);
 			this.characterVisionController = new CharacterVisionController(this.visionOverlayQuad, depthMaskShader);
