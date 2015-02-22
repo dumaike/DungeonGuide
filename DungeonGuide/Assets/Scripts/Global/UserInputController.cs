@@ -27,7 +27,6 @@ namespace DungeonGuide
 		private Vector3 desiredWorldCharacterPosition;
         private Vector3 lastWorldMousePosition;
         
-        private bool contextMenuActive = false;
 		private float mousePressedTime;
 
 		private InputMode currentMode = InputMode.CHARACTERS;
@@ -114,7 +113,7 @@ namespace DungeonGuide
 				Log.Print("Mouse 1 Up", LogChannel.INPUT);
 			}
 		
-			if (!this.contextMenuActive)
+			if (!this.contextMenuObject.IsContextMenuActive())
 			{
 				if (this.currentMode == InputMode.CHARACTERS)
 				{
@@ -127,10 +126,6 @@ namespace DungeonGuide
 				
 				UpdateContextMenuCheck();
 			}		
-			else if (this.contextMenuActive && this.contextMenuObject.IsContextMenuActive() == false)
-			{
-				this.contextMenuActive = false;
-			}	
 		} 
 		#endregion
 
@@ -188,7 +183,6 @@ namespace DungeonGuide
         private void DisplayContextMenu()
         {			
 			Log.Print("Log press activated", LogChannel.INPUT);
-			this.contextMenuActive = true;
 			
 			Vector3 mouseLocationInWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			Vector3 snappedLocation = mouseLocationInWorld;

@@ -12,7 +12,8 @@ namespace DungeonGuide
 		private enum CharacterTemplate
 		{
 			One_by_One_Character_Template,
-			One_by_One_Player_Template
+			One_by_One_Player_Template,
+			Two_by_Two_Character_Template
 		};		
 	
 		[SerializeField]
@@ -38,9 +39,12 @@ namespace DungeonGuide
 			{
 				case CharacterTemplate.One_by_One_Character_Template:
 					this.objectToCreate = Resources.Load("1x1CharacterTemplate") as GameObject;
-					break;
+				break;
 				case CharacterTemplate.One_by_One_Player_Template:
 					this.objectToCreate = Resources.Load("1x1PlayerCharacterTemplate") as GameObject;
+					break;
+				case CharacterTemplate.Two_by_Two_Character_Template:
+					this.objectToCreate = Resources.Load("2x2CharacterTemplate") as GameObject;
 					break;
 				default:
 					Log.Error("There's a template type that doesn't map to a prefab.", LogChannel.LOGIC, this);
