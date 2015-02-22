@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &199486
 GameObject:
@@ -26,13 +26,12 @@ GameObject:
   - 4: {fileID: 499486}
   - 33: {fileID: 3399486}
   - 23: {fileID: 2399486}
-  - 64: {fileID: 6499486}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &498406
 Transform:
@@ -85,19 +84,6 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 199486}
-  m_Mesh: {fileID: 4300002, guid: 35025e12b712b32498bc3cc6912b0f0f, type: 3}
---- !u!64 &6499486
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 199486}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_SmoothSphereCollisions: 0
-  m_Convex: 0
   m_Mesh: {fileID: 4300002, guid: 35025e12b712b32498bc3cc6912b0f0f, type: 3}
 --- !u!114 &11448914
 MonoBehaviour:
