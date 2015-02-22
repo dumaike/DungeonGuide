@@ -8,12 +8,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SceneSelection.unity
   - enabled: 1
-    path: Assets/Scenes/CragmawCastle.unity
+    path: Assets/Scenes/Levels/CragmawCastle.unity
   - enabled: 1
     path: Assets/Scenes/Testbed.unity
   - enabled: 1
-    path: Assets/Scenes/Forest.unity
+    path: Assets/Scenes/Levels/Forest.unity
   - enabled: 1
-    path: Assets/Scenes/GrassPlains.unity
+    path: Assets/Scenes/Levels/GrassPlains.unity
   - enabled: 1
-    path: Assets/Scenes/WaveEchoCave.unity
+    path: Assets/Scenes/Levels/WaveEchoCave.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/SlaveArena.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/JacklewereCave.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/SandriansShop.unity
