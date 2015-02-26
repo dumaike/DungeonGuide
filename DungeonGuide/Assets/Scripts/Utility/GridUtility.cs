@@ -24,13 +24,16 @@ namespace DungeonGuide
 				int snappedZ = (int)go.transform.position.z;
 				if (snappedX != go.transform.position.x ||
 				    snappedZ != go.transform.position.z ||
-				    go.transform.position.y != 0)
+				    go.transform.localPosition.y != 0)
 				{
-					Vector3 snappedPosition = go.transform.position;
-					snappedPosition.x = (float)Math.Round (snappedPosition.x);
-					snappedPosition.z = (float)Math.Round (snappedPosition.z);
-					snappedPosition.y = 0;
-					go.transform.position = snappedPosition;				
+					Vector3 snappedGlobalPosition = go.transform.position;
+					snappedGlobalPosition.x = (float)Math.Round (snappedGlobalPosition.x);
+					snappedGlobalPosition.z = (float)Math.Round (snappedGlobalPosition.z);
+					go.transform.position = snappedGlobalPosition;				
+					
+					Vector3 snappedLocalPosition = go.transform.localPosition;
+					snappedLocalPosition.y = 0;
+					go.transform.localPosition = snappedLocalPosition;				
 				}
 			}
 			if (snapType == SnapType.EDGE)

@@ -13,10 +13,10 @@ namespace DungeonGuide
 		}
 	
 		[SerializeField]
-		private List<MeshRenderer> toggledStateMeshes;
+		private List<GameObject> toggledGameObject;
 		
 		[SerializeField]
-		private List<MeshRenderer> defaultStateMeshes;
+		private List<GameObject> defaultGameObjects;
 		
 		[SerializeField]
 		private InteractiveType typeSerialized = InteractiveType.TOGGLEABLE;
@@ -33,12 +33,12 @@ namespace DungeonGuide
 			SceneManager.chVisionCtrl.SetVisionDirty();
 			this.inDefaultState = !this.inDefaultState;
 			
-			foreach(MeshRenderer cur in this.toggledStateMeshes)
+			foreach(GameObject cur in this.toggledGameObject)
 			{
 				cur.gameObject.SetActive(!this.inDefaultState);
 			}
 			
-			foreach(MeshRenderer cur in this.defaultStateMeshes)
+			foreach(GameObject cur in this.defaultGameObjects)
 			{
 				cur.gameObject.SetActive(this.inDefaultState);
 			}
@@ -46,7 +46,7 @@ namespace DungeonGuide
 		
 		public bool ContainsMesh(MeshRenderer mesh)
 		{		
-			foreach(MeshRenderer cur in this.toggledStateMeshes)
+			foreach(GameObject cur in this.toggledGameObject)
 			{
 				if (cur == mesh)
 				{
@@ -54,7 +54,7 @@ namespace DungeonGuide
 				}
 			}
 			
-			foreach(MeshRenderer cur in this.defaultStateMeshes)
+			foreach(GameObject cur in this.defaultGameObjects)
 			{
 				if (cur == mesh)
 				{
@@ -70,24 +70,24 @@ namespace DungeonGuide
 			//TODO Make this more effecient by only checking when
 			//we change visibily states
 		
-			List<MeshRenderer> currentlyShownMeshes = this.toggledStateMeshes;
+			List<GameObject> currentlyShownMeshes = this.toggledGameObject;
 			if (this.inDefaultState)
 			{
-				currentlyShownMeshes = this.defaultStateMeshes;
+				currentlyShownMeshes = this.defaultGameObjects;
 			}
 			
-			foreach(MeshRenderer cur in currentlyShownMeshes)
+			foreach(GameObject cur in currentlyShownMeshes)
 			{
 				cur.gameObject.SetActive(visible);
 			}
 		}
 		
-		public bool DoesMeshExist(MeshRenderer mesh)
+		public bool DoesMeshExist(GameObject mesh)
 		{
-			List<MeshRenderer> currentlyHiddenMeshes = this.defaultStateMeshes;
+			List<GameObject> currentlyHiddenMeshes = this.defaultGameObjects;
 			if (this.inDefaultState)
 			{
-				currentlyHiddenMeshes = this.toggledStateMeshes;
+				currentlyHiddenMeshes = this.toggledGameObject;
 			}
 			
 			return !currentlyHiddenMeshes.Contains(mesh);

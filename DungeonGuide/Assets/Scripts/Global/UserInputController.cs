@@ -259,8 +259,8 @@ namespace DungeonGuide
 		private void MoveSelectedCharacterToMouse()
 		{
 			MoveableRoot selectedCharacter = SceneManager.selectedChCtrl.GetSelectedCharacter();
-		
-			int layerMask = 1 << 0;
+			
+			int layerMask = (1 << LayerAccessor.DEFAULT) + (1 << LayerAccessor.BLOCKS_MOVEMENT);
 			
 			Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
 			Vector3 mousePositionDelta = newMousePosition - this.lastWorldMousePosition;

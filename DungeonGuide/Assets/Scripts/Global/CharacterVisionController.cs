@@ -8,8 +8,6 @@ namespace DungeonGuide
 	{				
 		private const float VISION_DISTANCE = 60.0f;
 		private const int NUM_RAYS = 360;
-
-		public const string INVISIBLE_LAYER_NAME = "NonSightBlocking";
 		
 		private Vector3 VISION_OFFSET = new Vector3(0, 0.1f, 0);
 
@@ -82,7 +80,7 @@ namespace DungeonGuide
 				return;
 			}
 		
-			int layerMask = 1 << 0;
+			int layerMask = (1 << LayerAccessor.DEFAULT) + (1 << LayerAccessor.BLOCKS_SIGHT);
 			
 			Vector3 visionLocationOffset = SceneManager.visionCam.transform.position - SceneManager.gameplayCam.transform.position;
 			

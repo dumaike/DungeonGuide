@@ -52,6 +52,8 @@ namespace DungeonGuide
 			}
 			SceneManager.Instance = this;
 			
+			LayerAccessor.InitLayerInformation();
+			
 			GameObject gameplayObjectRoot = GameObject.Find(GridUtility.GAMEPLAY_OBJECT_ROOT_NAME);
 			Canvas worldCanvas = gameplayObjectRoot.GetComponent<Canvas>();
 			if (worldCanvas == null)

@@ -86,8 +86,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 119612}
-  m_LocalRotation: {x: 0, y: .707106829, z: 0, w: .707106829}
-  m_LocalPosition: {x: -40, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -31, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 499850}
@@ -208,10 +208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6aa325cfc498a54e98522909e7a4775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggledStateMeshes:
-  - {fileID: 2319606}
-  defaultStateMeshes:
-  - {fileID: 2359780}
+  toggledGameObject:
+  - {fileID: 119606}
+  defaultGameObjects:
+  - {fileID: 159780}
   typeSerialized: 1
 --- !u!114 &11456852
 MonoBehaviour:

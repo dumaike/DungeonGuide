@@ -7,13 +7,9 @@ namespace DungeonGuide
 	public class PlayerCharacterRoot : MoveableRoot
     {
 		#region initializers
-		override protected void Awake()
-		{
-			base.Awake ();
-		}
-
 		private void Start()
 		{
+			base.Start ();
 
 		}
 

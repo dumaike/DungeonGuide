@@ -17,10 +17,9 @@ namespace DungeonGuide
 		public bool freeMovement = false;
 
 		#region initializers
-		virtual protected void Awake()
+		virtual protected void Start()
 		{		
-			GameObjectUtility.SetLayerRecursive (
-				LayerMask.NameToLayer (CharacterVisionController.INVISIBLE_LAYER_NAME), this.transform); 
+			GameObjectUtility.SetLayerRecursive (LayerAccessor.BLOCKS_NOTHING, this.transform); 
 		
 			this.meshRenderers = this.GetComponentsInChildren<MeshRenderer> ();
 			
@@ -32,11 +31,6 @@ namespace DungeonGuide
 				float y = renderer.bounds.extents.y;
 				this.characterDimensions = new Vector3((float)Math.Ceiling(x*2), (float)Math.Ceiling(y*2), (float)Math.Ceiling(z*2));
 			}
-		}
-
-		private void Start()
-		{
-
 		}
 
 		private void OnDestroy()
