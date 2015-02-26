@@ -23,3 +23,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Levels/JacklewereCave.unity
   - enabled: 1
     path: Assets/Scenes/Levels/SandriansShop.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/CaravanTrail.unity
