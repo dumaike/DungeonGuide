@@ -30,7 +30,6 @@ namespace DungeonGuide
 		#region public methods
 		public void TriggerInteraction()
 		{
-			SceneManager.chVisionCtrl.SetVisionDirty();
 			this.inDefaultState = !this.inDefaultState;
 			
 			foreach(GameObject cur in this.toggledGameObject)
@@ -42,6 +41,8 @@ namespace DungeonGuide
 			{
 				cur.gameObject.SetActive(this.inDefaultState);
 			}
+			
+			SceneManager.eventCtr.FireInteractiveObjectToggledEvent();
 		}
 		
 		public bool ContainsMesh(MeshRenderer mesh)

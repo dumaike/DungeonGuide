@@ -68,6 +68,7 @@ namespace DungeonGuide
 			if (moveableRootOfCharacter is PlayerCharacterRoot)
 			{
 				SceneManager.chVisionCtrl.AddCharacterToVision(moveableRootOfCharacter as PlayerCharacterRoot);
+				SceneManager.eventCtr.FireObjectCreatedEvent(moveableRootOfCharacter, moveableRootOfCharacter.transform.position);
 			}
 			
 			//Set up the character texture

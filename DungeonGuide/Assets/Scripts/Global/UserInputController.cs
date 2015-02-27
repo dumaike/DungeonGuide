@@ -286,9 +286,11 @@ namespace DungeonGuide
 					          LogChannel.CHARACTER_MOVEMENT);
 
 					//Debug.DrawLine (raycastRay.origin, raycastRay.origin + raycastRay.direction*distanceToMove);
-					
-					SceneManager.chVisionCtrl.SetVisionDirty();
+					Vector3 oldPosition = selectedCharacter.transform.position;
 					selectedCharacter.transform.position = snappedCharacterPosition;
+					
+					//Fire an event to let everyone know we moved someone
+					SceneManager.eventCtr.FireObjectMovedEvent(selectedCharacter, oldPosition, snappedCharacterPosition);
 				}
 				else
 				{

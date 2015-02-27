@@ -47,10 +47,11 @@ namespace DungeonGuide
 			if (this.selectedCharacter is PlayerCharacterRoot)
 			{
 				SceneManager.chVisionCtrl.RemoveCharacterFromVision(this.selectedCharacter as PlayerCharacterRoot);
+				SceneManager.eventCtr.FireObjectRemovedEvent(this.selectedCharacter, this.selectedCharacter.transform.position);
 			}
 			
 			SceneManager.Instance.DestroyGo(this.selectedCharacter.gameObject);
-			DeselectCharacter();			
+			DeselectCharacter();						
 		}
 		#endregion
 

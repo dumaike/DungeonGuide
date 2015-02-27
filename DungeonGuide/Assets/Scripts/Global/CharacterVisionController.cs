@@ -16,8 +16,6 @@ namespace DungeonGuide
 		
 		private List<List<Vector3>> visionPerCharacter;
 		
-		private bool visionDirty = true;
-		
 		private MeshFilter visionOverlay;
 		
 		private Material depthMaskShader;
@@ -35,23 +33,30 @@ namespace DungeonGuide
 			this.playerCharacters = new List<PlayerCharacterRoot>();
 			foreach (PlayerCharacterRoot character in characters)
 			{
-				AddCharacterToVision(character);
+				AddCharacterToVision(character);			
 			}						
+			
+			SceneManager.eventCtr.objectMovedEvent += HandleobjectMovedEvent;
+			SceneManager.eventCtr.interactiveObjectToggeled += HandleinteractiveObjectToggeled;
+			SceneManager.eventCtr.objectCreated += HandleobjectCreated;
+			SceneManager.eventCtr.objectRemoved += HandleobjectRemoved;
+			
+			UpdateVision();
+		}
+		
+		~CharacterVisionController()
+		{			
+			SceneManager.eventCtr.objectMovedEvent -= HandleobjectMovedEvent;
+			SceneManager.eventCtr.interactiveObjectToggeled -= HandleinteractiveObjectToggeled;
+			SceneManager.eventCtr.objectCreated -= HandleobjectCreated;
+			SceneManager.eventCtr.objectRemoved -= HandleobjectRemoved;
 		}
 		#endregion
 
 		#region public methods
-		public void SetVisionDirty()
-		{
-			Log.Print("Character vision set to dirty. Recalculating.", LogChannel.CHARACTER_VISION);
-		
-			this.visionDirty = true;
-		}
 		
 		public void RemoveCharacterFromVision(PlayerCharacterRoot character)
-		{
-			SetVisionDirty();
-			
+		{			
 			int indexOfCharacter = this.playerCharacters.IndexOf(character);
 			this.playerCharacters.RemoveAt(indexOfCharacter);
 			
@@ -61,7 +66,6 @@ namespace DungeonGuide
 		
 		public void AddCharacterToVision(PlayerCharacterRoot character)
 		{
-			SetVisionDirty();
 			this.playerCharacters.Add (character);
 			
 			GameObject newMeshObject = new GameObject(character.name + "VisionMesh");
@@ -71,15 +75,69 @@ namespace DungeonGuide
 			this.characterVisionMeshes.Add(newMeshObject);			
 		}
 		
-		public void Update()
-		{		
-			//If nothing has changed that requires a vision re-calc, don't
-			//bother doing anything in the update.
-			if (!this.visionDirty || ConsoleCommands.fullVisionMode)
-			{
-				return;
-			}
+		public void ShowAllTiles()
+		{
+			this.visionOverlay.gameObject.SetActive(false);
+		}
 		
+		public void UpdateVisionQuad()
+		{
+			Vector3[] cameraCorners = new Vector3[]
+			{
+				SceneManager.gameplayCam.ViewportToWorldPoint(new Vector3(0,0,0)),
+				SceneManager.gameplayCam.ViewportToWorldPoint(new Vector3(0,1,0)),
+				SceneManager.gameplayCam.ViewportToWorldPoint(new Vector3(1,1,0)),
+				SceneManager.gameplayCam.ViewportToWorldPoint(new Vector3(1,0,0))
+			};
+			
+			this.visionOverlay.sharedMesh = new Mesh();
+			Mesh mesh = this.visionOverlay.sharedMesh;
+			mesh.Clear();
+			mesh.vertices = cameraCorners;
+			mesh.triangles = new int[]
+			{
+				0,1,2,
+				2,3,0
+			};
+			
+			Vector2[] uvs = new Vector2[]
+			{
+				new Vector2(0,0), //bottom-left
+				new Vector2(0,1), //top-left
+				new Vector2(1,1), //top-right
+				new Vector2(1,0) //bottom-right
+			};
+			mesh.uv = uvs;
+			
+			mesh.RecalculateNormals();
+			mesh.RecalculateBounds();
+			mesh.Optimize();			
+		}
+		#endregion
+
+		#region private methods
+		private void HandleobjectMovedEvent (MoveableRoot target, Vector3 oldPosition, Vector3 newPosition)
+		{
+			UpdateVision();
+		}
+		
+		private void HandleinteractiveObjectToggeled ()
+		{
+			UpdateVision();
+		}	
+		
+		private void HandleobjectRemoved (MoveableRoot target, Vector3 position)
+		{			
+			UpdateVision();
+		}
+		
+		private void HandleobjectCreated (MoveableRoot target, Vector3 position)
+		{			
+			UpdateVision();
+		}
+		
+		private void UpdateVision()
+		{			
 			int layerMask = (1 << LayerAccessor.DEFAULT) + (1 << LayerAccessor.BLOCKS_SIGHT);
 			
 			Vector3 visionLocationOffset = SceneManager.visionCam.transform.position - SceneManager.gameplayCam.transform.position;
@@ -88,7 +146,7 @@ namespace DungeonGuide
 			for (int iPlayerIndex = 0; iPlayerIndex < this.playerCharacters.Count; ++iPlayerIndex) 
 			{
 				PlayerCharacterRoot player = this.playerCharacters[iPlayerIndex];
-			
+				
 				Vector3 characterVisionOrigin = player.transform.position + VISION_OFFSET;
 				float raycastStep = 360.0f/NUM_RAYS;
 				Vector3[] visionPoints = new Vector3[NUM_RAYS + 1];
@@ -137,51 +195,8 @@ namespace DungeonGuide
 				mesh.RecalculateBounds();
 				mesh.Optimize();
 			}
-			
-			this.visionDirty = false;
 		}
 		
-		public void ShowAllTiles()
-		{
-			this.visionOverlay.gameObject.SetActive(false);
-		}
-		
-		public void UpdateVisionQuad()
-		{
-			Vector3[] cameraCorners = new Vector3[]
-			{
-				SceneManager.gameplayCam.ViewportToWorldPoint(new Vector3(0,0,0)),
-				SceneManager.gameplayCam.ViewportToWorldPoint(new Vector3(0,1,0)),
-				SceneManager.gameplayCam.ViewportToWorldPoint(new Vector3(1,1,0)),
-				SceneManager.gameplayCam.ViewportToWorldPoint(new Vector3(1,0,0))
-			};
-			
-			this.visionOverlay.sharedMesh = new Mesh();
-			Mesh mesh = this.visionOverlay.sharedMesh;
-			mesh.Clear();
-			mesh.vertices = cameraCorners;
-			mesh.triangles = new int[]
-			{
-				0,1,2,
-				2,3,0
-			};
-			
-			Vector2[] uvs = new Vector2[]
-			{
-				new Vector2(0,0), //bottom-left
-				new Vector2(0,1), //top-left
-				new Vector2(1,1), //top-right
-				new Vector2(1,0) //bottom-right
-			};
-			mesh.uv = uvs;
-			
-			mesh.RecalculateNormals();
-			mesh.RecalculateBounds();
-			mesh.Optimize();			
-		}
-		#endregion
-
-		#region private methods
 		#endregion
 	}
 

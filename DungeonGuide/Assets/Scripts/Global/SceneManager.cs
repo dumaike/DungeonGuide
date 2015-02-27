@@ -15,14 +15,18 @@ namespace DungeonGuide
 		private CharacterVisionController characterVisionController;
 		private SelectedCharacterController selectedCharacterController;
 		private InteractiveObjectController interactiveObjectController;
+		private EventCenter eventCenter;
 		
 		public static UserInputController userInputCtlr {get{return SceneManager.Instance.userInputController;}}		
 		public static CharacterVisionController chVisionCtrl {get{return SceneManager.Instance.characterVisionController;}}		
 		public static SelectedCharacterController selectedChCtrl {get{return SceneManager.Instance.selectedCharacterController;}}		
-		public static InteractiveObjectController interactiveObjCtrl {get{return SceneManager.Instance.interactiveObjectController;}}
+		public static InteractiveObjectController interactiveObjCtrl {get{return SceneManager.Instance.interactiveObjectController;}}	
+		public static EventCenter eventCtr {get{return SceneManager.Instance.eventCenter;}}
 		
 		public static Camera gameplayCam {get{return SceneManager.Instance.gameplayCamera;}}		
 		public static Camera visionCam {get{return SceneManager.Instance.visionCamera;}}
+		
+		//private List<
 		
 		[SerializeField]
 		private Text intputModeButton;	
@@ -70,6 +74,8 @@ namespace DungeonGuide
 				worldCanvas.renderMode = RenderMode.WorldSpace;
 			}
 		
+			this.eventCenter = new EventCenter();
+			
 			this.userInputController = new UserInputController(this.intputModeButton, this.contextMenu);
 			this.characterVisionController = new CharacterVisionController(this.visionOverlayQuad, depthMaskShader);
 			this.selectedCharacterController = new SelectedCharacterController();
@@ -82,6 +88,7 @@ namespace DungeonGuide
 			this.characterVisionController = null;
 			this.selectedCharacterController = null;
 			this.interactiveObjectController = null;
+			this.eventCenter = null;
 		}
 		
 		#endregion
@@ -105,13 +112,8 @@ namespace DungeonGuide
 		}
 		#endregion
 
-		#region private methods
+		#region private methods		
 		private void Update()
-		{		
-			this.characterVisionController.Update();
-		}
-		
-		private void LateUpdate()
 		{
 			this.userInputController.Update();
 		}		

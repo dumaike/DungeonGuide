@@ -7,15 +7,9 @@ namespace DungeonGuide
 	public class PlayerCharacterRoot : MoveableRoot
     {
 		#region initializers
-		private void Start()
+		override protected void Start()
 		{
 			base.Start ();
-
-		}
-
-		private void OnDestroy()
-		{
-
 		}
 		#endregion
 
