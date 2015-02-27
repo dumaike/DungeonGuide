@@ -154,7 +154,7 @@ namespace DungeonGuide
 			
 			//Transform screen coords into world coords
 			camera.orthographicSize = newZoom;
-			SceneManager.chVisionCtrl.UpdateVisionQuad();
+			SceneManager.eventCtr.FireCameraZoomedEvent();
 		}
 		
         private void UpdateContextMenuCheck()
@@ -251,8 +251,8 @@ namespace DungeonGuide
 				//Transform screen coords into world coords
 				SceneManager.gameplayCam.transform.position -= mousePositionDelta;
 				SceneManager.visionCam.transform.position -= mousePositionDelta;
-								
-				SceneManager.chVisionCtrl.UpdateVisionQuad();
+				
+				SceneManager.eventCtr.FireCameraZoomedEvent();
 			}
 		}
 		

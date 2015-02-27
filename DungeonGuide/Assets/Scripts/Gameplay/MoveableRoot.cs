@@ -12,7 +12,13 @@ namespace DungeonGuide
 		private Color selectedColor = new Color(0, 1, 1, 1);
 		private Color defaultColor = new Color(1, 1, 1, 1);
 		
-		public Vector3 characterDimensions {get; private set;}
+		[SerializeField]
+		[Range(1,2)]
+		private int characterSize = 1;
+		
+		[SerializeField]
+		private bool hasVisionEditor = true;
+		public bool hasVision {get {return this.hasVisionEditor;} private set{this.hasVisionEditor = value;}}
 		
 		public bool freeMovement = false;
 
@@ -22,15 +28,6 @@ namespace DungeonGuide
 			GameObjectUtility.SetLayerRecursive (LayerAccessor.BLOCKS_NOTHING, this.transform); 
 		
 			this.meshRenderers = this.GetComponentsInChildren<MeshRenderer> ();
-			
-			//HACK Assumes centered single mesh objects
-			foreach (MeshRenderer renderer in this.meshRenderers)
-			{
-				float x = renderer.bounds.extents.x;
-				float z = renderer.bounds.extents.z;
-				float y = renderer.bounds.extents.y;
-				this.characterDimensions = new Vector3((float)Math.Ceiling(x*2), (float)Math.Ceiling(y*2), (float)Math.Ceiling(z*2));
-			}
 		}
 
 		private void OnDestroy()

@@ -29,6 +29,12 @@ namespace DungeonGuide
 		/// </summary>
 		public delegate void InteractiveObjectToggledHandler();
 		public event InteractiveObjectToggledHandler interactiveObjectToggeled;
+		
+		/// <summary>
+		/// Fires when an interactive object is toggled (door open, secret door opened, etc)
+		/// </summary>
+		public delegate void CameraZoomHandler();
+		public event CameraZoomHandler cameraZoomed;
 	
 		public EventCenter()
 		{
@@ -64,6 +70,14 @@ namespace DungeonGuide
 			if (this.interactiveObjectToggeled != null)
 			{
 				this.interactiveObjectToggeled();
+			}
+		}	
+		
+		public void FireCameraZoomedEvent()
+		{
+			if (this.cameraZoomed != null)
+			{
+				this.cameraZoomed();
 			}
 		}	
 	}

@@ -42,7 +42,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 465560}
-  - 114: {fileID: 11465560}
+  - 114: {fileID: 11469384}
   - 114: {fileID: 11465562}
   m_Layer: 8
   m_Name: VisionBeacon
@@ -171,18 +171,6 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 
---- !u!114 &11465560
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 165560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 124a4c4eb36f2604583d9183c878dc58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  freeMovement: 0
 --- !u!114 &11465562
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,6 +183,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snapType: 0
+--- !u!114 &11469384
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e14f83c636e9a43980af700f7b711a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterSize: 1
+  hasVisionEditor: 1
+  freeMovement: 0
 --- !u!222 &22264870
 CanvasRenderer:
   m_ObjectHideFlags: 1

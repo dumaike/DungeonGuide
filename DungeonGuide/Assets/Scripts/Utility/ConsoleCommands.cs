@@ -10,7 +10,7 @@ namespace DungeonGuide
 		public static void FullVision() 
 		{
 			fullVisionMode = !fullVisionMode;
-			SceneManager.chVisionCtrl.ShowAllTiles();
+			//SceneManager.chVisionCtrl.ShowAllTiles();
 		}
 	}
 

@@ -18,7 +18,6 @@ namespace DungeonGuide
 		private EventCenter eventCenter;
 		
 		public static UserInputController userInputCtlr {get{return SceneManager.Instance.userInputController;}}		
-		public static CharacterVisionController chVisionCtrl {get{return SceneManager.Instance.characterVisionController;}}		
 		public static SelectedCharacterController selectedChCtrl {get{return SceneManager.Instance.selectedCharacterController;}}		
 		public static InteractiveObjectController interactiveObjCtrl {get{return SceneManager.Instance.interactiveObjectController;}}	
 		public static EventCenter eventCtr {get{return SceneManager.Instance.eventCenter;}}

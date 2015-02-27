@@ -11,7 +11,7 @@ namespace DungeonGuide
 		
 		private Vector3 VISION_OFFSET = new Vector3(0, 0.1f, 0);
 
-		private List<PlayerCharacterRoot> playerCharacters;
+		private List<MoveableRoot> playerCharacters;
 		private List<GameObject> characterVisionMeshes;
 		
 		private List<List<Vector3>> visionPerCharacter;
@@ -27,19 +27,23 @@ namespace DungeonGuide
 			this.visionOverlay = visionOverlay;
 			UpdateVisionQuad();
 		
-			PlayerCharacterRoot[] characters = GameObject.FindObjectsOfType<PlayerCharacterRoot>();
+			MoveableRoot[] characters = GameObject.FindObjectsOfType<MoveableRoot>();
 			
 			this.characterVisionMeshes = new List<GameObject>();
-			this.playerCharacters = new List<PlayerCharacterRoot>();
-			foreach (PlayerCharacterRoot character in characters)
+			this.playerCharacters = new List<MoveableRoot>();
+			foreach (MoveableRoot character in characters)
 			{
-				AddCharacterToVision(character);			
+				if (character.hasVision)
+				{
+					AddCharacterToVision(character);			
+				}
 			}						
 			
 			SceneManager.eventCtr.objectMovedEvent += HandleobjectMovedEvent;
 			SceneManager.eventCtr.interactiveObjectToggeled += HandleinteractiveObjectToggeled;
 			SceneManager.eventCtr.objectCreated += HandleobjectCreated;
 			SceneManager.eventCtr.objectRemoved += HandleobjectRemoved;
+			SceneManager.eventCtr.cameraZoomed += HandlecameraZoomed;
 			
 			UpdateVision();
 		}
@@ -50,12 +54,13 @@ namespace DungeonGuide
 			SceneManager.eventCtr.interactiveObjectToggeled -= HandleinteractiveObjectToggeled;
 			SceneManager.eventCtr.objectCreated -= HandleobjectCreated;
 			SceneManager.eventCtr.objectRemoved -= HandleobjectRemoved;
+			SceneManager.eventCtr.cameraZoomed -= HandlecameraZoomed;
 		}
 		#endregion
-
-		#region public methods
 		
-		public void RemoveCharacterFromVision(PlayerCharacterRoot character)
+		#region private methods
+		
+		private void RemoveCharacterFromVision(MoveableRoot character)
 		{			
 			int indexOfCharacter = this.playerCharacters.IndexOf(character);
 			this.playerCharacters.RemoveAt(indexOfCharacter);
@@ -64,7 +69,7 @@ namespace DungeonGuide
 			this.characterVisionMeshes.RemoveAt(indexOfCharacter);
 		}
 		
-		public void AddCharacterToVision(PlayerCharacterRoot character)
+		private void AddCharacterToVision(MoveableRoot character)
 		{
 			this.playerCharacters.Add (character);
 			
@@ -73,11 +78,6 @@ namespace DungeonGuide
 			meshFilter.sharedMesh = new Mesh();
 			newMeshObject.AddComponent<MeshRenderer>();
 			this.characterVisionMeshes.Add(newMeshObject);			
-		}
-		
-		public void ShowAllTiles()
-		{
-			this.visionOverlay.gameObject.SetActive(false);
 		}
 		
 		public void UpdateVisionQuad()
@@ -113,12 +113,18 @@ namespace DungeonGuide
 			mesh.RecalculateBounds();
 			mesh.Optimize();			
 		}
-		#endregion
+		
+		private void HandlecameraZoomed ()
+		{
+			UpdateVisionQuad();
+		}
 
-		#region private methods
 		private void HandleobjectMovedEvent (MoveableRoot target, Vector3 oldPosition, Vector3 newPosition)
 		{
-			UpdateVision();
+			if (target.hasVision)
+			{
+				UpdateVision();
+			}
 		}
 		
 		private void HandleinteractiveObjectToggeled ()
@@ -128,11 +134,19 @@ namespace DungeonGuide
 		
 		private void HandleobjectRemoved (MoveableRoot target, Vector3 position)
 		{			
+			if (target.hasVision)
+			{
+				RemoveCharacterFromVision(target);
+			}
 			UpdateVision();
 		}
 		
 		private void HandleobjectCreated (MoveableRoot target, Vector3 position)
 		{			
+			if (target.hasVision)
+			{
+				AddCharacterToVision(target);
+			}
 			UpdateVision();
 		}
 		
@@ -145,7 +159,7 @@ namespace DungeonGuide
 			//Create the vision points
 			for (int iPlayerIndex = 0; iPlayerIndex < this.playerCharacters.Count; ++iPlayerIndex) 
 			{
-				PlayerCharacterRoot player = this.playerCharacters[iPlayerIndex];
+				MoveableRoot player = this.playerCharacters[iPlayerIndex];
 				
 				Vector3 characterVisionOrigin = player.transform.position + VISION_OFFSET;
 				float raycastStep = 360.0f/NUM_RAYS;

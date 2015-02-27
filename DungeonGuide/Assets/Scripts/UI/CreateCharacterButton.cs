@@ -63,14 +63,6 @@ namespace DungeonGuide
 			createdCharacter.transform.position = this.creationUi.characterCreationPosition;
 			createdCharacter.transform.parent = this.gameplayObjectRoot.transform;
 			
-			//Register the character for vision if applicable
-			MoveableRoot moveableRootOfCharacter = createdCharacter.GetComponentInChildren<MoveableRoot>();
-			if (moveableRootOfCharacter is PlayerCharacterRoot)
-			{
-				SceneManager.chVisionCtrl.AddCharacterToVision(moveableRootOfCharacter as PlayerCharacterRoot);
-				SceneManager.eventCtr.FireObjectCreatedEvent(moveableRootOfCharacter, moveableRootOfCharacter.transform.position);
-			}
-			
 			//Set up the character texture
 			MeshRenderer characterMesh = createdCharacter.GetComponentInChildren<MeshRenderer>();
 			characterMesh.material.mainTexture = this.characterTexture;
@@ -82,6 +74,9 @@ namespace DungeonGuide
 			}
 			
 			this.creationUi.CloseCharacterCreation();
+			
+			MoveableRoot moveableRootOfCharacter = createdCharacter.GetComponentInChildren<MoveableRoot>();
+			SceneManager.eventCtr.FireObjectCreatedEvent(moveableRootOfCharacter, moveableRootOfCharacter.transform.position);
 		}
 		#endregion
 
