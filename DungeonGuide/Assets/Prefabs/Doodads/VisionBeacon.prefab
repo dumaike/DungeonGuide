@@ -42,7 +42,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 465560}
-  - 114: {fileID: 11469384}
+  - 114: {fileID: 11467296}
+  - 95: {fileID: 9567296}
   - 114: {fileID: 11465562}
   m_Layer: 8
   m_Name: VisionBeacon
@@ -145,6 +146,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.5, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &9567296
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165560}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &11464870
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -183,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snapType: 0
---- !u!114 &11469384
+--- !u!114 &11467296
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -194,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53e14f83c636e9a43980af700f7b711a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterSize: 1
+  characterSizeEditor: 1
   hasVisionEditor: 1
   freeMovement: 0
 --- !u!222 &22264870

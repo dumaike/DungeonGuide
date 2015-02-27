@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 418634}
   - 65: {fileID: 6518634}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MeshCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ GameObject:
   - 4: {fileID: 418636}
   - 33: {fileID: 3318634}
   - 23: {fileID: 2318634}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,8 @@ GameObject:
   - 4: {fileID: 418638}
   - 114: {fileID: 11418636}
   - 114: {fileID: 11418634}
-  m_Layer: 0
+  - 95: {fileID: 9570378}
+  m_Layer: 8
   m_Name: 1x1CharacterTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +62,7 @@ GameObject:
   - 222: {fileID: 22285758}
   - 114: {fileID: 11485758}
   - 114: {fileID: 11412266}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CounterText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,6 +147,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.5, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &9570378
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118638}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &11412266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -183,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53e14f83c636e9a43980af700f7b711a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterSize: 1
+  characterSizeEditor: 1
   hasVisionEditor: 0
   freeMovement: 0
 --- !u!114 &11485758

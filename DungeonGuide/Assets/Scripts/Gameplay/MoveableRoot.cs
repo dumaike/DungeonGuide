@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace DungeonGuide
 {
+	[RequireComponent(typeof(Animator))]
 	public class MoveableRoot : MonoBehaviour
 	{						
 		protected MeshRenderer[] meshRenderers;
@@ -14,7 +15,8 @@ namespace DungeonGuide
 		
 		[SerializeField]
 		[Range(1,2)]
-		private int characterSize = 1;
+		private int characterSizeEditor = 1;
+		public int characterSize {get {return this.characterSizeEditor;} private set{this.characterSizeEditor = value;}}
 		
 		[SerializeField]
 		private bool hasVisionEditor = true;

@@ -11,11 +11,14 @@ namespace DungeonGuide
 	
 		public static SceneManager Instance {get; private set;}
 		
+		#pragma warning disable 414
 		private UserInputController userInputController;
 		private CharacterVisionController characterVisionController;
 		private SelectedCharacterController selectedCharacterController;
 		private InteractiveObjectController interactiveObjectController;
+		private CharacterStackingController characterStackingController;
 		private EventCenter eventCenter;
+		#pragma warning restore 414
 		
 		public static UserInputController userInputCtlr {get{return SceneManager.Instance.userInputController;}}		
 		public static SelectedCharacterController selectedChCtrl {get{return SceneManager.Instance.selectedCharacterController;}}		
@@ -77,16 +80,20 @@ namespace DungeonGuide
 			
 			this.userInputController = new UserInputController(this.intputModeButton, this.contextMenu);
 			this.characterVisionController = new CharacterVisionController(this.visionOverlayQuad, depthMaskShader);
+			this.characterStackingController = new CharacterStackingController();
 			this.selectedCharacterController = new SelectedCharacterController();
 			this.interactiveObjectController = new InteractiveObjectController();
 		}
 
 		private void OnDestroy()
 		{
+			this.eventCenter = null;
+			
 			this.userInputController = null;
 			this.characterVisionController = null;
 			this.selectedCharacterController = null;
 			this.interactiveObjectController = null;
+			this.characterStackingController = null;
 			this.eventCenter = null;
 		}
 		
@@ -94,6 +101,11 @@ namespace DungeonGuide
 		public void DestroyGo(GameObject objectToDestroy)
 		{
 			Destroy(objectToDestroy);
+		}
+		
+		public void ShowAllTiles()
+		{
+			this.characterVisionController.ShowAllTiles();
 		}
 		
 		#region public methods

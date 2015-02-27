@@ -58,6 +58,15 @@ namespace DungeonGuide
 		}
 		#endregion
 		
+		#region public methods
+		
+		public void ShowAllTiles()
+		{
+			this.visionOverlay.gameObject.SetActive(false);
+		}
+		
+		#endregion
+		
 		#region private methods
 		
 		private void RemoveCharacterFromVision(MoveableRoot character)
