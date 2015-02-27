@@ -26,7 +26,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 423090}
-  - 114: {fileID: 11474874}
+  - 114: {fileID: 11405118}
   - 114: {fileID: 11413458}
   m_Layer: 0
   m_Name: WagonDoodad
@@ -100,6 +100,21 @@ MeshCollider:
   m_SmoothSphereCollisions: 0
   m_Convex: 0
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &11405118
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829e2fe8ff17bd943be586014cc8519c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterSizeEditor: 1
+  hasVisionEditor: 0
+  stackablePartsEditor: {fileID: 0}
+  freeMovement: 0
 --- !u!114 &11413458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -112,18 +127,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snapType: 0
---- !u!114 &11474874
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 123090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53e14f83c636e9a43980af700f7b711a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  freeMovement: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

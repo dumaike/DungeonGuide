@@ -67,15 +67,10 @@ namespace DungeonGuide
 			MeshRenderer characterMesh = createdCharacter.GetComponentInChildren<MeshRenderer>();
 			characterMesh.material.mainTexture = this.characterTexture;
 			
-			Text counterText = createdCharacter.GetComponentInChildren<Text>();
-			if (counterText != null)
-			{
-				counterText.text = this.creationCounter.ToString();
-			}
+			MoveableEntity moveableRootOfCharacter = createdCharacter.GetComponentInChildren<MoveableEntity>();
+			moveableRootOfCharacter.SetCharacterText(this.creationCounter.ToString());
 			
-			this.creationUi.CloseCharacterCreation();
-			
-			MoveableRoot moveableRootOfCharacter = createdCharacter.GetComponentInChildren<MoveableRoot>();
+			this.creationUi.CloseCharacterCreation();			
 			SceneManager.eventCtr.FireObjectCreatedEvent(moveableRootOfCharacter, moveableRootOfCharacter.transform.position);
 		}
 		#endregion

@@ -66,7 +66,7 @@ namespace DungeonGuide
 				return 0;
 			}
 		
-			MoveableRoot selectedCharacter = SceneManager.selectedChCtrl.GetSelectedCharacter();
+			MoveableEntity selectedCharacter = SceneManager.selectedChCtrl.GetSelectedCharacter();
 			
 			return (int)(selectedCharacter.transform.position - this.selectedCharacterStartPosition).magnitude;
 		}
@@ -224,7 +224,7 @@ namespace DungeonGuide
 			RaycastHit hitInfo = new RaycastHit();
 			if (Physics.Raycast(raycastRay, out hitInfo))
 			{
-				MoveableRoot hitCharacter = hitInfo.transform.GetComponentInParent<MoveableRoot>();
+				MoveableEntity hitCharacter = hitInfo.transform.GetComponentInParent<MoveableEntity>();
 				if (hitCharacter != null)
 				{
 					SceneManager.selectedChCtrl.SelectCharacter(hitCharacter);  
@@ -258,7 +258,7 @@ namespace DungeonGuide
 		
 		private void MoveSelectedCharacterToMouse()
 		{
-			MoveableRoot selectedCharacter = SceneManager.selectedChCtrl.GetSelectedCharacter();
+			MoveableEntity selectedCharacter = SceneManager.selectedChCtrl.GetSelectedCharacter();
 			
 			int layerMask = (1 << LayerAccessor.DEFAULT) + (1 << LayerAccessor.BLOCKS_MOVEMENT);
 			

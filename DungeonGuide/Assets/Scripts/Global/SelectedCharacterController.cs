@@ -5,7 +5,7 @@ namespace DungeonGuide
 {
 	public class SelectedCharacterController
 	{		
-		private MoveableRoot selectedCharacter;
+		private MoveableEntity selectedCharacter;
 		
 		#region initializers
 		public SelectedCharacterController()
@@ -15,7 +15,7 @@ namespace DungeonGuide
 		#endregion
 
 		#region public methods
-		public void SelectCharacter(MoveableRoot character)
+		public void SelectCharacter(MoveableEntity character)
 		{
 			this.selectedCharacter = character;
 			this.selectedCharacter.CharacterSelected(true);
@@ -26,7 +26,7 @@ namespace DungeonGuide
 			this.selectedCharacter.TintCharacter(color);
 		}		
 		
-		public MoveableRoot GetSelectedCharacter()
+		public MoveableEntity GetSelectedCharacter()
 		{
 			return this.selectedCharacter;
 		}

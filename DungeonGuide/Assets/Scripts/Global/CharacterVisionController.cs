@@ -11,7 +11,7 @@ namespace DungeonGuide
 		
 		private Vector3 VISION_OFFSET = new Vector3(0, 0.1f, 0);
 
-		private List<MoveableRoot> playerCharacters;
+		private List<MoveableEntity> playerCharacters;
 		private List<GameObject> characterVisionMeshes;
 		
 		private List<List<Vector3>> visionPerCharacter;
@@ -27,11 +27,11 @@ namespace DungeonGuide
 			this.visionOverlay = visionOverlay;
 			UpdateVisionQuad();
 		
-			MoveableRoot[] characters = GameObject.FindObjectsOfType<MoveableRoot>();
+			MoveableEntity[] characters = GameObject.FindObjectsOfType<MoveableEntity>();
 			
 			this.characterVisionMeshes = new List<GameObject>();
-			this.playerCharacters = new List<MoveableRoot>();
-			foreach (MoveableRoot character in characters)
+			this.playerCharacters = new List<MoveableEntity>();
+			foreach (MoveableEntity character in characters)
 			{
 				if (character.hasVision)
 				{
@@ -69,7 +69,7 @@ namespace DungeonGuide
 		
 		#region private methods
 		
-		private void RemoveCharacterFromVision(MoveableRoot character)
+		private void RemoveCharacterFromVision(MoveableEntity character)
 		{			
 			int indexOfCharacter = this.playerCharacters.IndexOf(character);
 			this.playerCharacters.RemoveAt(indexOfCharacter);
@@ -78,7 +78,7 @@ namespace DungeonGuide
 			this.characterVisionMeshes.RemoveAt(indexOfCharacter);
 		}
 		
-		private void AddCharacterToVision(MoveableRoot character)
+		private void AddCharacterToVision(MoveableEntity character)
 		{
 			this.playerCharacters.Add (character);
 			
@@ -128,7 +128,7 @@ namespace DungeonGuide
 			UpdateVisionQuad();
 		}
 
-		private void HandleobjectMovedEvent (MoveableRoot target, Vector3 oldPosition, Vector3 newPosition)
+		private void HandleobjectMovedEvent (MoveableEntity target, Vector3 oldPosition, Vector3 newPosition)
 		{
 			if (target.hasVision)
 			{
@@ -141,7 +141,7 @@ namespace DungeonGuide
 			UpdateVision();
 		}	
 		
-		private void HandleobjectRemoved (MoveableRoot target, Vector3 position)
+		private void HandleobjectRemoved (MoveableEntity target, Vector3 position)
 		{			
 			if (target.hasVision)
 			{
@@ -150,7 +150,7 @@ namespace DungeonGuide
 			UpdateVision();
 		}
 		
-		private void HandleobjectCreated (MoveableRoot target, Vector3 position)
+		private void HandleobjectCreated (MoveableEntity target, Vector3 position)
 		{			
 			if (target.hasVision)
 			{
@@ -168,9 +168,12 @@ namespace DungeonGuide
 			//Create the vision points
 			for (int iPlayerIndex = 0; iPlayerIndex < this.playerCharacters.Count; ++iPlayerIndex) 
 			{
-				MoveableRoot player = this.playerCharacters[iPlayerIndex];
+				MoveableEntity player = this.playerCharacters[iPlayerIndex];
 				
-				Vector3 characterVisionOrigin = player.transform.position + VISION_OFFSET;
+				Vector3 characterVisionOrigin = player.transform.position;
+				characterVisionOrigin.y = 0;
+				characterVisionOrigin += VISION_OFFSET;
+				
 				float raycastStep = 360.0f/NUM_RAYS;
 				Vector3[] visionPoints = new Vector3[NUM_RAYS + 1];
 				visionPoints[0] = characterVisionOrigin + visionLocationOffset;

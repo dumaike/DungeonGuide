@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 
@@ -9,19 +9,19 @@ namespace DungeonGuide
 		/// <summary>
 		/// Fires when any object moves
 		/// </summary>
-		public delegate void ObjectMovedHandler(MoveableRoot target, Vector3 oldPosition, Vector3 newPosition);
+		public delegate void ObjectMovedHandler(MoveableEntity target, Vector3 oldPosition, Vector3 newPosition);
 		public event ObjectMovedHandler objectMovedEvent;
 		
 		/// <summary>
 		/// Fires when an moveable object is created
 		/// </summary>
-		public delegate void ObjectCreatedHandler(MoveableRoot target, Vector3 position);
+		public delegate void ObjectCreatedHandler(MoveableEntity target, Vector3 position);
 		public event ObjectCreatedHandler objectCreated;
 		
 		/// <summary>
 		/// Fires when an moveable object is removed from the scene
 		/// </summary>
-		public delegate void ObjectRemovedHandler(MoveableRoot target, Vector3 position);
+		public delegate void ObjectRemovedHandler(MoveableEntity target, Vector3 position);
 		public event ObjectRemovedHandler objectRemoved;
 		
 		/// <summary>
@@ -41,7 +41,7 @@ namespace DungeonGuide
 		
 		}	
 		
-		public void FireObjectMovedEvent(MoveableRoot target, Vector3 oldPosition, Vector3 newPosition)
+		public void FireObjectMovedEvent(MoveableEntity target, Vector3 oldPosition, Vector3 newPosition)
 		{
 			if (this.objectMovedEvent != null)
 			{
@@ -49,7 +49,7 @@ namespace DungeonGuide
 			}
 		}	
 		
-		public void FireObjectCreatedEvent(MoveableRoot target, Vector3 position)
+		public void FireObjectCreatedEvent(MoveableEntity target, Vector3 position)
 		{
 			if (this.objectCreated != null)
 			{
@@ -57,7 +57,7 @@ namespace DungeonGuide
 			}
 		}	
 		
-		public void FireObjectRemovedEvent(MoveableRoot target, Vector3 position)
+		public void FireObjectRemovedEvent(MoveableEntity target, Vector3 position)
 		{
 			if (this.objectRemoved != null)
 			{

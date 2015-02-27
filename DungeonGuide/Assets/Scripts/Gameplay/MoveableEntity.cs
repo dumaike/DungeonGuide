@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 namespace DungeonGuide
 {
-	[RequireComponent(typeof(Animator))]
-	public class MoveableRoot : MonoBehaviour
+	public class MoveableEntity : MonoBehaviour
 	{						
 		protected MeshRenderer[] meshRenderers;
 
@@ -19,8 +18,12 @@ namespace DungeonGuide
 		public int characterSize {get {return this.characterSizeEditor;} private set{this.characterSizeEditor = value;}}
 		
 		[SerializeField]
-		private bool hasVisionEditor = true;
+		private bool hasVisionEditor = false;
 		public bool hasVision {get {return this.hasVisionEditor;} private set{this.hasVisionEditor = value;}}
+		
+		[SerializeField]
+		private GameObject stackablePartsEditor = null;
+		public GameObject stackableParts {get {return this.stackablePartsEditor;}}
 		
 		public bool freeMovement = false;
 
@@ -53,6 +56,24 @@ namespace DungeonGuide
 			foreach (MeshRenderer curRenderer in this.meshRenderers)
 			{
 				curRenderer.material.color = this.defaultColor;
+			}
+		}
+		
+		public void SetCharacterText(string value)
+		{			
+			Text counterText = this.GetComponentInChildren<Text>();
+			if (counterText != null)
+			{
+				counterText.text = value;
+			}
+		}
+		
+		public void ShowText(bool show)
+		{			
+			Text counterText = this.GetComponentInChildren<Text>();
+			if (counterText != null)
+			{
+				counterText.enabled = show;
 			}
 		}
 		#endregion
