@@ -202,7 +202,7 @@ namespace DungeonGuide
 				//Draw the character's vision mesh
 				GameObject visionMesh = this.characterVisionMeshes[iPlayerIndex];
 				MeshFilter meshFilter = visionMesh.GetComponent<MeshFilter>();
-				meshFilter.renderer.material = this.depthMaskShader;
+				meshFilter.GetComponent<Renderer>().material = this.depthMaskShader;
 				Mesh mesh = meshFilter.sharedMesh;
 				mesh.Clear();
 				mesh.vertices = visionPoints;
