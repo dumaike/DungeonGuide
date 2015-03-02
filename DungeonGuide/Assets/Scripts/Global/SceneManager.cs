@@ -124,7 +124,7 @@ namespace DungeonGuide
 		#endregion
 
 		#region private methods		
-		private void Update()
+		private void LateUpdate()
 		{
 			this.userInputController.Update();
 		}		

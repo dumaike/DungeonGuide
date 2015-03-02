@@ -160,7 +160,7 @@ namespace DungeonGuide
         private void UpdateContextMenuCheck()
         {
 			//If the mouse was pressed
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButtonUp(0))
 			{
 				float timeSinceLastClick = Time.time - this.mousePressedTime;
 				if (timeSinceLastClick < UserInputController.DOUBLE_CLICK_DURATION &&
