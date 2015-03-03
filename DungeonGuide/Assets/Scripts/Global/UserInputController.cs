@@ -115,6 +115,10 @@ namespace DungeonGuide
 		
 			if (!this.contextMenuObject.IsContextMenuActive())
 			{
+				UpdateContextMenuCheck();
+				
+				if (!this.contextMenuObject.IsContextMenuActive())
+				{
 				if (this.currentMode == InputMode.CHARACTERS)
 				{
 					UpdateCharacterMovement ();
@@ -123,8 +127,7 @@ namespace DungeonGuide
 				{
 					UpdateCameraMovement ();
 				}
-				
-				UpdateContextMenuCheck();
+				}				
 			}		
 		} 
 		#endregion

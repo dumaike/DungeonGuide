@@ -20,16 +20,20 @@ TextureImporter:
   isReadable: 0
   grayScaleToAlpha: 0
   generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 0
+  cubemapConvolutionExponent: 0
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: 4
   maxTextureSize: 512
   textureSettings:
-    filterMode: 0
+    filterMode: 1
     aniso: 0
     mipBias: 0
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
+  rGBM: 0
   compressionQuality: 0
   spriteMode: 1
   spriteExtrude: 0
@@ -45,3 +49,5 @@ TextureImporter:
     sprites: []
   spritePackingTag: characters
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

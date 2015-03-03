@@ -17,11 +17,12 @@ public class ImportPreferences : AssetPostprocessor
 			textureSettings.textureFormat = TextureImporterFormat.RGBA32;
 			textureSettings.maxTextureSize = 512;
 			textureSettings.mipmapEnabled = false;
+			textureSettings.filterMode = FilterMode.Bilinear;
 			textureSettings.spriteMode = 1;
 			texImporter.spritePackingTag = "characters";
 			texImporter.SetTextureSettings(textureSettings);
 			
 			EditorUtility.CompressTexture(texture, TextureFormat.RGBA32, TextureCompressionQuality.Best);
-		}		
+		}	
 	}
 }
