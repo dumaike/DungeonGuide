@@ -186,11 +186,11 @@ namespace CUDLR {
 
     void OnEnable() {
       // Capture Console Logs
-      Application.RegisterLogCallback(Console.LogCallback);
+      Application.logMessageReceived += Console.LogCallback;
     }
 
     void OnDisable() {
-      Application.RegisterLogCallback(null);
+      Application.logMessageReceived -= null;
     }
 
     void Update() {
