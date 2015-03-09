@@ -119,14 +119,14 @@ namespace DungeonGuide
 				
 				if (!this.contextMenuObject.IsContextMenuActive())
 				{
-				if (this.currentMode == InputMode.CHARACTERS)
-				{
-					UpdateCharacterMovement ();
-				}
-				else if (this.currentMode == InputMode.CAMERA)
-				{
-					UpdateCameraMovement ();
-				}
+					if (this.currentMode == InputMode.CHARACTERS)
+					{
+						UpdateCharacterMovement ();
+					}
+					else if (this.currentMode == InputMode.CAMERA)
+					{
+						UpdateCameraMovement ();
+					}
 				}				
 			}		
 		} 

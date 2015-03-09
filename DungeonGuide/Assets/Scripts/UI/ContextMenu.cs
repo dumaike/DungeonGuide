@@ -118,7 +118,8 @@ namespace DungeonGuide
 		{
 			return this.tintCharacterUi.activeSelf ||
 				this.extendedContextMenuUi.activeSelf ||
-				this.gameObject.activeSelf;
+				this.gameObject.activeSelf ||
+				this.characterCreationUi.gameObject.activeSelf;
 		}
 		
 		public void TintCharacter(Color colorToTint)
