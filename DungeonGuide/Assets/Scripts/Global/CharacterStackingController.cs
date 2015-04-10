@@ -33,7 +33,7 @@ namespace DungeonGuide
 		
 		~CharacterStackingController()
 		{						
-			SceneManager.eventCtr.objectMovedEvent += HandleobjectMovedEvent;
+			SceneManager.eventCtr.objectMovedEvent -= HandleobjectMovedEvent;
 			SceneManager.eventCtr.objectCreated -= AddStackableObject;
 			SceneManager.eventCtr.objectRemoved -= RemoveStackableObject;
 		}

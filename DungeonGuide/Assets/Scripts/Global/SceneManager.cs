@@ -17,19 +17,19 @@ namespace DungeonGuide
 		private SelectedCharacterController selectedCharacterController;
 		private InteractiveObjectController interactiveObjectController;
 		private CharacterStackingController characterStackingController;
+		private CharacterMovementController characterMovementController;
 		private EventCenter eventCenter;
 		#pragma warning restore 414
 		
 		public static UserInputController userInputCtlr {get{return SceneManager.Instance.userInputController;}}		
 		public static SelectedCharacterController selectedChCtrl {get{return SceneManager.Instance.selectedCharacterController;}}		
 		public static InteractiveObjectController interactiveObjCtrl {get{return SceneManager.Instance.interactiveObjectController;}}	
+		public static CharacterMovementController crMvmtCtrl {get{return SceneManager.Instance.characterMovementController;}}	
 		public static EventCenter eventCtr {get{return SceneManager.Instance.eventCenter;}}
 		
 		public static Camera gameplayCam {get{return SceneManager.Instance.gameplayCamera;}}		
 		public static Camera visionCam {get{return SceneManager.Instance.visionCamera;}}
-		
-		//private List<
-		
+				
 		[SerializeField]
 		private Text intputModeButton;	
 		
@@ -83,6 +83,7 @@ namespace DungeonGuide
 			this.characterStackingController = new CharacterStackingController();
 			this.selectedCharacterController = new SelectedCharacterController();
 			this.interactiveObjectController = new InteractiveObjectController();
+			this.characterMovementController = new CharacterMovementController();
 		}
 
 		private void OnDestroy()
@@ -94,6 +95,7 @@ namespace DungeonGuide
 			this.selectedCharacterController = null;
 			this.interactiveObjectController = null;
 			this.characterStackingController = null;
+			this.characterMovementController = null;
 			this.eventCenter = null;
 		}
 		
