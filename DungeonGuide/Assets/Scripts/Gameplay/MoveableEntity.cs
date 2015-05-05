@@ -12,6 +12,8 @@ namespace DungeonGuide
 		private Color selectedColor = new Color(0, 1, 1, 1);
 		private Color defaultColor = new Color(1, 1, 1, 1);
 		
+		private float startingAlpha;
+		
 		[SerializeField]
 		[Range(1,2)]
 		private int characterSizeEditor = 1;
@@ -22,8 +24,13 @@ namespace DungeonGuide
 		public bool hasVision {get {return this.hasVisionEditor;} private set{this.hasVisionEditor = value;}}
 		
 		[SerializeField]
+		private bool snapsEditor = true;
+		public bool snaps {get {return this.snapsEditor;} private set{this.snapsEditor = value;}}
+		
+		[SerializeField]
 		private GameObject stackablePartsEditor = null;
 		public GameObject stackableParts {get {return this.stackablePartsEditor;}}
+		
 		
 		public bool freeMovement = false;
 
@@ -33,6 +40,14 @@ namespace DungeonGuide
 			GameObjectUtility.SetLayerRecursive (LayerAccessor.BLOCKS_NOTHING, this.transform); 
 		
 			this.meshRenderers = this.GetComponentsInChildren<MeshRenderer> ();
+			
+			foreach (MeshRenderer curRenderer in this.meshRenderers)
+			{
+				this.startingAlpha = curRenderer.material.color.a;
+			}
+			
+			this.selectedColor.a = this.startingAlpha;
+			this.defaultColor.a = this.startingAlpha;
 		}
 
 		private void OnDestroy()
@@ -53,6 +68,7 @@ namespace DungeonGuide
 		public void TintCharacter(Color color)
 		{
 			this.defaultColor = color;
+			this.defaultColor.a = this.startingAlpha;
 			foreach (MeshRenderer curRenderer in this.meshRenderers)
 			{
 				curRenderer.material.color = this.defaultColor;

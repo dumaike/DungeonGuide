@@ -75,7 +75,8 @@ namespace DungeonGuide
 				    otherObject.transform.position.z == newPosition.z && 
 				    otherObject.characterSize == target.characterSize &&
 				    otherObject != target &&
-				    otherObject != null)
+				    otherObject != null &&
+				    otherObject.stackableParts != null)
 				{
 					destinationStack.Add(otherObject);
 				}
@@ -83,7 +84,8 @@ namespace DungeonGuide
 					otherObject.transform.position.z == oldPosition.z && 
 					otherObject.characterSize == target.characterSize &&
 					otherObject != target &&
-					otherObject != null)
+					otherObject != null &&
+				    otherObject.stackableParts != null)
 				{
 					sourceStack.Add(otherObject);
 				}

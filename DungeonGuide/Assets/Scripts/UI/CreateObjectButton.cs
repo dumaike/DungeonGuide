@@ -5,10 +5,7 @@ using UnityEngine.UI;
 namespace DungeonGuide
 {
 	public class CreateObjectButton : MonoBehaviour
-	{		
-		[SerializeField]
-		private Texture objectTexture;
-		
+	{				
 		[SerializeField]
 		private GameObject objectToCreate;
 		
@@ -27,7 +24,7 @@ namespace DungeonGuide
 		#endregion
 
 		#region public methods
-		public void CreateCharacter()
+		public void CreateObject()
 		{
 			GameObject createdCharacter = Instantiate(this.objectToCreate) as GameObject;
 			createdCharacter.transform.position = this.creationUi.characterCreationPosition;

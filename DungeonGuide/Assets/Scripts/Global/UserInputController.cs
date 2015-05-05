@@ -271,9 +271,12 @@ namespace DungeonGuide
 			
 			this.desiredWorldCharacterPosition = this.desiredWorldCharacterPosition + mousePositionDelta;
 			Vector3 snappedCharacterPosition = this.desiredWorldCharacterPosition;
-			snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
-			snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
-			snappedCharacterPosition.y = selectedCharacter.transform.position.y;
+			if (selectedCharacter.snaps)
+			{
+				snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
+				snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
+				snappedCharacterPosition.y = selectedCharacter.transform.position.y;
+			}
 			
 			Vector3 currentCharacterPosition = selectedCharacter.transform.position;
 			Vector3 movementDirection = snappedCharacterPosition - currentCharacterPosition;
