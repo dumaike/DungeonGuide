@@ -22,7 +22,7 @@ namespace DungeonGuide
 		[SerializeField]
 		private Texture characterTexture;
 		
-		private CharacterCreationUi creationUi;
+		private ObjectCreationUi creationUi;
 		
 		private GameObject objectToCreate;
 		
@@ -31,7 +31,7 @@ namespace DungeonGuide
 		#region initializers
 		public void Awake()
 		{
-			this.creationUi = this.transform.GetComponentInParent<CharacterCreationUi>();
+			this.creationUi = this.transform.GetComponentInParent<ObjectCreationUi>();
 			
 			this.gameplayObjectRoot = GameObject.Find(GridUtility.GAMEPLAY_OBJECT_ROOT_NAME);
 			
@@ -70,7 +70,7 @@ namespace DungeonGuide
 			MoveableEntity moveableRootOfCharacter = createdCharacter.GetComponentInChildren<MoveableEntity>();
 			moveableRootOfCharacter.SetCharacterText(this.creationCounter.ToString());
 			
-			this.creationUi.CloseCharacterCreation();			
+			this.creationUi.CloseObjectCreation();			
 			SceneManager.eventCtr.FireObjectCreatedEvent(moveableRootOfCharacter, moveableRootOfCharacter.transform.position);
 		}
 		#endregion

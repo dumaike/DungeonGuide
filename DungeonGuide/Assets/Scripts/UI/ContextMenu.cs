@@ -22,7 +22,7 @@ namespace DungeonGuide
 		private Button tintCharacterButton;
 		
 		[SerializeField]
-		private CharacterCreationUi characterCreationUi;
+		private ObjectCreationUi characterCreationUi;
 		
 		[SerializeField]
 		private GameObject extendedContextMenuUi;
@@ -69,7 +69,7 @@ namespace DungeonGuide
 		
 		public void CreateCharacter()
 		{
-			this.characterCreationUi.OpenCharacterCreation(this.snappedActionLocation);
+			this.characterCreationUi.OpenObjectCreation(this.snappedActionLocation);
 			HideContextMenu();
 		}
 		

@@ -24,6 +24,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/SandriansShop.unity
   - enabled: 1
+    path: Assets/Scenes/Levels/EnsidorsBrewShop.unity
+  - enabled: 1
     path: Assets/Scenes/Levels/CaravanTrail.unity
   - enabled: 1
     path: Assets/Scenes/Levels/TheAlronEstate.unity
