@@ -13,10 +13,7 @@ public class PlayerInitiativeView : MonoBehaviour
 	List<PlayerInitiativeElement> playerEntries = 
 		new List<PlayerInitiativeElement>();
 		
-	private void Awake()
-	{
-		
-	}
+	private int activeElementIndex = 0;
 	
 	public void AddPlayer()
 	{
@@ -26,19 +23,39 @@ public class PlayerInitiativeView : MonoBehaviour
 		}
 	
 		PlayerInitiativeElement newEle =
-		 Instantiate(this.playerInitiativeElementTemplate);
-		 
-		 newEle.transform.SetParent(this.transform, false);
-		 newEle.InitializeElement(this);
-		 
-		 this.playerEntries.Add(newEle);
+			Instantiate(this.playerInitiativeElementTemplate);
+		
+		newEle.transform.SetParent(this.transform, false);
+		newEle.InitializeElement(this);
+		
+		this.playerEntries.Add(newEle);
+		
+		if (this.playerEntries.Count == 1)
+		{
+			newEle.SetActing();
+		}
 	}
 	
 	public void RemovePlayer(PlayerInitiativeElement elementToRemove)
 	{
+		int indexOfPlayer = this.playerEntries.IndexOf(elementToRemove);
+		if (indexOfPlayer == this.activeElementIndex)
+		{
+			AdvanceInitiative();
+		}
+	
 		this.playerEntries.Remove(elementToRemove);
 		
 		Destroy (elementToRemove.gameObject);
+	}
+	
+	public void AdvanceInitiative()
+	{
+		this.playerEntries[this.activeElementIndex].SetWaiting();
+		
+		this.activeElementIndex = (this.activeElementIndex + 1)%this.playerEntries.Count;
+		
+		this.playerEntries[this.activeElementIndex].SetActing();
 	}
 	
 }
