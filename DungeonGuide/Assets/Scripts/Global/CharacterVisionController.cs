@@ -191,7 +191,6 @@ namespace DungeonGuide
 						hitPoint = hitInfo.point;
 						
 						Collider hitThing = hitInfo.collider;
-						Rigidbody rigidBody = hitInfo.rigidbody;
 						
 						//If we hit a capsule, then make the "hit" the outside
 						if (hitThing is CapsuleCollider)
