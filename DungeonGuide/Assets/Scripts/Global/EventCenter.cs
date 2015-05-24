@@ -35,6 +35,12 @@ namespace DungeonGuide
 		/// </summary>
 		public delegate void CameraZoomHandler();
 		public event CameraZoomHandler cameraZoomed;
+		
+		/// <summary>
+		/// Fires when a menu item is clicked
+		/// </summary>
+		public delegate void MenuItemClickedHandler();
+		public event MenuItemClickedHandler menuItemClicked;
 	
 		public EventCenter()
 		{
@@ -78,6 +84,14 @@ namespace DungeonGuide
 			if (this.cameraZoomed != null)
 			{
 				this.cameraZoomed();
+			}
+		}	
+		
+		public void FireMenuItemClickedEvent()
+		{
+			if (this.menuItemClicked != null)
+			{
+				this.menuItemClicked();
 			}
 		}	
 	}

@@ -257,6 +257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actingObject: {fileID: 163946}
   waitingObject: {fileID: 147722}
+  playerName: {fileID: 11496744}
 --- !u!114 &11496744
 MonoBehaviour:
   m_ObjectHideFlags: 1

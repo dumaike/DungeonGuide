@@ -21,6 +21,7 @@ namespace DungeonGuide
 		private EventCenter eventCenter;
 		#pragma warning restore 414
 		
+		//TODO Get rid of all these references and use the event center
 		public static UserInputController userInputCtlr {get{return SceneManager.Instance.userInputController;}}		
 		public static SelectedCharacterController selectedChCtrl {get{return SceneManager.Instance.selectedCharacterController;}}		
 		public static InteractiveObjectController interactiveObjCtrl {get{return SceneManager.Instance.interactiveObjectController;}}	

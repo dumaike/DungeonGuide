@@ -1,36 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
-public class PlayerInitiativeElement : MonoBehaviour 
+
+namespace DungeonGuide
 {
-	private PlayerInitiativeView view;
-	
-	[SerializeField]
-	private GameObject actingObject;
-	
-	[SerializeField]
-	private GameObject waitingObject;
-
-	public void InitializeElement(PlayerInitiativeView view)
+	public class PlayerInitiativeElement : MonoBehaviour 
 	{
-		this.view = view;
-		SetWaiting();
-	}
-
-	public void RemoveElement()
-	{
-		this.view.RemovePlayer(this);
-	}
+		private PlayerInitiativeView view;
+		
+		[SerializeField]
+		private GameObject actingObject;
+		
+		[SerializeField]
+		private GameObject waitingObject;
+		
+		[SerializeField]
+		private Text playerName;
 	
-	public void SetActing()
-	{
-		this.actingObject.SetActive(true);
-		this.waitingObject.SetActive(false);
-	}
+		public void InitializeElement(PlayerInitiativeView view, string playerName)
+		{
+			this.view = view;
+			this.playerName.text = playerName;
+			SetWaiting();
+		}
 	
-	public void SetWaiting()
-	{		
-		this.actingObject.SetActive(false);
-		this.waitingObject.SetActive(true);
+		public void RemoveElement()
+		{
+			this.view.RemovePlayer(this);
+		}
+		
+		public void SetActing()
+		{
+			this.actingObject.SetActive(true);
+			this.waitingObject.SetActive(false);
+		}
+		
+		public void SetWaiting()
+		{		
+			this.actingObject.SetActive(false);
+			this.waitingObject.SetActive(true);
+		}
 	}
 }

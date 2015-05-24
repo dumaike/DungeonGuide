@@ -49,15 +49,17 @@ namespace DungeonGuide
 		{
 			this.intputModeButtonText = inputModeButtonText;
 			this.contextMenuObject = contextMenu;
+			
+			SceneManager.eventCtr.menuItemClicked += HandleMenuItemClicked;
+		}
+		
+		~UserInputController()
+		{						
+			SceneManager.eventCtr.menuItemClicked -= HandleMenuItemClicked;
 		}
 		#endregion
 
-		#region public methods
-		
-		public void MenuItemClicked()
-		{
-			this.mousePressedTime = float.MinValue;
-		}		
+		#region public methods		
 		
 		public int SelectedCharacterMovementAmount()
 		{
@@ -73,7 +75,7 @@ namespace DungeonGuide
 		
 		public void ReceiveInputEvent(InputEvent inputEvent)
 		{
-			MenuItemClicked();
+			HandleMenuItemClicked();
 		
 			switch (inputEvent)
 			{
@@ -133,6 +135,11 @@ namespace DungeonGuide
 		#endregion
 
 		#region private methods
+		private void HandleMenuItemClicked()
+		{
+			this.mousePressedTime = float.MinValue;
+		}	
+		
 		private void ToggleInputMode()
 		{		
 			if (this.currentMode == InputMode.CAMERA)
