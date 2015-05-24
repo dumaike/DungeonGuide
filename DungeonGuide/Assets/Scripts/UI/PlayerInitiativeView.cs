@@ -26,7 +26,7 @@ namespace DungeonGuide
 		List<PlayerInitiativeElement> playerEntries = 
 			new List<PlayerInitiativeElement>();
 			
-		private int activeElementIndex = 0;
+		private PlayerInitiativeElement actingElement;
 		
 		public void AddPlayer()
 		{
@@ -56,13 +56,22 @@ namespace DungeonGuide
 				Instantiate(this.playerInitiativeElementTemplate);
 			
 			newEle.transform.SetParent(this.transform, false);
-			newEle.InitializeElement(this, this.newPlayerName.text);
+			newEle.InitializeElement(this, this.newPlayerName.text, int.Parse(this.newPlayerInitiative.text));
 			
 			this.playerEntries.Add(newEle);
 			
 			if (this.playerEntries.Count == 1)
 			{
 				newEle.SetActing();
+				this.actingElement = newEle;
+			}
+			
+			this.playerEntries.Sort((x, y) => (y.initiative.CompareTo(x.initiative)));
+			
+			for (int iPlayerIndex = 0; iPlayerIndex < this.playerEntries.Count; ++iPlayerIndex)
+			{
+				PlayerInitiativeElement player = this.playerEntries[iPlayerIndex];
+				player.transform.SetSiblingIndex(iPlayerIndex);
 			}
 			
 			this.addPlayerDialog.SetActive(false);
@@ -73,15 +82,19 @@ namespace DungeonGuide
 			//Clear out double clicks
 			SceneManager.eventCtr.FireMenuItemClickedEvent();
 			
-			int indexOfPlayer = this.playerEntries.IndexOf(elementToRemove);
-			if (indexOfPlayer == this.activeElementIndex)
+			if (elementToRemove == this.actingElement)
 			{
 				AdvanceInitiative();
 			}
 		
-			this.playerEntries.Remove(elementToRemove);
+			this.playerEntries.Remove(elementToRemove);			
 			
 			Destroy (elementToRemove.gameObject);
+			
+			if (this.playerEntries.Count == 0)
+			{
+				this.actingElement = null;
+			}
 		}
 		
 		public void AdvanceInitiative()
@@ -89,13 +102,16 @@ namespace DungeonGuide
 			//Clear out double clicks
 			SceneManager.eventCtr.FireMenuItemClickedEvent();
 		
-			if (this.playerEntries.Count > 0)
+			if (this.actingElement != null)
 			{
-				this.playerEntries[this.activeElementIndex].SetWaiting();
+				this.actingElement.SetWaiting();
 				
-				this.activeElementIndex = (this.activeElementIndex + 1)%this.playerEntries.Count;
+				int activeElementIndex = this.playerEntries.IndexOf(this.actingElement);
+				activeElementIndex = (activeElementIndex + 1)%this.playerEntries.Count;
 				
-				this.playerEntries[this.activeElementIndex].SetActing();
+				this.actingElement = this.playerEntries[activeElementIndex];
+				
+				this.actingElement.SetActing();
 			}
 		}
 	}

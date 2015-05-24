@@ -17,11 +17,14 @@ namespace DungeonGuide
 		
 		[SerializeField]
 		private Text playerName;
+		
+		public int initiative {get; private set;}
 	
-		public void InitializeElement(PlayerInitiativeView view, string playerName)
+		public void InitializeElement(PlayerInitiativeView view, string playerName, int playerInitiative)
 		{
 			this.view = view;
 			this.playerName.text = playerName;
+			this.initiative = playerInitiative;
 			SetWaiting();
 		}
 	
