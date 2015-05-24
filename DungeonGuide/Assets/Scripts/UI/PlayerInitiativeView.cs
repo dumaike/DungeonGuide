@@ -56,7 +56,10 @@ namespace DungeonGuide
 				Instantiate(this.playerInitiativeElementTemplate);
 			
 			newEle.transform.SetParent(this.transform, false);
-			newEle.InitializeElement(this, this.newPlayerName.text, int.Parse(this.newPlayerInitiative.text));
+			
+			int playerInitiative = 0;
+			int.TryParse(this.newPlayerInitiative.text, out playerInitiative);
+			newEle.InitializeElement(this, this.newPlayerName.text, playerInitiative);
 			
 			this.playerEntries.Add(newEle);
 			
