@@ -16,7 +16,7 @@ namespace DungeonGuide
 		private List<string> childTogglesNames = new List<string>();
 			
 		// Use this for initialization
-		void Start () 
+		private void Start () 
 		{
 			//When a check box is ticked, set the name to that
 			Toggle[] childToggles = GetComponentsInChildren<Toggle>(true);
@@ -36,6 +36,15 @@ namespace DungeonGuide
 			}
 			
 			this.nameField.onValueChange.AddListener(OnLabelValueChanged);
+		}
+		
+		private void OnEnable()
+		{
+			Toggle[] childToggles = GetComponentsInChildren<Toggle>(true);
+			foreach (Toggle toggle in childToggles)
+			{
+				toggle.isOn = false;
+			}
 		}
 		
 		/// <summary>
