@@ -86,8 +86,6 @@ namespace DungeonGuide
 
 		private void OnDestroy()
 		{
-			this.eventCenter = null;
-			
 			this.userInputController = null;
 			this.characterVisionController = null;
 			this.interactiveObjectController = null;

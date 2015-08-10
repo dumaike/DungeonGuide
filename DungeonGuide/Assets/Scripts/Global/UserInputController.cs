@@ -43,7 +43,7 @@ namespace DungeonGuide
 		
 		private Text intputModeButtonText;	
 		private ContextMenu contextMenuObject;
-		private MoveableEntity selectedCharacter;
+		private MoveableEntity selectedObject;
 
 		#region initializers
 		public UserInputController(Text inputModeButtonText, ContextMenu contextMenu)
@@ -52,13 +52,13 @@ namespace DungeonGuide
 			this.contextMenuObject = contextMenu;
 
 			SceneManager.eventCtr.menuItemClicked += HandleMenuItemClicked;
-			SceneManager.eventCtr.objectSelected += HandleCharacterSelected;
+			SceneManager.eventCtr.objectSelected += HandleObjectSelected;
 		}
 
 		~UserInputController()
 		{						
 			SceneManager.eventCtr.menuItemClicked -= HandleMenuItemClicked;
-			SceneManager.eventCtr.objectSelected -= HandleCharacterSelected;
+			SceneManager.eventCtr.objectSelected -= HandleObjectSelected;
 		}
 		#endregion
 
@@ -66,12 +66,12 @@ namespace DungeonGuide
 		
 		public int SelectedCharacterMovementAmount()
 		{
-			if (this.selectedCharacter == null)
+			if (this.selectedObject == null)
 			{
 				return 0;
 			}		
 			
-			return (int)(selectedCharacter.transform.position - this.selectedCharacterStartPosition).magnitude;
+			return (int)(selectedObject.transform.position - this.selectedCharacterStartPosition).magnitude;
 		}
 		
 		public void ReceiveInputEvent(InputEvent inputEvent)
@@ -118,13 +118,15 @@ namespace DungeonGuide
 		
 			if (!this.contextMenuObject.IsContextMenuActive())
 			{
+				//If the context menu isn't active, check to see if it should be
 				UpdateContextMenuCheck();
 				
+				//If it's still not active, preform selection or movement
 				if (!this.contextMenuObject.IsContextMenuActive())
 				{
 					if (this.currentMode == InputMode.CHARACTERS)
 					{
-						UpdateCharacterMovement ();
+						UpdateObjectMovementAndSelection ();
 					}
 					else if (this.currentMode == InputMode.CAMERA)
 					{
@@ -142,9 +144,9 @@ namespace DungeonGuide
 			this.mousePressedTime = float.MinValue;
 		}
 
-		private void HandleCharacterSelected(MoveableEntity target, bool selected)
+		private void HandleObjectSelected(MoveableEntity target, bool selected)
 		{
-			this.selectedCharacter = !selected ? null : target;
+			this.selectedObject = !selected ? null : target;
 		}
 
 		private void ToggleInputMode()
@@ -210,30 +212,30 @@ namespace DungeonGuide
 			this.contextMenuObject.DisplayContextMenu(snappedLocation, mouseLocationInWorld);
         }
 
-		private void UpdateCharacterMovement()
+		private void UpdateObjectMovementAndSelection()
 		{
 			//If a character was clicked
 			if ((Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) && 
-				this.selectedCharacter == null)
+				this.selectedObject == null)
 			{				
-				SelectCharacterUnderMouse();
+				SelectObjectUnderMouse();
 			}
 
 			//If a character was released
 			if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) &&
-				this.selectedCharacter != null)
+				this.selectedObject != null)
 			{
-				this.selectedCharacter.CharacterSelected(false);
-				SceneManager.eventCtr.FireObjectSelected(this.selectedCharacter, false);
+				this.selectedObject.CharacterSelected(false);
+				SceneManager.eventCtr.FireObjectSelected(this.selectedObject, false);
 			}
 			
-			if (this.selectedCharacter != null)
+			if (this.selectedObject != null)
 			{
 				MoveSelectedCharacterToMouse();
 			}
 		}
 		
-		private void SelectCharacterUnderMouse()
+		private void SelectObjectUnderMouse()
 		{
 			Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			this.lastWorldMousePosition = raycastRay.origin;
@@ -276,7 +278,7 @@ namespace DungeonGuide
 		
 		private void MoveSelectedCharacterToMouse()
 		{
-			if (this.selectedCharacter == null)
+			if (this.selectedObject == null)
 			{
 				Log.Error("You're trying to move a selected character, but there is none", 
 					LogChannel.LOGIC);
@@ -291,14 +293,14 @@ namespace DungeonGuide
 			
 			this.desiredWorldCharacterPosition = this.desiredWorldCharacterPosition + mousePositionDelta;
 			Vector3 snappedCharacterPosition = this.desiredWorldCharacterPosition;
-			if (this.selectedCharacter.snaps)
+			if (this.selectedObject.snaps)
 			{
 				snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
 				snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
-				snappedCharacterPosition.y = this.selectedCharacter.transform.position.y;
+				snappedCharacterPosition.y = this.selectedObject.transform.position.y;
 			}
 			
-			Vector3 currentCharacterPosition = this.selectedCharacter.transform.position;
+			Vector3 currentCharacterPosition = this.selectedObject.transform.position;
 			Vector3 movementDirection = snappedCharacterPosition - currentCharacterPosition;
 			float distanceToMove = movementDirection.magnitude;
 			if (distanceToMove > 0)
@@ -306,22 +308,22 @@ namespace DungeonGuide
 				Ray raycastRay = new Ray (currentCharacterPosition, movementDirection);
 				RaycastHit hitInfo = new RaycastHit ();
 
-				if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask) || this.selectedCharacter.freeMovement)
+				if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask) || this.selectedObject.freeMovement)
 				{
-					Log.Print("Moving character from " + this.selectedCharacter.transform.position + " to " + snappedCharacterPosition, 
+					Log.Print("Moving character from " + this.selectedObject.transform.position + " to " + snappedCharacterPosition, 
 					          LogChannel.CHARACTER_MOVEMENT);
 
 					//Debug.DrawLine (raycastRay.origin, raycastRay.origin + raycastRay.direction*distanceToMove);
-					Vector3 oldPosition = this.selectedCharacter.transform.position;
-					this.selectedCharacter.transform.position = snappedCharacterPosition;
+					Vector3 oldPosition = this.selectedObject.transform.position;
+					this.selectedObject.transform.position = snappedCharacterPosition;
 					
 					//Fire an event to let everyone know we moved someone
-					SceneManager.eventCtr.FireObjectMovedEvent(this.selectedCharacter, oldPosition, snappedCharacterPosition);
+					SceneManager.eventCtr.FireObjectMovedEvent(this.selectedObject, oldPosition, snappedCharacterPosition);
 				}
 				else
 				{
 					Log.Print("Can't move because we hit a " + hitInfo.transform.name + " when trying to move to " 
-					          + snappedCharacterPosition + " from " + this.selectedCharacter.transform.position, 
+					          + snappedCharacterPosition + " from " + this.selectedObject.transform.position, 
 					          LogChannel.CHARACTER_MOVEMENT, hitInfo.transform.gameObject);
 				}
 			}
