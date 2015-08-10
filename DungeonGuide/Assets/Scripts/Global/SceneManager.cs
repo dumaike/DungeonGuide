@@ -14,7 +14,6 @@ namespace DungeonGuide
 		#pragma warning disable 414
 		private UserInputController userInputController;
 		private CharacterVisionController characterVisionController;
-		private SelectedCharacterController selectedCharacterController;
 		private InteractiveObjectController interactiveObjectController;
 		private CharacterStackingController characterStackingController;
 		private CharacterMovementController characterMovementController;
@@ -23,7 +22,6 @@ namespace DungeonGuide
 		
 		//TODO Get rid of all these references and use the event center
 		public static UserInputController userInputCtlr {get{return SceneManager.Instance.userInputController;}}		
-		public static SelectedCharacterController selectedChCtrl {get{return SceneManager.Instance.selectedCharacterController;}}		
 		public static InteractiveObjectController interactiveObjCtrl {get{return SceneManager.Instance.interactiveObjectController;}}	
 		public static CharacterMovementController crMvmtCtrl {get{return SceneManager.Instance.characterMovementController;}}	
 		public static EventCenter eventCtr {get{return SceneManager.Instance.eventCenter;}}
@@ -82,7 +80,6 @@ namespace DungeonGuide
 			this.userInputController = new UserInputController(this.intputModeButton, this.contextMenu);
 			this.characterVisionController = new CharacterVisionController(this.visionOverlayQuad, depthMaskShader);
 			this.characterStackingController = new CharacterStackingController();
-			this.selectedCharacterController = new SelectedCharacterController();
 			this.interactiveObjectController = new InteractiveObjectController();
 			this.characterMovementController = new CharacterMovementController();
 		}
@@ -93,7 +90,6 @@ namespace DungeonGuide
 			
 			this.userInputController = null;
 			this.characterVisionController = null;
-			this.selectedCharacterController = null;
 			this.interactiveObjectController = null;
 			this.characterStackingController = null;
 			this.characterMovementController = null;

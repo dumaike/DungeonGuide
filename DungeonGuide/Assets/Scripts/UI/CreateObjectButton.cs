@@ -28,7 +28,7 @@ namespace DungeonGuide
 		{
 			GameObject createdCharacter = Instantiate(this.objectToCreate) as GameObject;
 			createdCharacter.transform.position = this.creationUi.characterCreationPosition;
-			createdCharacter.transform.parent = this.gameplayObjectRoot.transform;
+			createdCharacter.transform.SetParent(this.gameplayObjectRoot.transform);
 			
 			MoveableEntity moveableRootOfCharacter = createdCharacter.GetComponentInChildren<MoveableEntity>();
 			

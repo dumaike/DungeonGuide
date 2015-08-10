@@ -17,13 +17,19 @@ namespace DungeonGuide
 		/// </summary>
 		public delegate void ObjectCreatedHandler(MoveableEntity target, Vector3 position);
 		public event ObjectCreatedHandler objectCreated;
-		
+
 		/// <summary>
 		/// Fires when an moveable object is removed from the scene
 		/// </summary>
 		public delegate void ObjectRemovedHandler(MoveableEntity target, Vector3 position);
 		public event ObjectRemovedHandler objectRemoved;
-		
+
+		/// <summary>
+		/// Fires when a moveable object is selected
+		/// </summary>
+		public delegate void ObjectSelectedHandler(MoveableEntity target, bool selected);
+		public event ObjectSelectedHandler objectSelected;
+
 		/// <summary>
 		/// Fires when an interactive object is toggled (door open, secret door opened, etc)
 		/// </summary>
@@ -85,14 +91,22 @@ namespace DungeonGuide
 			{
 				this.cameraZoomed();
 			}
-		}	
-		
+		}
+
 		public void FireMenuItemClickedEvent()
 		{
 			if (this.menuItemClicked != null)
 			{
 				this.menuItemClicked();
 			}
-		}	
+		}
+
+		public void FireObjectSelected(MoveableEntity target, bool selected)
+		{
+			if (this.objectSelected != null)
+			{
+				this.objectSelected(target, selected);
+			}
+		}
 	}
 }

@@ -11,7 +11,7 @@ namespace DungeonGuide
 		public static void Init()
 		{
 			//Make a window and focus on it
-			ConfigPreferencesWindow window = (ConfigPreferencesWindow)EditorWindow.GetWindow(typeof(ConfigPreferencesWindow));
+			ConfigPreferencesWindow window = (ConfigPreferencesWindow)GetWindow(typeof(ConfigPreferencesWindow));
 			window.Focus();
 		}
 		

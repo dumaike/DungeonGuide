@@ -32,7 +32,8 @@ namespace DungeonGuide
 		
 		private Vector3 snappedActionLocation;
 		private Vector3 mouseWorldLocation;
-	
+		private MoveableEntity selectedCharacter = null;
+
 		#region public methods
 		public void DisplayContextMenu(Vector3 snappedActionLocation, Vector3 mouseLocationInWorld)
 		{
@@ -41,12 +42,12 @@ namespace DungeonGuide
 			this.mouseWorldLocation = mouseLocationInWorld;
 			
 			//Turn off the delete button if we didn't hit a character
-			bool isCharacterSelected = SceneManager.selectedChCtrl.IsCharacterSelected();
+			bool isCharacterSelected = this.selectedCharacter != null;
 			this.deleteButton.interactable = isCharacterSelected;
 			this.freedomButton.interactable = isCharacterSelected;
 			this.tintCharacterButton.interactable = isCharacterSelected;
 			this.freedomText.text = "Freedom";
-			if (isCharacterSelected && SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement)
+			if (isCharacterSelected && this.selectedCharacter.freeMovement)
 			{
 				this.freedomText.text = "Constrain";
 			}
@@ -63,7 +64,13 @@ namespace DungeonGuide
 		
 		public void DeleteSelectedCharacter()
 		{
-			SceneManager.selectedChCtrl.DeleteSelectedCharacter();
+			MoveableEntity cachedSelectedCharacter = this.selectedCharacter;
+
+			SceneManager.eventCtr.FireObjectRemovedEvent(this.selectedCharacter, this.selectedCharacter.transform.position);
+			SceneManager.eventCtr.FireObjectSelected(this.selectedCharacter, false);
+
+			Destroy(cachedSelectedCharacter);
+
 			HideAllContextMenues();
 		}
 		
@@ -87,8 +94,7 @@ namespace DungeonGuide
 		
 		public void ToggleMovementFreedom()
 		{
-			SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement = 
-				!SceneManager.selectedChCtrl.GetSelectedCharacter().freeMovement;
+			this.selectedCharacter.freeMovement = !this.selectedCharacter.freeMovement;
 			HideAllContextMenues();
 		}
 		
@@ -123,8 +129,8 @@ namespace DungeonGuide
 		}
 		
 		public void TintCharacter(Color colorToTint)
-		{			
-			SceneManager.selectedChCtrl.TintSelectedCharacter(colorToTint);
+		{
+			this.selectedCharacter.TintCharacter(colorToTint);
 			HideAllContextMenues();
 		}		
 		
@@ -136,11 +142,6 @@ namespace DungeonGuide
 			this.tintCharacterUi.SetActive(false);
 			this.extendedContextMenuUi.SetActive(false);
 			this.gameObject.SetActive(false);
-			
-			if (SceneManager.selectedChCtrl.IsCharacterSelected())
-			{
-				SceneManager.selectedChCtrl.DeselectCharacter();
-			}
 		}
 		#endregion
 	}
