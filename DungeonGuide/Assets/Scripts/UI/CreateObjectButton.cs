@@ -1,30 +1,38 @@
 using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 
 namespace DungeonGuide
 {
 	public class CreateObjectButton : MonoBehaviour
 	{				
 		[SerializeField]
-		private GameObject objectToCreate;
+		protected GameObject objectToCreate;
 		
-		private ObjectCreationUi creationUi;
+		protected ObjectCreationUi creationUi;
 		
-		private GameObject gameplayObjectRoot;
+		protected GameObject gameplayObjectRoot;
 		
 		#region initializers
-		public void Awake()
+		public virtual void Awake()
 		{
 			this.creationUi = this.transform.GetComponentInParent<ObjectCreationUi>();
 			
 			this.gameplayObjectRoot = GameObject.Find(GridUtility.GAMEPLAY_OBJECT_ROOT_NAME);
 		}
-		
+
 		#endregion
 
 		#region public methods
-		public void CreateObject()
+		/// <summary>
+		/// The function the unity editon will call to create this object
+		/// </summary>
+		public void EditorCreateObject()
+		{
+			CreateObject();
+		}
+		#endregion
+
+		#region protected methods
+		public virtual GameObject CreateObject()
 		{
 			GameObject createdObject = Instantiate(this.objectToCreate) as GameObject;
 			createdObject.transform.position = this.creationUi.characterCreationPosition;
@@ -43,11 +51,9 @@ namespace DungeonGuide
 			
 			this.creationUi.CloseObjectCreation();			
 			SceneManager.eventCtr.FireObjectCreatedEvent(moveableRootOfObject, moveableRootOfObject.transform.position);
+
+			return createdObject;
 		}
-		#endregion
-
-		#region private methods
-
 		#endregion
 	}
 

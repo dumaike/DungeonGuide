@@ -1,10 +1,8 @@
 using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 
 namespace DungeonGuide
 {
-	public class CreateCharacterButton : MonoBehaviour
+	public class CreateCharacterButton : CreateObjectButton
 	{
 		//The number of characters of this type created so far
 		private int creationCounter = 0;
@@ -22,20 +20,12 @@ namespace DungeonGuide
 		private CharacterTemplate characterType = CharacterTemplate.One_by_One_Character_Template;
 		
 		[SerializeField]
-		private Texture characterTexture;
-		
-		private ObjectCreationUi creationUi;
-		
-		private GameObject objectToCreate;
-		
-		private GameObject gameplayObjectRoot;
+		private Texture characterTexture = null;
 		
 		#region initializers
-		public void Awake()
+		public override void Awake()
 		{
-			this.creationUi = this.transform.GetComponentInParent<ObjectCreationUi>();
-			
-			this.gameplayObjectRoot = GameObject.Find(GridUtility.GAMEPLAY_OBJECT_ROOT_NAME);
+			base.Awake();
 			
 			switch (this.characterType)
 			{
@@ -62,22 +52,12 @@ namespace DungeonGuide
 		
 		#endregion
 
-		#region public methods
-		public void CreateCharacter()
+		#region protected methods
+		public override GameObject CreateObject()
 		{
 			this.creationCounter++;
 		
-			GameObject createdCharacter = Instantiate(this.objectToCreate) as GameObject;
-			createdCharacter.transform.position = this.creationUi.characterCreationPosition;
-			createdCharacter.transform.parent = this.gameplayObjectRoot.transform;          
-			
-			//If the character is corner snapping, snap them to the nearest corner
-			SnappableRoot snappableRoot = createdCharacter.GetComponent<SnappableRoot>();
-			if (snappableRoot != null && snappableRoot.snapType == SnapType.CORNER)
-			{
-				createdCharacter.transform.position =
-					createdCharacter.transform.position + new Vector3(0.5f, 0, 0.5f);
-			}
+			GameObject createdCharacter = base.CreateObject();
 
 			//Set up the character texture
 			MeshRenderer characterMesh = createdCharacter.GetComponentInChildren<MeshRenderer>();
@@ -85,9 +65,8 @@ namespace DungeonGuide
 			
 			MoveableEntity moveableRootOfCharacter = createdCharacter.GetComponentInChildren<MoveableEntity>();
 			moveableRootOfCharacter.SetCharacterText(this.creationCounter.ToString());
-			
-			this.creationUi.CloseObjectCreation();			
-			SceneManager.eventCtr.FireObjectCreatedEvent(moveableRootOfCharacter, moveableRootOfCharacter.transform.position);
+
+			return createdCharacter;
 		}
 		#endregion
 
