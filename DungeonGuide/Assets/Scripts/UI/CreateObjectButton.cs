@@ -26,14 +26,23 @@ namespace DungeonGuide
 		#region public methods
 		public void CreateObject()
 		{
-			GameObject createdCharacter = Instantiate(this.objectToCreate) as GameObject;
-			createdCharacter.transform.position = this.creationUi.characterCreationPosition;
-			createdCharacter.transform.SetParent(this.gameplayObjectRoot.transform);
+			GameObject createdObject = Instantiate(this.objectToCreate) as GameObject;
+			createdObject.transform.position = this.creationUi.characterCreationPosition;
+
+			//If the object is corner snapping, snap them to the nearest corner
+			SnappableRoot snappableRoot = createdObject.GetComponent<SnappableRoot>();
+			if (snappableRoot != null && snappableRoot.snapType == SnapType.CORNER)
+			{
+				createdObject.transform.position =
+					createdObject.transform.position + new Vector3(0.5f, 0, 0.5f);
+			}
+
+			createdObject.transform.SetParent(this.gameplayObjectRoot.transform);
 			
-			MoveableEntity moveableRootOfCharacter = createdCharacter.GetComponentInChildren<MoveableEntity>();
+			MoveableEntity moveableRootOfObject = createdObject.GetComponentInChildren<MoveableEntity>();
 			
 			this.creationUi.CloseObjectCreation();			
-			SceneManager.eventCtr.FireObjectCreatedEvent(moveableRootOfCharacter, moveableRootOfCharacter.transform.position);
+			SceneManager.eventCtr.FireObjectCreatedEvent(moveableRootOfObject, moveableRootOfObject.transform.position);
 		}
 		#endregion
 

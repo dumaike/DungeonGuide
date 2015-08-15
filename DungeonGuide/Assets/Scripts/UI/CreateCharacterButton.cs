@@ -69,8 +69,16 @@ namespace DungeonGuide
 		
 			GameObject createdCharacter = Instantiate(this.objectToCreate) as GameObject;
 			createdCharacter.transform.position = this.creationUi.characterCreationPosition;
-			createdCharacter.transform.parent = this.gameplayObjectRoot.transform;
+			createdCharacter.transform.parent = this.gameplayObjectRoot.transform;          
 			
+			//If the character is corner snapping, snap them to the nearest corner
+			SnappableRoot snappableRoot = createdCharacter.GetComponent<SnappableRoot>();
+			if (snappableRoot != null && snappableRoot.snapType == SnapType.CORNER)
+			{
+				createdCharacter.transform.position =
+					createdCharacter.transform.position + new Vector3(0.5f, 0, 0.5f);
+			}
+
 			//Set up the character texture
 			MeshRenderer characterMesh = createdCharacter.GetComponentInChildren<MeshRenderer>();
 			characterMesh.material.mainTexture = this.characterTexture;

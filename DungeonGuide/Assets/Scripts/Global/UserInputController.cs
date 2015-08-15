@@ -231,7 +231,7 @@ namespace DungeonGuide
 			
 			if (this.selectedObject != null)
 			{
-				MoveSelectedCharacterToMouse();
+				MoveSelectedObjectToMouse();
 			}
 		}
 		
@@ -276,7 +276,7 @@ namespace DungeonGuide
 			}
 		}
 		
-		private void MoveSelectedCharacterToMouse()
+		private void MoveSelectedObjectToMouse()
 		{
 			if (this.selectedObject == null)
 			{
@@ -292,16 +292,27 @@ namespace DungeonGuide
 			this.lastWorldMousePosition = newMousePosition;
 			
 			this.desiredWorldCharacterPosition = this.desiredWorldCharacterPosition + mousePositionDelta;
-			Vector3 snappedCharacterPosition = this.desiredWorldCharacterPosition;
-			if (this.selectedObject.snaps)
+			Vector3 finalObjectPosition = this.desiredWorldCharacterPosition;
+
+			SnappableRoot snappableRoot = this.selectedObject.GetComponent<SnappableRoot>();
+			if (snappableRoot != null)
 			{
-				snappedCharacterPosition.x = (float)Math.Round(snappedCharacterPosition.x);
-				snappedCharacterPosition.z = (float)Math.Round(snappedCharacterPosition.z);
-				snappedCharacterPosition.y = this.selectedObject.transform.position.y;
+				if (snappableRoot.snapType == SnapType.CENTER)
+				{
+					finalObjectPosition.x = (float) Math.Round(finalObjectPosition.x);
+					finalObjectPosition.z = (float) Math.Round(finalObjectPosition.z);
+					finalObjectPosition.y = this.selectedObject.transform.position.y;
+				}
+				else if (snappableRoot.snapType == SnapType.CORNER)
+				{
+					finalObjectPosition.x = (float) Math.Round(finalObjectPosition.x - 0.5f) + 0.5f;
+					finalObjectPosition.z = (float) Math.Round(finalObjectPosition.z - 0.5f) + 0.5f;
+					finalObjectPosition.y = this.selectedObject.transform.position.y;
+				}
 			}
-			
+
 			Vector3 currentCharacterPosition = this.selectedObject.transform.position;
-			Vector3 movementDirection = snappedCharacterPosition - currentCharacterPosition;
+			Vector3 movementDirection = finalObjectPosition - currentCharacterPosition;
 			float distanceToMove = movementDirection.magnitude;
 			if (distanceToMove > 0)
 			{
@@ -310,20 +321,20 @@ namespace DungeonGuide
 
 				if (!Physics.Raycast (raycastRay, out hitInfo, distanceToMove, layerMask) || this.selectedObject.freeMovement)
 				{
-					Log.Print("Moving character from " + this.selectedObject.transform.position + " to " + snappedCharacterPosition, 
+					Log.Print("Moving character from " + this.selectedObject.transform.position + " to " + finalObjectPosition, 
 					          LogChannel.CHARACTER_MOVEMENT);
 
 					//Debug.DrawLine (raycastRay.origin, raycastRay.origin + raycastRay.direction*distanceToMove);
 					Vector3 oldPosition = this.selectedObject.transform.position;
-					this.selectedObject.transform.position = snappedCharacterPosition;
+					this.selectedObject.transform.position = finalObjectPosition;
 					
 					//Fire an event to let everyone know we moved someone
-					SceneManager.eventCtr.FireObjectMovedEvent(this.selectedObject, oldPosition, snappedCharacterPosition);
+					SceneManager.eventCtr.FireObjectMovedEvent(this.selectedObject, oldPosition, finalObjectPosition);
 				}
 				else
 				{
 					Log.Print("Can't move because we hit a " + hitInfo.transform.name + " when trying to move to " 
-					          + snappedCharacterPosition + " from " + this.selectedObject.transform.position, 
+					          + finalObjectPosition + " from " + this.selectedObject.transform.position, 
 					          LogChannel.CHARACTER_MOVEMENT, hitInfo.transform.gameObject);
 				}
 			}

@@ -24,13 +24,8 @@ namespace DungeonGuide
 		public bool hasVision {get {return this.hasVisionEditor;} private set{this.hasVisionEditor = value;}}
 		
 		[SerializeField]
-		private bool snapsEditor = true;
-		public bool snaps {get {return this.snapsEditor;} private set{this.snapsEditor = value;}}
-		
-		[SerializeField]
 		private GameObject stackablePartsEditor = null;
 		public GameObject stackableParts {get {return this.stackablePartsEditor;}}
-		
 		
 		public bool freeMovement = false;
 
