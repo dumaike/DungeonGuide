@@ -47,3 +47,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Levels/PlainMasonry.unity
   - enabled: 1
     path: Assets/Scenes/Levels/EnsidorsBrewShop.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/Town.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/Fylaki.unity
