@@ -9,16 +9,14 @@ namespace DungeonGuide
 		private const float VISION_DISTANCE = 60.0f;
 		private const int NUM_RAYS = 360;
 		
-		private Vector3 VISION_OFFSET = new Vector3(0, 0.1f, 0);
+		private readonly Vector3 VISION_OFFSET = new Vector3(0, 0.1f, 0);
 
-		private List<MoveableEntity> playerCharacters;
-		private List<GameObject> characterVisionMeshes;
+		private readonly List<MoveableEntity> playerCharacters;
+		private readonly List<GameObject> characterVisionMeshes;
 		
-		private List<List<Vector3>> visionPerCharacter;
+		private readonly MeshFilter visionOverlay;
 		
-		private MeshFilter visionOverlay;
-		
-		private Material depthMaskShader;
+		private readonly Material depthMaskShader;
 
 		#region initializers
 		public CharacterVisionController(MeshFilter visionOverlay, Material depthMaskShader)
@@ -27,7 +25,7 @@ namespace DungeonGuide
 			this.visionOverlay = visionOverlay;
 			UpdateVisionQuad();
 		
-			MoveableEntity[] characters = GameObject.FindObjectsOfType<MoveableEntity>();
+			MoveableEntity[] characters = Object.FindObjectsOfType<MoveableEntity>();
 			
 			this.characterVisionMeshes = new List<GameObject>();
 			this.playerCharacters = new List<MoveableEntity>();
@@ -74,7 +72,7 @@ namespace DungeonGuide
 			int indexOfCharacter = this.playerCharacters.IndexOf(character);
 			this.playerCharacters.RemoveAt(indexOfCharacter);
 			
-			SceneManager.Destroy(this.characterVisionMeshes[indexOfCharacter]);
+			Object.Destroy(this.characterVisionMeshes[indexOfCharacter]);
 			this.characterVisionMeshes.RemoveAt(indexOfCharacter);
 		}
 		
@@ -161,7 +159,9 @@ namespace DungeonGuide
 		
 		private void UpdateVision()
 		{			
-			int layerMask = (1 << LayerAccessor.DEFAULT) + (1 << LayerAccessor.BLOCKS_SIGHT);
+			int layerMask = (1 << LayerAccessor.DEFAULT) + 
+				(1 << LayerAccessor.BLOCKS_SIGHT) + 
+				(1 << LayerAccessor.BLOCKS_BOTH);
 			
 			Vector3 visionLocationOffset = SceneManager.visionCam.transform.position - SceneManager.gameplayCam.transform.position;
 			
@@ -183,7 +183,7 @@ namespace DungeonGuide
 					Vector3 directionVector = Quaternion.Euler(0, iRayIndex*raycastStep, 0)*Vector3.right;
 					Ray raycastRay = new Ray(characterVisionOrigin, directionVector);
 					
-					RaycastHit hitInfo = new RaycastHit ();
+					RaycastHit hitInfo;
 					bool hitSomething = Physics.Raycast (raycastRay, out hitInfo, VISION_DISTANCE, layerMask);
 					Vector3 hitPoint;
 					if (hitSomething)

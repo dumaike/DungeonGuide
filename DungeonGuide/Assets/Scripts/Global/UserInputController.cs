@@ -240,8 +240,10 @@ namespace DungeonGuide
 			Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			this.lastWorldMousePosition = raycastRay.origin;
 			
-			RaycastHit hitInfo = new RaycastHit();
-			if (Physics.Raycast(raycastRay, out hitInfo))
+			//Only click default and non-blocking layers
+			int layerMask = (1 << LayerAccessor.DEFAULT) + (1 << LayerAccessor.BLOCKS_NOTHING);
+			RaycastHit hitInfo;
+			if (Physics.Raycast(raycastRay, out hitInfo, 1000, layerMask))
 			{
 				MoveableEntity hitCharacter = hitInfo.transform.GetComponentInParent<MoveableEntity>();
 				if (hitCharacter != null)
@@ -285,7 +287,9 @@ namespace DungeonGuide
 				return;
 			}
 
-			int layerMask = (1 << LayerAccessor.DEFAULT) + (1 << LayerAccessor.BLOCKS_MOVEMENT);
+			int layerMask = (1 << LayerAccessor.DEFAULT) + 
+				(1 << LayerAccessor.BLOCKS_MOVEMENT) + 
+				(1 << LayerAccessor.BLOCKS_BOTH);
 			
 			Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
 			Vector3 mousePositionDelta = newMousePosition - this.lastWorldMousePosition;
