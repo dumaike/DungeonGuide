@@ -12,8 +12,8 @@ namespace DungeonGuide
 		[MenuItem("Tools/Align Tiles %3")]
 		public static void AlignTiles()
 		{
-			SnappableRoot[] allSnappable = GameObject.FindObjectsOfType<SnappableRoot>();
-			Log.Print("Aligning " + allSnappable.Length + " snappable tiles.", LogChannel.DEBUG);
+			SnappableRoot[] allSnappable = Object.FindObjectsOfType<SnappableRoot>();
+			Log.Print("Aligning " + allSnappable.Length + " snappable tiles.", LogChannel.EDITOR_SETUP);
 			foreach(SnappableRoot root in allSnappable)
 			{
 				GridUtility.SnapToGrid(root.gameObject, root.snapType);
@@ -23,15 +23,15 @@ namespace DungeonGuide
 		[MenuItem("Tools/Delete Duplicates")]
 		public static void DeleteDuplicates()
 		{
-			List<SnappableRoot> allSnappable = GameObject.FindObjectsOfType<SnappableRoot>().ToList();
+			List<SnappableRoot> allSnappable = Object.FindObjectsOfType<SnappableRoot>().ToList();
 			List<SnappableRoot> dupsToDelete = new List<SnappableRoot>();
 			List<SnappableRoot> uniquesToKeep = new List<SnappableRoot>();
 			
 			foreach(SnappableRoot root in allSnappable)
 			{
 				SnappableRoot foundInUniques = uniquesToKeep.Find(found => 
-				                                                  found.name == root.name && 
-				                                                  found.transform.position == root.transform.position);
+					found.name == root.name && 
+				    found.transform.position == root.transform.position);
 				
 				if (foundInUniques == null)
 				{
@@ -47,29 +47,57 @@ namespace DungeonGuide
 			
 			foreach(SnappableRoot root in dupsToDelete)
 			{
-				GameObject.DestroyImmediate(root.gameObject);
+				Object.DestroyImmediate(root.gameObject);
 			}
 		}
 
 		[MenuItem("Tools/Organize Tiles")]
 		public static void OrgTiles()
 		{
-			SnappableRoot[] allSnappable = GameObject.FindObjectsOfType<SnappableRoot>();
+			SnappableRoot[] allSnappable = Object.FindObjectsOfType<SnappableRoot>();
+			int numReparented = 0;
+
 			foreach (SnappableRoot root in allSnappable)
 			{
-				GridUtility.ReparentToPath(root.gameObject, GridUtility.GAMEPLAY_OBJECT_ROOT_NAME + "/" + root.name);
+				bool didReparent = 
+					GridUtility.ReparentToPath(root.gameObject, GridUtility.GAMEPLAY_OBJECT_ROOT_NAME + "/" + root.name);
+				if (didReparent)
+				{
+					numReparented++;
+					Log.Print("Reparenting \"" + root.name + "\"", LogChannel.EDITOR_SETUP, root);
+				}
 			}
+
+			Log.Print("Found " + numReparented + " object(s) to reparent.");
 		}
 
 		[MenuItem("Tools/Fix Names")]
 		public static void FixNames()
 		{
-			GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
+			GameObject[] allObjects = Object.FindObjectsOfType<GameObject>();
+			int renamesFound = 0;
 
-			foreach (GameObject root in allObjects)
+			foreach (GameObject obj in allObjects)
 			{
-				PrefabUtility.GetPrefabType(root);
+				PrefabType prefabType = PrefabUtility.GetPrefabType(obj);
+				if (prefabType != PrefabType.None)
+				{
+					GameObject root = PrefabUtility.FindPrefabRoot(obj);
+					if (root == obj)
+					{
+						Object prefab = PrefabUtility.GetPrefabParent(obj);
+						if (prefab.name != obj.name)
+						{
+							Log.Print("Changing \"" + obj.name + "\" to \"" + 
+								prefab.name + "\".", LogChannel.EDITOR_SETUP, obj);
+							obj.name = prefab.name;
+							renamesFound++;
+						}
+					}
+				}
 			}
+
+			Log.Print("Found " + renamesFound + " object(s) to rename.");
 		}
 		#endregion
 

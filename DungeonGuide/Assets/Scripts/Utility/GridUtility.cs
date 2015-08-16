@@ -45,14 +45,14 @@ namespace DungeonGuide
 		/// </summary>
 		/// <param name="go">The object to reparent</param>
 		/// <param name="path">The string path representing the where we should reparent. For example: "GameplayObjects/Tiles"</param>
-		public static void ReparentToPath(GameObject go, string path)
+		public static bool ReparentToPath(GameObject go, string path)
 		{
-			ReparentToPathInternal(go, path, "");
+			return ReparentToPathInternal(go, path, "");
 		}
 		
-		private static void ReparentToPathInternal(GameObject go, string childPath, string parentPath)
+		private static bool ReparentToPathInternal(GameObject go, string childPath, string parentPath)
 		{
-			int indexOfSlash = childPath.IndexOf("/");
+			int indexOfSlash = childPath.IndexOf("/");			
 			if (indexOfSlash == -1)
 			{
 				GameObject parent = GameObject.Find(parentPath + "/" + childPath);
@@ -63,47 +63,48 @@ namespace DungeonGuide
 					if (grandparent == null)
 					{
 						Log.Error("Some sort of logic error has happened in ReparentToPathInternal. We got to a child without creating it's parents", LogChannel.DEBUG);
-						return;
+						return false;
 					}
 					parent.transform.parent = grandparent.transform;
 				}
+
+				//If we're already at that parent
+				if (go.transform.parent == parent.transform)
+				{
+					return false;
+				}
+
 				go.transform.parent = parent.transform;
+				return true;
 			}
-			else
+
+			string topLevelObjectName = childPath.Substring(0, indexOfSlash);
+			string topLevelObjectPath = parentPath + "/" + topLevelObjectName;
+			GameObject topLevelObject = GameObject.Find(topLevelObjectPath);
+				
+			//If the top level object doesn't exist, make it
+			if (topLevelObject == null)
 			{
-				string topLevelObjectName = childPath.Substring(0, indexOfSlash);
-				string topLevelObjectPath = parentPath + "/" + topLevelObjectName;
-				GameObject topLevelObject = GameObject.Find(topLevelObjectPath);
-				
-				//If the top level object doesn't exist, make it
-				if (topLevelObject == null)
-				{
-					topLevelObject = new GameObject(topLevelObjectName);
+				topLevelObject = new GameObject(topLevelObjectName);
 					
-					//If the top level object parent doesn't exist, there's a problem
-					//(or he's just on the root)
-					GameObject parentOfTopLevelObject = null;
-					if (!string.IsNullOrEmpty(parentPath))
-					{
-						parentOfTopLevelObject = new GameObject(parentPath);
-						if (parentOfTopLevelObject == null)
-						{
-							Log.Error("Some sort of logic error has happened in ReparentToPathInternal. We got to a child without creating it's parents", LogChannel.DEBUG);
-							return;
-						}
-						topLevelObject.transform.parent = parentOfTopLevelObject.transform;
-					}
-				}
-				
-				string newChildPath = childPath.Substring(indexOfSlash + 1);
-				string newParentPath = parentPath;
-				if (!string.IsNullOrEmpty(newParentPath))
+				//If the top level object parent doesn't exist, there's a problem
+				//(or he's just on the root)
+				if (!string.IsNullOrEmpty(parentPath))
 				{
-					newParentPath += "/";
+					GameObject parentOfTopLevelObject = new GameObject(parentPath);
+
+					topLevelObject.transform.parent = parentOfTopLevelObject.transform;
 				}
-				newParentPath += topLevelObjectName;
-				ReparentToPathInternal(go, newChildPath, newParentPath);
 			}
+				
+			string newChildPath = childPath.Substring(indexOfSlash + 1);
+			string newParentPath = parentPath;
+			if (!string.IsNullOrEmpty(newParentPath))
+			{
+				newParentPath += "/";
+			}
+			newParentPath += topLevelObjectName;
+			return ReparentToPathInternal(go, newChildPath, newParentPath);
 		}
 		#endregion
 	}
