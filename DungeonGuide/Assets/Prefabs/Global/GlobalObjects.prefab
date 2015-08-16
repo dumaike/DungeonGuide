@@ -5354,7 +5354,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11412760}
+      - m_Target: {fileID: 11471920}
         m_MethodName: EditorCreateObject
         m_Mode: 1
         m_Arguments:
@@ -8838,7 +8838,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11412760}
+      - m_Target: {fileID: 11452130}
         m_MethodName: EditorCreateObject
         m_Mode: 1
         m_Arguments:
@@ -9864,7 +9864,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11412760}
+      - m_Target: {fileID: 11485344}
         m_MethodName: EditorCreateObject
         m_Mode: 1
         m_Arguments:
@@ -11314,7 +11314,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11412760}
+      - m_Target: {fileID: 11491436}
         m_MethodName: EditorCreateObject
         m_Mode: 1
         m_Arguments:
@@ -12914,7 +12914,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11412760}
+      - m_Target: {fileID: 11427650}
         m_MethodName: EditorCreateObject
         m_Mode: 1
         m_Arguments:
@@ -15121,7 +15121,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11412760}
+      - m_Target: {fileID: 11492802}
         m_MethodName: EditorCreateObject
         m_Mode: 1
         m_Arguments:

@@ -50,14 +50,25 @@ namespace DungeonGuide
 				GameObject.DestroyImmediate(root.gameObject);
 			}
 		}
-		
+
 		[MenuItem("Tools/Organize Tiles")]
 		public static void OrgTiles()
 		{
 			SnappableRoot[] allSnappable = GameObject.FindObjectsOfType<SnappableRoot>();
-			foreach(SnappableRoot root in allSnappable)
+			foreach (SnappableRoot root in allSnappable)
 			{
 				GridUtility.ReparentToPath(root.gameObject, GridUtility.GAMEPLAY_OBJECT_ROOT_NAME + "/" + root.name);
+			}
+		}
+
+		[MenuItem("Tools/Fix Names")]
+		public static void FixNames()
+		{
+			GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
+
+			foreach (GameObject root in allObjects)
+			{
+				PrefabUtility.GetPrefabType(root);
 			}
 		}
 		#endregion
