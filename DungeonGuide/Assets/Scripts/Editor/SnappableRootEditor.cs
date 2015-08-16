@@ -16,7 +16,7 @@ namespace DungeonGuide
 			
 			if (this.snappableObject == null)
 			{
-				this.snappableObject = target as SnappableRoot;
+				this.snappableObject = (SnappableRoot)target;
 			}
 			
 			if (this.snappableObject.transform.parent == null && this.snappableObject.gameObject.activeInHierarchy)

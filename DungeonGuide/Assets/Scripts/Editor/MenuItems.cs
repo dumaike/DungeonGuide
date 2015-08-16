@@ -9,6 +9,10 @@ namespace DungeonGuide
 	public class MenuItems
 	{
 		#region public methods
+
+		/// <summary>
+		/// Align all the tiles with the grid that should be aligned with the grid
+		/// </summary>
 		[MenuItem("Tools/Align Tiles %3")]
 		public static void AlignTiles()
 		{
@@ -20,6 +24,9 @@ namespace DungeonGuide
 			}
 		}
 		
+		/// <summary>
+		/// Delete any duplicated tiles in the same position with the same name
+		/// </summary>
 		[MenuItem("Tools/Delete Duplicates")]
 		public static void DeleteDuplicates()
 		{
@@ -51,6 +58,9 @@ namespace DungeonGuide
 			}
 		}
 
+		/// <summary>
+		/// Reparent any tiles into the heiarcy location we'd expect to find them
+		/// </summary>
 		[MenuItem("Tools/Organize Tiles")]
 		public static void OrgTiles()
 		{
@@ -71,6 +81,9 @@ namespace DungeonGuide
 			Log.Print("Found " + numReparented + " object(s) to reparent.");
 		}
 
+		/// <summary>
+		/// Make sure all objects have their original prefab names
+		/// </summary>
 		[MenuItem("Tools/Fix Names")]
 		public static void FixNames()
 		{
