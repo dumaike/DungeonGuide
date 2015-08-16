@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 410776}
   - 33: {fileID: 3310776}
   - 23: {fileID: 2310776}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GrassMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 460188}
   - 114: {fileID: 11466836}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TreeOnGrassTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - 4: {fileID: 460190}
   - 33: {fileID: 3360190}
   - 23: {fileID: 2360190}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TreeMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 485764}
   - 136: {fileID: 13698794}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160188}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -36, y: 0, z: -3}
+  m_LocalPosition: {x: -7, y: 0, z: 17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 410776}
