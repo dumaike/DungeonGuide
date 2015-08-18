@@ -1,4 +1,4 @@
 MapVisualizer
 =============
 
-An application that can help GMs in traditional role playing games visual maps and player movement around them.
+An application that can help GMs in traditional role playing games visualize maps and player movement within them.

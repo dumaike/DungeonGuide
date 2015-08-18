@@ -23,7 +23,7 @@ GameObject:
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 224: {fileID: 22456568}
+  - 4: {fileID: 420358}
   - 114: {fileID: 11450922}
   m_Layer: 8
   m_Name: 40LengthCube
@@ -59,7 +59,21 @@ Transform:
   m_LocalPosition: {x: 0, y: .00499999989, z: 0}
   m_LocalScale: {x: 5.5, y: .00999999978, z: 5.5}
   m_Children: []
-  m_Father: {fileID: 22456568}
+  m_Father: {fileID: 420358}
+  m_RootOrder: 0
+--- !u!4 &420358
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118638}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 418634}
+  - {fileID: 480694}
+  m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &480694
 Transform:
@@ -68,10 +82,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 137098}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: .00499999989, z: 0}
   m_LocalScale: {x: 8.19999981, y: 10, z: 8.19999981}
   m_Children: []
-  m_Father: {fileID: 22456568}
+  m_Father: {fileID: 420358}
   m_RootOrder: 1
 --- !u!23 &2362422
 MeshRenderer:
@@ -129,35 +143,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterSizeEditor: 1
   hasVisionEditor: 0
-  snapsEditor: 0
   stackablePartsEditor: {fileID: 0}
   freeMovement: 1
---- !u!224 &22456568
-RectTransform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 118638}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3.51999998}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 418634}
-  - {fileID: 480694}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -35.5200005, y: 17.3769531}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: .5, y: .5}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 118638}
