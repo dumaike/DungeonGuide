@@ -41,7 +41,7 @@ namespace DungeonGuide
 			SceneManager.eventCtr.interactiveObjectToggeled += HandleinteractiveObjectToggeled;
 			SceneManager.eventCtr.objectCreated += HandleobjectCreated;
 			SceneManager.eventCtr.objectRemoved += HandleobjectRemoved;
-			SceneManager.eventCtr.cameraZoomed += HandlecameraZoomed;
+			SceneManager.eventCtr.cameraUpdated += HandleCameraUpdated;
 			
 			UpdateVision();
 		}
@@ -52,7 +52,7 @@ namespace DungeonGuide
 			SceneManager.eventCtr.interactiveObjectToggeled -= HandleinteractiveObjectToggeled;
 			SceneManager.eventCtr.objectCreated -= HandleobjectCreated;
 			SceneManager.eventCtr.objectRemoved -= HandleobjectRemoved;
-			SceneManager.eventCtr.cameraZoomed -= HandlecameraZoomed;
+			SceneManager.eventCtr.cameraUpdated -= HandleCameraUpdated;
 		}
 		#endregion
 		
@@ -121,7 +121,7 @@ namespace DungeonGuide
 			mesh.Optimize();			
 		}
 		
-		private void HandlecameraZoomed ()
+		private void HandleCameraUpdated ()
 		{
 			UpdateVisionQuad();
 		}

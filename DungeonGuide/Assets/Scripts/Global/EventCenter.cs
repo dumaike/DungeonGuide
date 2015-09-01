@@ -37,10 +37,10 @@ namespace DungeonGuide
 		public event InteractiveObjectToggledHandler interactiveObjectToggeled;
 		
 		/// <summary>
-		/// Fires when an interactive object is toggled (door open, secret door opened, etc)
+		/// When the camera is updated (panned, zoomed, etc)
 		/// </summary>
-		public delegate void CameraZoomHandler();
-		public event CameraZoomHandler cameraZoomed;
+		public delegate void CameraUpdatedHandler();
+		public event CameraUpdatedHandler cameraUpdated;
 		
 		/// <summary>
 		/// Fires when a menu item is clicked
@@ -85,11 +85,11 @@ namespace DungeonGuide
 			}
 		}	
 		
-		public void FireCameraZoomedEvent()
+		public void FireCameraUpdateEvent()
 		{
-			if (this.cameraZoomed != null)
+			if (this.cameraUpdated != null)
 			{
-				this.cameraZoomed();
+				this.cameraUpdated();
 			}
 		}
 

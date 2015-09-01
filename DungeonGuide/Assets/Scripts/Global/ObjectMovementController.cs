@@ -32,8 +32,7 @@ namespace DungeonGuide
 
 		public void Update()
 		{
-			if (!this.contextMenuObject.IsContextMenuActive() &&
-				UserInputController.currentMode == InputMode.CHARACTERS)
+			if (!this.contextMenuObject.IsContextMenuActive())
 			{
 				UpdateObjectMovementAndSelection();
 			}
