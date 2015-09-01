@@ -16,14 +16,12 @@ namespace DungeonGuide
 		private CharacterVisionController characterVisionController;
 		private InteractiveObjectController interactiveObjectController;
 		private CharacterStackingController characterStackingController;
-		private CharacterMovementController characterMovementController;
+		private ObjectMovementController objectMovementController;
 		private EventCenter eventCenter;
 		#pragma warning restore 414
 		
 		//TODO Get rid of all these references and use the event center
-		public static UserInputController userInputCtlr {get{return SceneManager.Instance.userInputController;}}		
 		public static InteractiveObjectController interactiveObjCtrl {get{return SceneManager.Instance.interactiveObjectController;}}	
-		public static CharacterMovementController crMvmtCtrl {get{return SceneManager.Instance.characterMovementController;}}	
 		public static EventCenter eventCtr {get{return SceneManager.Instance.eventCenter;}}
 		
 		public static Camera gameplayCam {get{return SceneManager.Instance.gameplayCamera;}}		
@@ -81,7 +79,7 @@ namespace DungeonGuide
 			this.characterVisionController = new CharacterVisionController(this.visionOverlayQuad, depthMaskShader);
 			this.characterStackingController = new CharacterStackingController();
 			this.interactiveObjectController = new InteractiveObjectController();
-			this.characterMovementController = new CharacterMovementController();
+			this.objectMovementController = new ObjectMovementController(this.contextMenu);
 		}
 
 		private void OnDestroy()
@@ -90,7 +88,7 @@ namespace DungeonGuide
 			this.characterVisionController = null;
 			this.interactiveObjectController = null;
 			this.characterStackingController = null;
-			this.characterMovementController = null;
+			this.objectMovementController = null;
 			this.eventCenter = null;
 		}
 		
@@ -124,6 +122,7 @@ namespace DungeonGuide
 		private void LateUpdate()
 		{
 			this.userInputController.Update();
+			this.objectMovementController.Update();
 		}		
 		#endregion
 	}
