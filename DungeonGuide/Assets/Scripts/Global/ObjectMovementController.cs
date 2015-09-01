@@ -3,13 +3,15 @@ using UnityEngine;
 
 namespace DungeonGuide
 {
-	//TODO Factor all character movement out of user input controller and into here
+	/// <summary>
+	/// Controls all object movement
+	/// </summary>
 	public class ObjectMovementController
 	{
-		private Vector3 desiredWorldCharacterPosition;
-		private Vector3 lastWorldMousePosition;
+		private Vector3 desiredObjectWorldPosition;
+		private Vector3 lastMouseWorldPosition;
 
-		private ContextMenu contextMenuObject;
+		private readonly ContextMenu contextMenuObject;
 		private MoveableEntity selectedObject;
 
 		#region initializers
@@ -68,7 +70,7 @@ namespace DungeonGuide
 		private void SelectObjectUnderMouse()
 		{
 			Ray raycastRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-			this.lastWorldMousePosition = raycastRay.origin;
+			this.lastMouseWorldPosition = raycastRay.origin;
 
 			//Only click default and non-blocking layers
 			int layerMask = (1 << LayerAccessor.DEFAULT) + (1 << LayerAccessor.BLOCKS_NOTHING);
@@ -80,7 +82,7 @@ namespace DungeonGuide
 				{
 					SceneManager.eventCtr.FireObjectSelected(hitCharacter, true);
 					hitCharacter.CharacterSelected(true);
-					this.desiredWorldCharacterPosition = hitCharacter.transform.position;
+					this.desiredObjectWorldPosition = hitCharacter.transform.position;
 				}
 			}
 		}
@@ -99,11 +101,11 @@ namespace DungeonGuide
 				(1 << LayerAccessor.BLOCKS_BOTH);
 
 			Vector3 newMousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
-			Vector3 mousePositionDelta = newMousePosition - this.lastWorldMousePosition;
-			this.lastWorldMousePosition = newMousePosition;
+			Vector3 mousePositionDelta = newMousePosition - this.lastMouseWorldPosition;
+			this.lastMouseWorldPosition = newMousePosition;
 
-			this.desiredWorldCharacterPosition = this.desiredWorldCharacterPosition + mousePositionDelta;
-			Vector3 finalObjectPosition = this.desiredWorldCharacterPosition;
+			this.desiredObjectWorldPosition = this.desiredObjectWorldPosition + mousePositionDelta;
+			Vector3 finalObjectPosition = this.desiredObjectWorldPosition;
 
 			SnappableRoot snappableRoot = this.selectedObject.GetComponent<SnappableRoot>();
 			if (snappableRoot != null)
@@ -122,18 +124,18 @@ namespace DungeonGuide
 				}
 			}
 
-			Vector3 currentCharacterPosition = this.selectedObject.transform.position;
-			Vector3 movementDirection = finalObjectPosition - currentCharacterPosition;
+			Vector3 currentObjectPosition = this.selectedObject.transform.position;
+			Vector3 movementDirection = finalObjectPosition - currentObjectPosition;
 			float distanceToMove = movementDirection.magnitude;
 			if (distanceToMove > 0)
 			{
-				Ray raycastRay = new Ray(currentCharacterPosition, movementDirection);
+				Ray raycastRay = new Ray(currentObjectPosition, movementDirection);
 				RaycastHit hitInfo = new RaycastHit();
 
 				if (!Physics.Raycast(raycastRay, out hitInfo, distanceToMove, layerMask) || this.selectedObject.freeMovement)
 				{
-					Log.Print("Moving character from " + this.selectedObject.transform.position + " to " + finalObjectPosition,
-							  LogChannel.CHARACTER_MOVEMENT);
+					Log.Print("Moving object from " + this.selectedObject.transform.position + " to " + finalObjectPosition,
+							  LogChannel.OBJECT_MOVEMENT);
 
 					//Debug.DrawLine (raycastRay.origin, raycastRay.origin + raycastRay.direction*distanceToMove);
 					Vector3 oldPosition = this.selectedObject.transform.position;
@@ -146,7 +148,7 @@ namespace DungeonGuide
 				{
 					Log.Print("Can't move because we hit a " + hitInfo.transform.name + " when trying to move to "
 							  + finalObjectPosition + " from " + this.selectedObject.transform.position,
-							  LogChannel.CHARACTER_MOVEMENT, hitInfo.transform.gameObject);
+							  LogChannel.OBJECT_MOVEMENT, hitInfo.transform.gameObject);
 				}
 			}
 		}

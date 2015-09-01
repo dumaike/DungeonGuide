@@ -1,6 +1,6 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DungeonGuide
 {
@@ -23,7 +23,7 @@ namespace DungeonGuide
 		public InteractiveType type {get {return this.typeSerialized;} private set {this.typeSerialized = value;}}
 		
 		private bool inDefaultState = true;
-	
+
 		#region initializers
 		#endregion
 
@@ -46,26 +46,12 @@ namespace DungeonGuide
 		}
 		
 		public bool ContainsMesh(MeshRenderer mesh)
-		{		
-			foreach(GameObject cur in this.toggledGameObject)
-			{
-				if (cur == mesh)
-				{
-					return true;
-				}
-			}
-			
-			foreach(GameObject cur in this.defaultGameObjects)
-			{
-				if (cur == mesh)
-				{
-					return true;
-				}
-			}
-			
-			return false;
+		{
+			return 
+				this.toggledGameObject.Any(cur => cur == mesh) || 
+				this.defaultGameObjects.Any(cur => cur == mesh);
 		}
-		
+
 		public void ShowCurrentlyActiveMeshes(bool visible)
 		{						
 			//TODO Make this more effecient by only checking when

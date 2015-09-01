@@ -11,6 +11,10 @@ namespace DungeonGuide
 	
 		public static SceneManager Instance {get; private set;}
 		
+		/// <summary>
+		/// Disable "never used" warnings here because a lot of these register
+		/// events, but aren't ever referenced directly
+		/// </summary>
 		#pragma warning disable 414
 		private UserInputController userInputController;
 		private CharacterVisionController characterVisionController;
