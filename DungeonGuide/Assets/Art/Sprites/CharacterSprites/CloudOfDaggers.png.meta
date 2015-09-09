@@ -37,6 +37,7 @@ TextureImporter:
   lightmap: 0
   rGBM: 0
   compressionQuality: 0
+  allowsAlphaSplitting: 0
   spriteMode: 1
   spriteExtrude: 0
   spriteMeshType: 0
