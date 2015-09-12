@@ -51,3 +51,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Levels/Town.unity
   - enabled: 1
     path: Assets/Scenes/Levels/Fylaki.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/PeneymaRange.unity
