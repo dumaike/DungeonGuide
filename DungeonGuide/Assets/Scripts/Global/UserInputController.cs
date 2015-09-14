@@ -57,12 +57,12 @@ namespace DungeonGuide
 			switch (inputEvent)
 			{
 				case InputEvent.ZOOM_IN:
-					CameraZoom(-ZOOM_INCREMENT, SceneManager.gameplayCam);
-					CameraZoom(-ZOOM_INCREMENT, SceneManager.visionCam);
+					UpdateCameraZoom(-ZOOM_INCREMENT, SceneManager.gameplayCam);
+					UpdateCameraZoom(-ZOOM_INCREMENT, SceneManager.visionCam);
 					break;
 				case InputEvent.ZOOM_OUT:
-					CameraZoom(ZOOM_INCREMENT, SceneManager.gameplayCam);
-					CameraZoom(ZOOM_INCREMENT, SceneManager.visionCam);
+					UpdateCameraZoom(ZOOM_INCREMENT, SceneManager.gameplayCam);
+					UpdateCameraZoom(ZOOM_INCREMENT, SceneManager.visionCam);
 					break;
 				default:
 					Log.Error("No action mapped for input event: " + inputEvent);
@@ -98,6 +98,8 @@ namespace DungeonGuide
 				if (!this.contextMenuObject.IsContextMenuActive())
 				{
 					UpdateCameraMovement ();
+					UpdateCameraZoom(0, SceneManager.gameplayCam);
+					UpdateCameraZoom(0, SceneManager.visionCam);
 				}
 			}		
 		}
@@ -110,9 +112,15 @@ namespace DungeonGuide
 			this.mousePressedTime = float.MinValue;
 		}
 
-		private void CameraZoom(float amount, Camera camera)
+		private void UpdateCameraZoom(float amount, Camera camera)
 		{
-			float newZoom = camera.orthographicSize + amount;
+			float zoomAmount = amount;
+			if (zoomAmount == 0)
+			{
+				zoomAmount = GetCameraZoomDelta();
+			}
+
+			float newZoom = camera.orthographicSize + zoomAmount;
 			if (newZoom <= 0) 
 			{
 				newZoom = camera.orthographicSize;
@@ -122,8 +130,55 @@ namespace DungeonGuide
 			camera.orthographicSize = newZoom;
 			SceneManager.eventCtr.FireCameraUpdateEvent();
 		}
-		
-        private void UpdateContextMenuCheck()
+
+		/// <summary>
+		/// The distance the camera should zoom in/out this frame
+		/// </summary>
+		/// <returns></returns>
+		private float GetCameraZoomDelta()
+		{
+			//If there are exactly two touches, start camera movement.
+			/*if (Input.touchCount == 2)
+			{
+				Log.Print("Two touches!");
+
+				Touch touch1 = Input.GetTouch(0);
+				Touch touch2 = Input.GetTouch(1);
+
+				if (!this.processingMultitouch)
+				{
+					this.processingMultitouch = true;
+					this.lastTouch1Position =
+						SceneManager.gameplayCam.ScreenPointToRay(touch1.position).origin;
+					this.lastTouch2Position =
+						SceneManager.gameplayCam.ScreenPointToRay(touch2.position).origin;
+				}
+
+				Vector3 newTouch1 =
+						SceneManager.gameplayCam.ScreenPointToRay(touch1.position).origin;
+				Vector3 newTouch2 =
+						SceneManager.gameplayCam.ScreenPointToRay(touch2.position).origin;
+
+				float touchDistanceDelta = 
+					((newTouch1 - newTouch2).magnitude - (this.lastTouch1Position - this.lastTouch2Position).magnitude)*2000;
+
+				this.lastTouch1Position = newTouch1;
+				this.lastTouch2Position = newTouch2;
+
+				Log.Print("Touch dist: " + touchDistanceDelta);
+
+				return touchDistanceDelta;
+			}
+			else
+			{
+				this.processingMultitouch = false;
+			}*/
+			
+			float mouseScrollWheel = Input.GetAxis("Mouse ScrollWheel");
+			return mouseScrollWheel;
+		}
+
+		private void UpdateContextMenuCheck()
         {
 			//If the mouse was pressed
 	        if (!Input.GetMouseButtonUp(0))
@@ -161,7 +216,7 @@ namespace DungeonGuide
 		
 		private void UpdateCameraMovement()
 		{
-			Vector3 cameraMovement = GetMouseWorldDelta();
+			Vector3 cameraMovement = GetCameraMovementDelta();
 
 			if (cameraMovement != Vector3.zero)
 			{
@@ -173,7 +228,11 @@ namespace DungeonGuide
 			}
 		}
 
-		private Vector3 GetMouseWorldDelta()
+		/// <summary>
+		/// The distance the camera should pan move this frame
+		/// </summary>
+		/// <returns></returns>
+		private Vector3 GetCameraMovementDelta()
 		{
 			//If there are exactly two touches, start camera movement.
 			if (Input.touchCount == 2)
@@ -197,9 +256,6 @@ namespace DungeonGuide
 
 				Vector3 touch1Delta = newTouch1 - this.lastTouch1Position;
 				Vector3 touch2Delta = newTouch2 - this.lastTouch2Position;
-
-				//If the touches aren't in the same general direction, don't count it.
-				float touchSimilarity = (touch1Delta.normalized - touch2Delta.normalized).magnitude;
 
 				Vector3 averageTouchDelta = (touch1Delta + touch2Delta) / 2;
 
