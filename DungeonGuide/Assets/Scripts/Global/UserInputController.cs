@@ -4,12 +4,6 @@ using UnityEngine.UI;
 
 namespace DungeonGuide
 {
-	public enum InputMode
-	{
-		CAMERA,
-		CHARACTERS,
-	};
-
 	public class UserInputController
 	{			
 		private const float UI_HEIGHT = 5.0f;
@@ -22,23 +16,27 @@ namespace DungeonGuide
 		}
 
 		private const float DOUBLE_CLICK_DURATION = 0.2f;
-
-		public static InputMode currentMode = InputMode.CHARACTERS;
 		
 		private const float ZOOM_INCREMENT = 0.5f;
-		
-		private readonly Text intputModeButtonText;
+
+		/// <summary>
+		/// The smaller the number, the more parallel we require two touch movement
+		/// to be to count as a camera movement. 0 is perfectly parallel, 2 is ever
+		/// opposite direction touches count.
+		/// </summary>
+		private const float PARALLEL_TOUCH_THRESHOLD = 0.4f;
 
 		private readonly ContextMenu contextMenuObject;
 
 		private float mousePressedTime;
 
-		private Vector3 lastWorldMousePosition;
+		private Vector3 lastTouch1Position;
+		private Vector3 lastTouch2Position;
+		private bool processingMultitouch = false;
 
 		#region initializers
-		public UserInputController(Text inputModeButtonText, ContextMenu contextMenu)
+		public UserInputController(ContextMenu contextMenu)
 		{
-			this.intputModeButtonText = inputModeButtonText;
 			this.contextMenuObject = contextMenu;
 
 			SceneManager.eventCtr.menuItemClicked += HandleMenuItemClicked;
@@ -58,9 +56,6 @@ namespace DungeonGuide
 
 			switch (inputEvent)
 			{
-				case InputEvent.TOGGLE_INPUT_MODE:
-					ToggleInputMode();
-					break;
 				case InputEvent.ZOOM_IN:
 					CameraZoom(-ZOOM_INCREMENT, SceneManager.gameplayCam);
 					CameraZoom(-ZOOM_INCREMENT, SceneManager.visionCam);
@@ -100,8 +95,7 @@ namespace DungeonGuide
 				UpdateContextMenuCheck();
 				
 				//If it's still not active, preform selection or movement
-				if (!this.contextMenuObject.IsContextMenuActive() &&
-					currentMode == InputMode.CAMERA)
+				if (!this.contextMenuObject.IsContextMenuActive())
 				{
 					UpdateCameraMovement ();
 				}
@@ -116,20 +110,6 @@ namespace DungeonGuide
 			this.mousePressedTime = float.MinValue;
 		}
 
-		private void ToggleInputMode()
-		{		
-			if (currentMode == InputMode.CAMERA)
-			{
-				currentMode = InputMode.CHARACTERS;
-				this.intputModeButtonText.text = "Character Mode";
-			}
-			else
-			{
-				currentMode = InputMode.CAMERA;
-				this.intputModeButtonText.text = "Camera Mode";
-			}
-		}
-		
 		private void CameraZoom(float amount, Camera camera)
 		{
 			float newZoom = camera.orthographicSize + amount;
@@ -181,24 +161,79 @@ namespace DungeonGuide
 		
 		private void UpdateCameraMovement()
 		{
-			if (Input.GetMouseButtonDown(0))
-			{				
-				this.lastWorldMousePosition = SceneManager.gameplayCam.ScreenPointToRay(Input.mousePosition).origin;
-			}
-			
-			if(Input.GetMouseButton(0))
+			Vector3 cameraMovement = GetMouseWorldDelta();
+
+			if (cameraMovement != Vector3.zero)
 			{
-				Vector3 newMousePosition = SceneManager.gameplayCam.ScreenPointToRay(Input.mousePosition).origin;
-				Vector3 mousePositionDelta = newMousePosition - this.lastWorldMousePosition;
-				//Include the delta in the new mouse position because we're moving the camera too
-				this.lastWorldMousePosition = newMousePosition - mousePositionDelta;
-				
 				//Transform screen coords into world coords
-				SceneManager.gameplayCam.transform.position -= mousePositionDelta;
-				SceneManager.visionCam.transform.position -= mousePositionDelta;
+				SceneManager.gameplayCam.transform.position -= cameraMovement;
+				SceneManager.visionCam.transform.position -= cameraMovement;
 				
 				SceneManager.eventCtr.FireCameraUpdateEvent();
 			}
+		}
+
+		private Vector3 GetMouseWorldDelta()
+		{
+			//If there are exactly two touches, start camera movement.
+			if (Input.touchCount == 2)
+			{
+				Touch touch1 = Input.GetTouch(0);
+				Touch touch2 = Input.GetTouch(1);
+
+				if (!this.processingMultitouch)
+				{
+					this.processingMultitouch = true;
+					this.lastTouch1Position =
+						SceneManager.gameplayCam.ScreenPointToRay(touch1.position).origin;
+					this.lastTouch2Position =
+						SceneManager.gameplayCam.ScreenPointToRay(touch2.position).origin;					
+				}
+				
+				Vector3 newTouch1 =
+						SceneManager.gameplayCam.ScreenPointToRay(touch1.position).origin;
+				Vector3 newTouch2 = 
+						SceneManager.gameplayCam.ScreenPointToRay(touch2.position).origin;
+
+				Vector3 touch1Delta = newTouch1 - this.lastTouch1Position;
+				Vector3 touch2Delta = newTouch2 - this.lastTouch2Position;
+
+				//If the touches aren't in the same general direction, don't count it.
+				float touchSimilarity = (touch1Delta.normalized - touch2Delta.normalized).magnitude;
+
+				Vector3 averageTouchDelta = (touch1Delta + touch2Delta) / 2;
+
+				this.lastTouch1Position = newTouch1 - averageTouchDelta;
+				this.lastTouch2Position = newTouch2 - averageTouchDelta;
+				
+				return averageTouchDelta;
+			}
+			else
+			{
+				this.processingMultitouch = false;
+			}
+
+			//We just grabbed right click, so get the "starting" position of the mouse as a touch 1
+			if (Input.GetMouseButtonDown(1))
+			{
+				this.lastTouch1Position =
+					SceneManager.gameplayCam.ScreenPointToRay(Input.mousePosition).origin;
+			}
+
+			//The right mouse is down, so grab the delta between this and the previous position
+			if (Input.GetMouseButton(1))
+			{
+				Vector3 newTouchPosition =
+					SceneManager.gameplayCam.ScreenPointToRay(Input.mousePosition).origin;
+				Vector3 returnVector = newTouchPosition - this.lastTouch1Position;
+
+				//Update the last pos plus the expected camera movement
+				this.lastTouch1Position = newTouchPosition - returnVector;
+				
+				return returnVector;
+			}
+			
+			return Vector3.zero;
 		}
 		#endregion
 	}

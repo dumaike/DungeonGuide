@@ -30,9 +30,6 @@ namespace DungeonGuide
 		
 		public static Camera gameplayCam {get{return SceneManager.Instance.gameplayCamera;}}		
 		public static Camera visionCam {get{return SceneManager.Instance.visionCamera;}}
-				
-		[SerializeField]
-		private Text intputModeButton;	
 		
 		[SerializeField]
 		private ContextMenu contextMenu;	
@@ -79,7 +76,7 @@ namespace DungeonGuide
 		
 			this.eventCenter = new EventCenter();
 			
-			this.userInputController = new UserInputController(this.intputModeButton, this.contextMenu);
+			this.userInputController = new UserInputController(this.contextMenu);
 			this.characterVisionController = new CharacterVisionController(this.visionOverlayQuad, depthMaskShader);
 			this.characterStackingController = new CharacterStackingController();
 			this.interactiveObjectController = new InteractiveObjectController();

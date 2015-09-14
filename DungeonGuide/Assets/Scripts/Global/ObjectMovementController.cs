@@ -32,7 +32,8 @@ namespace DungeonGuide
 
 		public void Update()
 		{
-			if (!this.contextMenuObject.IsContextMenuActive())
+			if (!this.contextMenuObject.IsContextMenuActive() && 
+				(Input.touchCount == 1 || Input.GetMouseButton(0) || Input.GetMouseButtonUp(0)))
 			{
 				UpdateObjectMovementAndSelection();
 			}
@@ -46,14 +47,14 @@ namespace DungeonGuide
 		private void UpdateObjectMovementAndSelection()
 		{
 			//If a character was clicked
-			if ((Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) &&
+			if ((Input.GetMouseButtonDown(0)) &&
 				this.selectedObject == null)
 			{
 				SelectObjectUnderMouse();
 			}
 
 			//If a character was released
-			if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) &&
+			if ((Input.GetMouseButtonUp(0)) &&
 				this.selectedObject != null)
 			{
 				this.selectedObject.CharacterSelected(false);
