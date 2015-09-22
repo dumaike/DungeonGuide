@@ -21,9 +21,10 @@ namespace DungeonGuide
 			{
 				int snappedX = (int)go.transform.position.x;
 				int snappedZ = (int)go.transform.position.z;
-				if (snappedX != go.transform.position.x ||
-				    snappedZ != go.transform.position.z ||
-				    go.transform.localPosition.y != 0)
+				if (snappedX != go.transform.position.x
+				    || snappedZ != go.transform.position.z
+				    //|| go.transform.localPosition.y != 0
+					)
 				{
 					Vector3 snappedGlobalPosition = go.transform.position;
 					snappedGlobalPosition.x = (float)Math.Round (snappedGlobalPosition.x);
@@ -31,7 +32,7 @@ namespace DungeonGuide
 					go.transform.position = snappedGlobalPosition;				
 					
 					Vector3 snappedLocalPosition = go.transform.localPosition;
-					snappedLocalPosition.y = 0;
+					//snappedLocalPosition.y = 0;
 					go.transform.localPosition = snappedLocalPosition;				
 				}
 			}
