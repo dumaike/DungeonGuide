@@ -98,8 +98,8 @@ namespace DungeonGuide
 				if (!this.contextMenuObject.IsContextMenuActive())
 				{
 					UpdateCameraMovement ();
-					UpdateCameraZoom(0, SceneManager.gameplayCam);
-					UpdateCameraZoom(0, SceneManager.visionCam);
+					//UpdateCameraZoom(0, SceneManager.gameplayCam);
+					//UpdateCameraZoom(0, SceneManager.visionCam);
 				}
 			}		
 		}
