@@ -43,7 +43,7 @@ namespace DungeonGuide
 			Vector3 movementAmount = this.selectedObjectStartPosition - target.transform.position;
 			float travelDistance = movementAmount.magnitude;
 
-			int roundedDistance = (int)Mathf.Ceil(travelDistance * SceneManager.SCENE_TO_WORLD_UNITS);
+			int roundedDistance = (int)Mathf.Ceil((int)travelDistance * SceneManager.SCENE_TO_WORLD_UNITS);
 
 			if (roundedDistance > 0)
 			{
