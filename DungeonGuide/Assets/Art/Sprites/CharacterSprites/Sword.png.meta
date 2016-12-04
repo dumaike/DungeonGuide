@@ -48,6 +48,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites: []
+    outline: []
   spritePackingTag: characters
   userData: 
   assetBundleName: 
