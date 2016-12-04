@@ -59,13 +59,6 @@ namespace DungeonGuide
 			LayerAccessor.InitLayerInformation();
 			
 			GameObject gameplayObjectRoot = GameObject.Find(GridUtility.GAMEPLAY_OBJECT_ROOT_NAME);
-			if (gameplayObjectRoot == null)
-			{
-				Log.Warning("There isn't a gameplay object root. We expect an object named " + GridUtility.GAMEPLAY_OBJECT_ROOT_NAME +
-					" in the scene. Fixing at runtime, but you should add one to add gameplay elements to the scene.", LogChannel.EDITOR_SETUP, this);
-				gameplayObjectRoot = new GameObject(GridUtility.GAMEPLAY_OBJECT_ROOT_NAME);
-			}
-
 			Canvas worldCanvas = gameplayObjectRoot.GetComponent<Canvas>();
 			if (worldCanvas == null)
 			{

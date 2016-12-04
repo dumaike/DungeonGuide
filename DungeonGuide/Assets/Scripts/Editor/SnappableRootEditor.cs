@@ -18,16 +18,13 @@ namespace DungeonGuide
 			{
 				this.snappableObject = (SnappableRoot)target;
 			}
-
-			/*if (this.snappableObject.transform.parent == null && this.snappableObject.gameObject.activeInHierarchy)
+			
+			if (this.snappableObject.transform.parent == null && this.snappableObject.gameObject.activeInHierarchy)
 			{
 				GridUtility.ReparentToPath(this.snappableObject.gameObject, GridUtility.GAMEPLAY_OBJECT_ROOT_NAME + "/" + this.snappableObject.name);
-			}*/
-
-			if (GUILayout.Button("Snap"))
-			{
-				GridUtility.SnapToGrid(this.snappableObject.gameObject, this.snappableObject.snapType);
 			}
+			
+			GridUtility.SnapToGrid(this.snappableObject.gameObject, this.snappableObject.snapType);
 		}
 
 		#endregion
