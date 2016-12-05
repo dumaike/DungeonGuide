@@ -18,7 +18,7 @@ namespace DungeonGuide
 		private InputField newPlayerName;
 		
 		[SerializeField]
-		private InputField newPlayerInitiative;
+		private Text newPlayerInitiative;
 		
 		[SerializeField]
 		private int maxPlayers = 10;
