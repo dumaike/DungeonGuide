@@ -11,7 +11,10 @@ namespace DungeonGuide
 		private ToggleGroup groupToDriveName;
 		
 		[SerializeField]
-		private InputField nameField;
+		private Text nameField;
+
+        [SerializeField]
+        private GameObject placeholder;
 		
 		private List<string> childTogglesNames = new List<string>();
 			
@@ -31,11 +34,11 @@ namespace DungeonGuide
 					if (toggled)
 					{
 						this.nameField.text = toggleName;
+                        this.placeholder.SetActive(false);
 					}
 				});
 			}
 			
-			this.nameField.onValueChange.AddListener(OnLabelValueChanged);
 		}
 		
 		private void OnEnable()
@@ -45,21 +48,6 @@ namespace DungeonGuide
 			{
 				toggle.isOn = false;
 			}
-		}
-		
-		/// <summary>
-		/// A callback for if a user starts typing in the text field, we
-		/// want to make sure the premade check boxes are off.
-		/// </summary>
-		/// <param name="newValue">New value.</param>
-		private void OnLabelValueChanged(string newValue)
-		{
-			if (this.childTogglesNames.Contains(newValue))
-			{
-				return;
-			}
-			
-			this.groupToDriveName.SetAllTogglesOff();
 		}
 	}
 }

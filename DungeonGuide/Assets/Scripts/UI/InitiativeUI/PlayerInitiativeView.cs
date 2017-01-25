@@ -15,10 +15,13 @@ namespace DungeonGuide
 		private GameObject addPlayerDialog;
 		
 		[SerializeField]
-		private InputField newPlayerName;
+		private Text newPlayerName;
 		
 		[SerializeField]
 		private Text newPlayerInitiative;
+
+        [SerializeField]
+        private Dropdown playerNameDropdown;
 		
 		[SerializeField]
 		private int maxPlayers = 10;
@@ -41,13 +44,7 @@ namespace DungeonGuide
 			this.newPlayerInitiative.text = "";
 			this.newPlayerName.text = "";
 			this.addPlayerDialog.SetActive(true);
-			
-			//Set the player name as the next input
-			EventSystem system = EventSystem.current;// EventSystemManager.currentSystem;
-			Selectable next = 
-				system.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
-			
-			system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));
+            this.playerNameDropdown.value = 0;			
 		}
 		
 		public void ConfirmAddPlayer()
