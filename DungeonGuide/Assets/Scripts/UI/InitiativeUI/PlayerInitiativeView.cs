@@ -56,8 +56,12 @@ namespace DungeonGuide
 
             for (int iNameIndex = 0; iNameIndex < this.playerEntries.Count; ++iNameIndex)
             {
-                this.playerEntries.ForEach();
-                this.newPlayerName.text.CompareTo()
+                PlayerInitiativeElement player = this.playerEntries[iNameIndex];
+                if (this.newPlayerName.text.Equals(player.playerName))
+                {
+                    playerNameIndex = ++playerNameIndex;
+                    this.newPlayerName.text = this.newPlayerName.text + playerNameIndex.ToString("N0");
+                }
             }
 
             newEle.transform.SetParent(this.transform, false);
