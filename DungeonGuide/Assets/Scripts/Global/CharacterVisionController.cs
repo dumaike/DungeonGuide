@@ -117,7 +117,7 @@ namespace DungeonGuide
 			
 			mesh.RecalculateNormals();
 			mesh.RecalculateBounds();
-			mesh.Optimize();			
+			;			
 		}
 		
 		private void HandleCameraUpdated ()
@@ -227,7 +227,7 @@ namespace DungeonGuide
 				
 				mesh.RecalculateNormals();
 				mesh.RecalculateBounds();
-				mesh.Optimize();
+				;
 			}
 		}
 		
