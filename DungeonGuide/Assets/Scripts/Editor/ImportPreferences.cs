@@ -3,6 +3,7 @@ using UnityEditor;
 
 public class ImportPreferences : AssetPostprocessor 
 {
+	/* TODO: Broke in 5.5 update. Needs to be fixed.
 	private void OnPostprocessTexture(Texture2D texture)
 	{
 		if (assetPath.Contains("CharacterSprites"))
@@ -24,4 +25,5 @@ public class ImportPreferences : AssetPostprocessor
 			EditorUtility.CompressTexture(texture, TextureFormat.RGBA32, TextureCompressionQuality.Best);
 		}	
 	}
+	*/
 }

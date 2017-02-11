@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace DungeonGuide
 {
@@ -11,7 +10,7 @@ namespace DungeonGuide
 		#region public methods
 		public void LoadScene()
 		{
-			Application.LoadLevel(this.sceneName);
+			UnityEngine.SceneManagement.SceneManager.LoadScene(this.sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
 		}
 		#endregion
 	}
