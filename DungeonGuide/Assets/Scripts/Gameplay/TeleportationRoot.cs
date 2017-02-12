@@ -53,6 +53,8 @@ namespace DungeonGuide
 				
 				//Fire another event to let everyone know we moved somewhere else
 				SceneManager.eventCtr.FireObjectMovedEvent(target, newPosition, destinationObject.transform.position);
+
+				SceneManager.eventCtr.FireObjectSelected(target, false);
 			}
 		}
 		#endregion

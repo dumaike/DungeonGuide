@@ -53,3 +53,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Levels/Fylaki.unity
   - enabled: 1
     path: Assets/Scenes/Levels/PeneymaRange.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/ShipBattle.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/SuicideDungeonBlowupLevel.unity
