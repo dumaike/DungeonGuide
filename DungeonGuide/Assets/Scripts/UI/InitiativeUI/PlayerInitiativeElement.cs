@@ -16,9 +16,10 @@ namespace DungeonGuide
 		private GameObject waitingObject;
 		
 		[SerializeField]
-		private Text playerName;
+		public Text playerName;
 		
 		public int initiative {get; private set;}
+
 	
 		public void InitializeElement(PlayerInitiativeView view, string playerName, int playerInitiative)
 		{

@@ -51,8 +51,29 @@ namespace DungeonGuide
 		{
 			PlayerInitiativeElement newEle =
 				Instantiate(this.playerInitiativeElementTemplate);
-			
-			newEle.transform.SetParent(this.transform, false);
+
+            int numberOfDuplicatesFound = 1;
+
+            for (int iNameIndex = 0; iNameIndex < this.playerEntries.Count; ++iNameIndex)
+            {
+                PlayerInitiativeElement player = this.playerEntries[iNameIndex];
+                int parenthesisPosition = player.playerName.text.IndexOf("(");
+                if (parenthesisPosition == -1 && this.newPlayerName.text.Equals(player.playerName.text))
+                {
+                    player.playerName.text = player.playerName.text + "(" + numberOfDuplicatesFound.ToString("N0") + ")";
+                    ++numberOfDuplicatesFound;
+                }
+                else if (this.newPlayerName.text.Equals(player.playerName.text.Substring(0,parenthesisPosition)))
+                {
+                   ++numberOfDuplicatesFound;
+                }
+            }
+            if (numberOfDuplicatesFound != 1)
+            {
+                this.newPlayerName.text = this.newPlayerName.text + "(" + numberOfDuplicatesFound.ToString("N0") + ")";
+            }
+
+            newEle.transform.SetParent(this.transform, false);
 			
 			int playerInitiative = 0;
 			int.TryParse(this.newPlayerInitiative.text, out playerInitiative);
