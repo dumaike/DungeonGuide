@@ -27,6 +27,7 @@ namespace DungeonGuide
         private int numberOfPlayers;
         private int experienceTotal;
 
+		private const int DEFAULT_NUM_PLAYERS = 5;
 
         public void ActivateDialog()
         {
@@ -37,7 +38,7 @@ namespace DungeonGuide
             this.enterExperienceUi.SetActive(true);
             this.experiencePerPlayerUi.SetActive(false);
             this.experienceText.text = "";
-            this.numberOfPlayersText.text = "5";
+            this.numberOfPlayersText.text = DEFAULT_NUM_PLAYERS.ToString();
             int.TryParse(this.numberOfPlayersText.text, out numberOfPlayers);
         }
 
