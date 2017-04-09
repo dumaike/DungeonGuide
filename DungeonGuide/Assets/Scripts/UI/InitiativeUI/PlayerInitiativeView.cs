@@ -63,7 +63,7 @@ namespace DungeonGuide
                     player.playerName.text = player.playerName.text + "(" + numberOfDuplicatesFound.ToString("N0") + ")";
                     ++numberOfDuplicatesFound;
                 }
-                else if (this.newPlayerName.text.Equals(player.playerName.text.Substring(0,parenthesisPosition)))
+                else if (parenthesisPosition > 0 && this.newPlayerName.text.Equals(player.playerName.text.Substring(0,parenthesisPosition)))
                 {
                    ++numberOfDuplicatesFound;
                 }
