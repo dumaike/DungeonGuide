@@ -10,6 +10,7 @@ namespace DungeonGuide
 		
 		private List<InteractiveRoot> reavealableObjects = new List<InteractiveRoot>();
 		private List<InteractiveRoot> toggleableObjects = new List<InteractiveRoot>();
+        private List<InteractiveRoot> openableObjects = new List<InteractiveRoot>();
 
 		#region initializers
 		public InteractiveObjectController()
@@ -25,6 +26,10 @@ namespace DungeonGuide
 				{
 					this.toggleableObjects.Add(interactiveObj);
 				}
+                else if (interactiveObj.type == InteractiveRoot.InteractiveType.OPENABLE)
+                {
+                    this.openableObjects.Add(interactiveObj);
+                }
 				else
 				{
 					Log.Warning("There's a type of interactive object not being tracked by " + 

@@ -9,7 +9,8 @@ namespace DungeonGuide
 		public enum InteractiveType
 		{
 			REVEALABLE,
-			TOGGLEABLE
+			TOGGLEABLE,
+            OPENABLE
 		}
 	
 		[SerializeField]
