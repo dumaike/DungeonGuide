@@ -26,7 +26,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 423090}
-  - component: {fileID: 11405118}
   - component: {fileID: 11413458}
   - component: {fileID: 23232049140037456}
   m_Layer: 0
@@ -44,7 +43,7 @@ Transform:
   m_GameObject: {fileID: 100374}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   m_LocalPosition: {x: 0, y: 0.1, z: 0}
-  m_LocalScale: {x: 3, y: 0.05, z: 3}
+  m_LocalScale: {x: 1, y: 0.05, z: 1}
   m_Children: []
   m_Father: {fileID: 423090}
   m_RootOrder: 0
@@ -56,8 +55,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 123090}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -31, y: 0, z: -15}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -49, y: 0, z: -10}
+  m_LocalScale: {x: 3, y: 0.05, z: 3}
   m_Children:
   - {fileID: 400374}
   m_Father: {fileID: 0}
@@ -84,21 +83,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11405118
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 123090}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 829e2fe8ff17bd943be586014cc8519c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterSizeEditor: 1
-  hasVisionEditor: 0
-  stackablePartsEditor: {fileID: 0}
-  freeMovement: 0
 --- !u!114 &11413458
 MonoBehaviour:
   m_ObjectHideFlags: 1
