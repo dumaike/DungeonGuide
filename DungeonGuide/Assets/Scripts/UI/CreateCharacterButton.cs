@@ -13,6 +13,7 @@ namespace DungeonGuide
 			One_by_One_Player_Template,
 			Two_by_Two_Character_Template,
 			Two_by_Two_Player_Template,
+            Three_by_Three_Character_Template,
 			Four_by_Four_Character_Template
 		};		
 	
@@ -41,7 +42,10 @@ namespace DungeonGuide
 				case CharacterTemplate.Two_by_Two_Player_Template:
 					this.objectToCreate = Resources.Load("2x2PlayerCharacterTemplate") as GameObject;
 					break;
-				case CharacterTemplate.Four_by_Four_Character_Template:
+                case CharacterTemplate.Three_by_Three_Character_Template:
+                    this.objectToCreate = Resources.Load("3x3CharacterTemplate") as GameObject;
+                    break;
+                case CharacterTemplate.Four_by_Four_Character_Template:
 					this.objectToCreate = Resources.Load("4x4CharacterTemplate") as GameObject;
 					break;
 				default:
